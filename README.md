@@ -1,4 +1,4 @@
-# recycle
+# Gomiko
 
 A new Flutter project.
 
