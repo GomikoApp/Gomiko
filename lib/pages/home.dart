@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
+  // title parameter is not necessary here, its just for testing.
   const HomePage({Key? key, required this.title}) : super(key: key);
 
   final String title;
@@ -9,19 +10,13 @@ class HomePage extends StatefulWidget {
   State<StatefulWidget> createState() => HomePageState();
 }
 
-// #docregion _HomePageState
 class HomePageState extends State<HomePage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
+      body: Center(
+        child: Text("Hello, world! I'm ${widget.title}."),
       ),
-      // #docregion body
-      body: const Center(
-        child: Text("Hello, world! I'm home."),
-      )
+    );
   }
-  // #enddocregion build
 }
