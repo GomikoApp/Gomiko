@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'pages/home.dart';
 import 'pages/profile.dart';
 import 'pages/search.dart';
+import 'pages/leaderboard.dart';
 
 void main() {
   runApp(const MyApp());
@@ -40,14 +41,13 @@ class MyAppState extends State<MyApp> {
       tooltip: null,
       enabled: false,
     ),
-
+    NavigationDestination(
+      icon: Icon(Icons.leaderboard),
+      label: 'Leaderboard',
+    ),
     NavigationDestination(
       icon: Icon(Icons.person),
       label: 'Profile',
-    ),
-    NavigationDestination(
-      icon: Icon(Icons.arrow_forward),
-      label: 'Sign Out',
     ),
   ];
 
@@ -55,8 +55,8 @@ class MyAppState extends State<MyApp> {
     HomePage(title: 'Home'),
     SearchPage(title: 'Search'),
     HomePage(title: 'Don\'t touch me :)'),
+    LeaderboardPage(title: 'Leaderboard'),
     ProfilePage(title: 'Profile'),
-    ProfilePage(title: 'Sign Out'),
   ];
 
   @override
