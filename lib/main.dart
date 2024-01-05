@@ -5,7 +5,6 @@ import 'pages/home.dart';
 import 'pages/profile.dart';
 import 'pages/search.dart';
 import 'pages/leaderboard.dart';
-import 'pages/login.dart';
 
 void main() {
   runApp(const MyApp());

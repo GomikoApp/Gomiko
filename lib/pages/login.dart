@@ -1,7 +1,8 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
-import 'package:recycle/pages/signup.dart';
+import 'package:provider/provider.dart';
+
+import '/main.dart';
+import 'signup.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key, required this.title}) : super(key: key);
@@ -18,6 +19,8 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
+    var appState = context.watch<MyAppChangeNotifier>();
+
     double formSizedBoxHeight = 20;
     double windowWidth = MediaQuery.of(context).size.width;
     double windowHeight = MediaQuery.of(context).size.height;
@@ -92,7 +95,8 @@ class _LoginPageState extends State<LoginPage> {
                           // or false if the form is invalid.
                           if (_formKey.currentState!.validate()) {
                             // Later to be used to integrate with Firebase
-                            throw UnimplementedError();
+                            Navigator.pop(context);
+                            appState.testLogInToUser();
                           }
                         },
                       ),
