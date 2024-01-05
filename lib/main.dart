@@ -5,6 +5,7 @@ import 'pages/home.dart';
 import 'pages/profile.dart';
 import 'pages/search.dart';
 import 'pages/leaderboard.dart';
+import 'pages/login.dart';
 
 void main() {
   runApp(const MyApp());
@@ -129,5 +130,7 @@ class MyAppChangeNotifier extends ChangeNotifier {
 
   void testLogInToUser() {
     loggedIn = true;
+    // Tells any widget watching this change notifier that it has changed.
+    notifyListeners();
   }
 }
