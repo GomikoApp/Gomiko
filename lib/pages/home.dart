@@ -36,27 +36,17 @@ class HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
+      appBar: null,
       body: Column(
         children: [
           // I want to add animations to these elements that is a simple fade
           // and transform up.
-          const Text(
+          Text(
             "Welcome to Gomiko",
             textScaler: TextScaler.linear(2.5),
           ),
-          const SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const LoginPage(title: "Login"),
-                ),
-              );
-            },
-            child: const Text("Login"),
-          ),
+          SizedBox(height: 20),
         ],
       ),
     );
