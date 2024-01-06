@@ -18,26 +18,46 @@ class HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      var appState = Provider.of<MyAppChangeNotifier>(context, listen: false);
+    // Uncomment this code after finishing the home page.
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   var appState = Provider.of<MyAppChangeNotifier>(context, listen: false);
 
-      // Check if user is logged in, if not, push login page to screen.
-      if (!appState.loggedIn) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const LoginPage(title: "Login"),
-          ),
-        );
-      }
-    });
+    //   // Check if user is logged in, if not, push login page to screen.
+    //   if (!appState.loggedIn) {
+    //     Navigator.push(
+    //       context,
+    //       MaterialPageRoute(
+    //         builder: (context) => const LoginPage(title: "Login"),
+    //       ),
+    //     );
+    //   }
+    // });
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Text("Hello, world! I'm ${widget.title}."),
+      body: Column(
+        children: [
+          // I want to add animations to these elements that is a simple fade
+          // and transform up.
+          const Text(
+            "Welcome to Gomiko",
+            textScaler: TextScaler.linear(2.5),
+          ),
+          const SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const LoginPage(title: "Login"),
+                ),
+              );
+            },
+            child: const Text("Login"),
+          ),
+        ],
       ),
     );
   }
