@@ -9,7 +9,7 @@ class LoginPage extends StatefulWidget {
   const LoginPage({Key? key, required this.title}) : super(key: key);
 
   final String title;
-  
+
   @override
   State<StatefulWidget> createState() => _LoginPageState();
 }
@@ -17,10 +17,13 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  RegExp emailRegex = RegExp(r'[a-zA-Z0-9.!#$%&’+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)(?:.[a-zA-Z0-9-]+)');
+  RegExp emailRegex = RegExp(
+      r'[a-zA-Z0-9.!#$%&’+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)(?:.[a-zA-Z0-9-]+)');
   double formSizedBoxHeight = 20;
   int passwordLengthMinimum = 5;
   int passwordLengthMaximum = 32;
+  RegExp passwordRegex = RegExp(r"[a-zA-Z0-9.!#@$%&’+/=?^_`{|}~-]");
+  FocusNode passwordFocusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -31,122 +34,116 @@ class _LoginPageState extends State<LoginPage> {
     double windowHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      body: Center(
-        child: Container(
-          constraints: BoxConstraints(
-            maxWidth: windowWidth / 1.25,
-            maxHeight: windowHeight / 2,
-          ),
-          child: Column(
-            // I want to add animations to these elements that is a simple fade 
-            // and transform up.
-            children: [
-              const Text(
-                "Welcome to Gomiko",
-                textScaler: TextScaler.linear(2.5),
-              ),
-              SizedBox(height: formSizedBoxHeight),
-              Form(
-                key: _formKey,
-                child: Column(
-                  children: <Widget>[
-                    // I'm currently referencing: https://api.flutter.dev/flutter/widgets/Form-class.html
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        icon: Icon(Icons.email),
-                        hintText: "Enter your email",
-                      ),
-                      controller: TextEditingController(
-
-                      ),
-                      // Validate string
-                      // TODO: validators need to be implemented later
-                      validator: (String? email) {
-                        if (email == null || 
-                            email.isEmpty) {
-                          return "Please enter some text.";
-                        }
-
-
-                        if (!emailRegex.hasMatch(email)) {
-                          return "Your email is invalid.";
-                        }
-
-                        return null;
-                      },
-                      inputFormatters: [
-                        FilteringTextInputFormatter.allow(
-                          RegExp(r"[a-zA-Z0-9.!#@$%&’+/=?^_`{|}~-]"),
-                          replacementString: '',
-                        )
-                      ],
+        body: Center(
+      child: Container(
+        constraints: BoxConstraints(
+          maxWidth: windowWidth / 1.25,
+          maxHeight: windowHeight / 2,
+        ),
+        child: Column(
+          // I want to add animations to these elements that is a simple fade
+          // and transform up.
+          children: [
+            const Text(
+              "Welcome to Gomiko",
+              textScaler: TextScaler.linear(2.5),
+            ),
+            SizedBox(height: formSizedBoxHeight),
+            Form(
+              key: _formKey,
+              child: Column(
+                children: <Widget>[
+                  // I'm currently referencing: https://api.flutter.dev/flutter/widgets/Form-class.html
+                  TextFormField(
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    decoration: const InputDecoration(
+                      icon: Icon(Icons.email),
+                      hintText: "Enter your email",
                     ),
-                    SizedBox(height: formSizedBoxHeight),
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        icon: Icon(Icons.key),
-                        hintText: "Enter your password.",
-                      ),
-                      // Validate string
-                      validator: (String? password) {
-                        if (password == null || 
-                            password.isEmpty) {
-                          return "Your password must not be empty.";
-                        }
+                    // Validate string
+                    // TODO: validators need to be implemented later
+                    validator: (String? email) {
+                      if (email == null ||
+                          email.isEmpty ||
+                          !emailRegex.hasMatch(email)) {
+                        return "Please enter a valid email.";
+                      }
 
-                        // NOTE: we use String.characters.length because complex characters will only count as one instead of
-                        // the >1 value that String.length can give.
-                        if (password.characters.length < passwordLengthMinimum || 
-                            password.characters.length > passwordLengthMaximum) {
-                          return "Your password must contain $passwordLengthMinimum-$passwordLengthMaximum characters.";
-                          // Your password can only contain alphanumeric symbols and the and must be $passwordLengthMinimum-$passwordLengthMaximum characters long.
-                        }
-
-                        return null;
-                      },
-                      inputFormatters: [
-                        LengthLimitingTextInputFormatter(passwordLengthMaximum),
-                        // Only allow alphanumeric characters and the symbols "!@#$%^&*+=".
-                        FilteringTextInputFormatter.allow(
-                          RegExp(r'[a-zA-Z0-9!@#$%^&*+=]'),
-                          replacementString: '',
-                        ),
-                      ],
+                      return null;
+                    },
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(
+                        RegExp(r"[a-zA-Z0-9.!#@$%&’+/=?^_`{|}~-]"),
+                        replacementString: '',
+                      )
+                    ],
+                  ),
+                  SizedBox(height: formSizedBoxHeight),
+                  TextFormField(
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    decoration: const InputDecoration(
+                      icon: Icon(Icons.key),
+                      hintText: "Enter your password.",
                     ),
-                    SizedBox(height: formSizedBoxHeight),
-                    ActionChip(
-                      label: const Text("Create Account"),
-                      onPressed: () {
-                        Navigator.push(
+                    focusNode: passwordFocusNode,
+                    // Validate string
+                    validator: (String? password) {
+                      if (password == null || password.isEmpty) {
+                        return "Your password must not be empty.";
+                      }
+
+                      // NOTE: we use String.characters.length because complex characters will only count as one instead of
+                      // the >1 value that String.length can give.
+                      if (password.characters.length < passwordLengthMinimum ||
+                          password.characters.length > passwordLengthMaximum) {
+                        return "Your password must contain $passwordLengthMinimum-$passwordLengthMaximum characters.";
+                        // Your password can only contain alphanumeric symbols and the and must be $passwordLengthMinimum-$passwordLengthMaximum characters long.
+                      }
+
+                      return null;
+                    },
+                    inputFormatters: [
+                      LengthLimitingTextInputFormatter(passwordLengthMaximum),
+                      // Only allow alphanumeric characters and the symbols "!@#$%^&*+=".
+                      FilteringTextInputFormatter.allow(
+                        RegExp(r'[a-zA-Z0-9!@#$%^&*+=]'),
+                        replacementString: '',
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: formSizedBoxHeight),
+                  ActionChip(
+                    label: const Text("Create Account"),
+                    onPressed: () {
+                      Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const SignUpPage(title: "Signup"),
-                          )
-                        );
+                            builder: (context) =>
+                                const SignUpPage(title: "Signup"),
+                          ));
+                    },
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                    child: ElevatedButton(
+                      child: const Text("Login"),
+                      onPressed: () {
+                        // Validate will return true if the form is valid,
+                        // or false if the form is invalid.
+                        if (_formKey.currentState!.validate()) {
+                          // TODO: Later to be used to integrate with Firebase
+                          Navigator.pop(context);
+                          appState.testLogInToUser();
+                        }
                       },
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 16.0),
-                      child: ElevatedButton(
-                        child: const Text("Login"),
-                        onPressed: () {
-                          // Validate will return true if the form is valid, 
-                          // or false if the form is invalid.
-                          if (_formKey.currentState!.validate()) {
-                            // TODO: Later to be used to integrate with Firebase
-                            Navigator.pop(context);
-                            appState.testLogInToUser();
-                          }
-                        },
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
-      )
-    );
+      ),
+    ));
   }
 }
