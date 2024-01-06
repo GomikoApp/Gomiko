@@ -8,7 +8,7 @@ import 'pages/home.dart';
 import 'pages/profile.dart';
 import 'pages/search.dart';
 import 'pages/leaderboard.dart';
-import 'pages/scan.dart';
+import 'pages/camera.dart';
 
 void main() {
   runApp(const MyApp());
@@ -94,7 +94,9 @@ class MyAppState extends State<MyApp> {
                 await availableCameras().then((value) => Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (_) => TakePictureScreen(cameras: value))));
+                        builder: (context) => TakePictureScreen(
+                              camera: value.first,
+                            ))));
               },
               tooltip: 'Scan',
               shape: const CircleBorder(),
