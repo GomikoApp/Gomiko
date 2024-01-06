@@ -1,4 +1,8 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+
+import 'dart:async';
+import 'dart:io';
 
 import 'pages/home.dart';
 import 'pages/profile.dart';
@@ -70,46 +74,53 @@ class MyAppState extends State<MyApp> {
             ColorScheme.fromSeed(seedColor: Colors.blue, secondary: Colors.red),
       ),
       darkTheme: ThemeData.dark(),
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Gomiko'),
-        ),
-        body: Center(
-          child: _pages.elementAt(_selectedIndex),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: SizedBox(
-          height: 75,
-          width: 75,
-          child: FloatingActionButton(
-            //TODO: Add functionality to scan button
-            onPressed: () {
-              print('Scan button pressed');
-            },
-            tooltip: 'Scan',
-            shape: const CircleBorder(),
-            child: const Icon(
-              Icons.camera_alt,
-              size: 40,
-            ),
+      home: Builder(
+        // Added builder to fix Navigator.push() error
+        builder: (context) => Scaffold(
+          appBar: AppBar(
+            title: const Text('Gomiko'),
           ),
-        ),
-        bottomNavigationBar: Stack(
-          alignment: Alignment.bottomCenter,
-          children: [
-            NavigationBar(
-              selectedIndex: _selectedIndex,
-              onDestinationSelected: _onDestinationSelected,
-              destinations: _destinations,
-            ),
-            Positioned(
-              bottom: MediaQuery.of(context).size.height *
-                  0.03, // Adjust this to adjust the position of the text
-              child: const Text(
-                'Scan',
+          body: Center(
+            child: _pages.elementAt(_selectedIndex),
+          ),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
+          floatingActionButton: SizedBox(
+            height: 75,
+            width: 75,
+            child: FloatingActionButton(
+              //TODO: Add functionality to scan button
+              onPressed: () async {
+                await availableCameras().then((value) => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => TakePictureScreen(cameras: value))));
+              },
+              tooltip: 'Scan',
+              shape: const CircleBorder(),
+              child: const Icon(
+                Icons.camera_alt,
+                size: 40,
               ),
             ),
-          ],
+          ),
+          bottomNavigationBar: Stack(
+            alignment: Alignment.bottomCenter,
+            children: [
+              NavigationBar(
+                selectedIndex: _selectedIndex,
+                onDestinationSelected: _onDestinationSelected,
+                destinations: _destinations,
+              ),
+              Positioned(
+                bottom: MediaQuery.of(context).size.height *
+                    0.03, // Adjust this to adjust the position of the text
+                child: const Text(
+                  'Scan',
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
