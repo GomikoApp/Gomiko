@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '/main.dart';
@@ -16,12 +17,16 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  RegExp emailRegex = RegExp(r'[a-zA-Z0-9.!#$%&’+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)(?:.[a-zA-Z0-9-]+)');
+  double formSizedBoxHeight = 20;
+  int passwordLengthMinimum = 5;
+  int passwordLengthMaximum = 32;
+
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     var appState = context.watch<MyAppChangeNotifier>();
 
-    double formSizedBoxHeight = 20;
     double windowWidth = MediaQuery.of(context).size.width;
     double windowHeight = MediaQuery.of(context).size.height;
 
@@ -51,28 +56,62 @@ class _LoginPageState extends State<LoginPage> {
                         icon: Icon(Icons.email),
                         hintText: "Enter your email",
                       ),
+                      controller: TextEditingController(
+
+                      ),
                       // Validate string
                       // TODO: validators need to be implemented later
-                      validator: (String? value) {
-                        if (value == null || value.isEmpty) {
-                          return "Please enter some text";
+                      validator: (String? email) {
+                        if (email == null || 
+                            email.isEmpty) {
+                          return "Please enter some text.";
                         }
+
+
+                        if (!emailRegex.hasMatch(email)) {
+                          return "Your email is invalid.";
+                        }
+
                         return null;
                       },
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(
+                          RegExp(r"[a-zA-Z0-9.!#@$%&’+/=?^_`{|}~-]"),
+                          replacementString: '',
+                        )
+                      ],
                     ),
                     SizedBox(height: formSizedBoxHeight),
                     TextFormField(
                       decoration: const InputDecoration(
                         icon: Icon(Icons.key),
-                        hintText: "Enter your password",
+                        hintText: "Enter your password.",
                       ),
                       // Validate string
-                      validator: (String? value) {
-                        if (value == null || value.isEmpty) {
-                          return "Please enter some text";
+                      validator: (String? password) {
+                        if (password == null || 
+                            password.isEmpty) {
+                          return "Your password must not be empty.";
                         }
+
+                        // NOTE: we use String.characters.length because complex characters will only count as one instead of
+                        // the >1 value that String.length can give.
+                        if (password.characters.length < passwordLengthMinimum || 
+                            password.characters.length > passwordLengthMaximum) {
+                          return "Your password must contain $passwordLengthMinimum-$passwordLengthMaximum characters.";
+                          // Your password can only contain alphanumeric symbols and the and must be $passwordLengthMinimum-$passwordLengthMaximum characters long.
+                        }
+
                         return null;
                       },
+                      inputFormatters: [
+                        LengthLimitingTextInputFormatter(passwordLengthMaximum),
+                        // Only allow alphanumeric characters and the symbols "!@#$%^&*+=".
+                        FilteringTextInputFormatter.allow(
+                          RegExp(r'[a-zA-Z0-9!@#$%^&*+=]'),
+                          replacementString: '',
+                        ),
+                      ],
                     ),
                     SizedBox(height: formSizedBoxHeight),
                     ActionChip(
@@ -94,7 +133,7 @@ class _LoginPageState extends State<LoginPage> {
                           // Validate will return true if the form is valid, 
                           // or false if the form is invalid.
                           if (_formKey.currentState!.validate()) {
-                            // Later to be used to integrate with Firebase
+                            // TODO: Later to be used to integrate with Firebase
                             Navigator.pop(context);
                             appState.testLogInToUser();
                           }
