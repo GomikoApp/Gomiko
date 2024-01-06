@@ -37,7 +37,6 @@ class HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      appBar: null,
       body: Column(
         children: [
           // I want to add animations to these elements that is a simple fade

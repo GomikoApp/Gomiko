@@ -69,18 +69,16 @@ class MyAppState extends State<MyApp> {
         title: 'Gomiko',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          colorScheme:
-              ColorScheme.fromSeed(seedColor: Colors.blue, secondary: Colors.red),
+          colorScheme: ColorScheme.fromSeed(
+              seedColor: Colors.blue, secondary: Colors.red),
         ),
         darkTheme: ThemeData.dark(),
         home: Scaffold(
-          appBar: AppBar(
-            title: const Text('Gomiko'),
-          ),
           body: Center(
             child: _pages.elementAt(_selectedIndex),
           ),
-          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
           floatingActionButton: SizedBox(
             height: 75,
             width: 75,
