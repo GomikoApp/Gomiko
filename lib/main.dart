@@ -4,6 +4,7 @@ import 'pages/home.dart';
 import 'pages/profile.dart';
 import 'pages/search.dart';
 import 'pages/leaderboard.dart';
+import 'pages/scan.dart';
 
 void main() {
   runApp(const MyApp());
@@ -82,7 +83,9 @@ class MyAppState extends State<MyApp> {
           width: 75,
           child: FloatingActionButton(
             //TODO: Add functionality to scan button
-            onPressed: () {},
+            onPressed: () {
+              print('Scan button pressed');
+            },
             tooltip: 'Scan',
             shape: const CircleBorder(),
             child: const Icon(
