@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart'
+    hide EmailAuthProvider, PhoneAuthProvider;   
+import 'package:firebase_ui_auth/firebase_ui_auth.dart';
+import 'package:go_router/go_router.dart';
+import 'app_state.dart';
 
-import 'pages/home.dart';
-import 'pages/profile.dart';
-import 'pages/search.dart';
-import 'pages/leaderboard.dart';
+import 'widgets/home_scaffold.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
   runApp(const MyApp());
 }
 
@@ -18,54 +22,11 @@ class MyApp extends StatefulWidget {
 }
 
 class MyAppState extends State<MyApp> {
-  int _selectedIndex = 0;
-
-  void _onDestinationSelected(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
-  final List<Widget> _destinations = const <NavigationDestination>[
-    NavigationDestination(
-      icon: Icon(Icons.home),
-      label: 'Home',
-    ),
-    NavigationDestination(
-      icon: Icon(Icons.search),
-      label: 'Search',
-    ),
-    //Scuffed way to fix the floating action button position
-    NavigationDestination(
-      icon: Icon(Icons.add, size: 0),
-      label: '',
-      tooltip: null,
-      enabled: false,
-    ),
-    NavigationDestination(
-      icon: Icon(Icons.leaderboard),
-      label: 'Leaderboard',
-    ),
-    NavigationDestination(
-      icon: Icon(Icons.person),
-      label: 'Profile',
-    ),
-  ];
-
-  final List<Widget> _pages = const <Widget>[
-    HomePage(title: 'Home'),
-    SearchPage(title: 'Search'),
-    HomePage(title: 'Don\'t touch me :)'),
-    LeaderboardPage(title: 'Leaderboard'),
-    ProfilePage(title: 'Profile'),
-  ];
-
   @override
   Widget build(BuildContext context) {
-    // See MyAppChangeNotifier class below for details on change notifiers.
     return ChangeNotifierProvider(
-      create: (context) => MyAppChangeNotifier(),
-      child: MaterialApp(
+      create: (context) => ApplicationState(),
+      child: MaterialApp.router(
         title: 'Gomiko',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
@@ -73,63 +34,84 @@ class MyAppState extends State<MyApp> {
               ColorScheme.fromSeed(seedColor: Colors.blue, secondary: Colors.red),
         ),
         darkTheme: ThemeData.dark(),
-        home: Scaffold(
-          appBar: AppBar(
-            title: const Text('Gomiko'),
-          ),
-          body: Center(
-            child: _pages.elementAt(_selectedIndex),
-          ),
-          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-          floatingActionButton: SizedBox(
-            height: 75,
-            width: 75,
-            child: FloatingActionButton(
-              //TODO: Add functionality to scan button
-              onPressed: () {},
-              tooltip: 'Scan',
-              shape: const CircleBorder(),
-              child: const Icon(
-                Icons.camera_alt,
-                size: 40,
-              ),
-            ),
-          ),
-          bottomNavigationBar: Stack(
-            alignment: Alignment.bottomCenter,
-            children: [
-              NavigationBar(
-                selectedIndex: _selectedIndex,
-                onDestinationSelected: _onDestinationSelected,
-                destinations: _destinations,
-              ),
-              Positioned(
-                bottom: MediaQuery.of(context).size.height *
-                    0.03, // Adjust this to adjust the position of the text
-                child: const Text(
-                  'Scan',
-                ),
-              ),
-            ],
-          ),
-        ),
+        routerConfig: _router,
       ),
     );
   }
 }
 
-/// This change notifier maintains a global state for the app.
-/// Reference: https://docs.flutter.dev/data-and-backend/state-mgmt/simple
-/// In this change notifier, put anything that you want to be accessible throughout the whole app.
-/// Then, in your widgets, you can create a variable that watches the root widget's change notifier state using 'BuildContext.watch<MyAppChangeNotifier>()'
-class MyAppChangeNotifier extends ChangeNotifier {
-  // Variable that keeps track of if the user is logged into the app.
-  // This is a temporary solution to imitate how the actual app will work before Firebase authentication.
-  bool loggedIn = false;
-
-  void testLogInToUser() {
-    loggedIn = true;
-    // Tells any widget watching this change notifier that it has changed.
-    notifyListeners();
-  }
-}
+final _router = GoRouter(
+  routes: [
+    GoRoute(
+      path: '/',
+      builder: (context, state) => const HomeScaffold(),
+      routes: [
+        GoRoute(
+          path: 'sign-in',
+          builder: (context, state) {
+            return SignInScreen(
+              actions: [
+                ForgotPasswordAction(((context, email) {
+                  final uri = Uri(
+                    path: '/sign-in/forgot-password',
+                    queryParameters: <String, String?>{
+                      'email': email,
+                    },
+                  );
+                  context.push(uri.toString());
+                })),
+                AuthStateChangeAction(((context, state) {
+                  final user = switch (state) {
+                    SignedIn state => state.user,
+                    UserCreated state => state.credential.user,
+                    _ => null
+                  };
+                  if (user == null) {
+                    return;
+                  }
+                  if (state is UserCreated) {
+                    user.updateDisplayName(user.email!.split('@')[0]);
+                  }
+                  if (!user.emailVerified) {
+                    user.sendEmailVerification();
+                    const snackBar = SnackBar(
+                        content: Text(
+                            'Please check your email to verify your email address'));
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  }
+                  context.pushReplacement('/');
+                })),
+              ],
+            );
+          },
+          routes: [
+            GoRoute(
+              path: 'forgot-password',
+              builder: (context, state) {
+                final arguments = state.uri.queryParameters;
+                return ForgotPasswordScreen(
+                  email: arguments['email'],
+                  headerMaxExtent: 200,
+                );
+              },
+            ),
+          ],
+        ),
+        GoRoute(
+          path: 'profile',
+          builder: (context, state) {
+            return ProfileScreen(
+              providers: const [],
+              actions: [
+                SignedOutAction((context) {
+                  context.pushReplacement('/');
+                }),
+              ],
+            );
+          },
+        ),
+      ],
+    ),
+  ],
+);
+// end of GoRouter configuration
