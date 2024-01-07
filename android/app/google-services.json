@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyB_T2Ens0aBxknpm4xgnbed4CA8i3hd7_w"
+          "current_key": "process.env['GOOGLE_API_KEY_ANDROID']"
         }
       ],
       "services": {
