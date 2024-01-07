@@ -74,9 +74,7 @@ class MyAppState extends State<MyApp> {
         ),
         darkTheme: ThemeData.dark(),
         home: Scaffold(
-          body: Center(
-            child: _pages.elementAt(_selectedIndex),
-          ),
+          body: _pages.elementAt(_selectedIndex),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
           floatingActionButton: SizedBox(

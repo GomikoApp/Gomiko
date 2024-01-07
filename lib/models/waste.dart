@@ -1,17 +1,17 @@
-import 'package:flutter/material.dart';
+import '../utils/extensions.dart';
 
 class Waste {
-  final String name;
   final WasteCategory category;
   final WasteType type;
-  final Image image;
+  final String image;
 
   Waste({
-    required this.name,
     required this.category,
     required this.type,
     required this.image,
   });
+
+  get name => category.name.capitalize();
 }
 
 ///

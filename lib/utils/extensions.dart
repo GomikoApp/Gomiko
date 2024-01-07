@@ -1,3 +1,4 @@
+/// Add any String extension methods here.
 extension StringExtension on String {
   /// Returns a copy of this string having its first letter uppercased.
   ///
