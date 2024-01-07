@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:firebase_auth/firebase_auth.dart'
-    hide EmailAuthProvider, PhoneAuthProvider;   
-import 'package:firebase_ui_auth/firebase_ui_auth.dart';
+import 'package:provider/provider.dart';  
 import 'package:go_router/go_router.dart';
-import 'package:recycle/pages/login.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'app_state.dart';
 
+import '/pages/login.dart';
 import 'widgets/home_scaffold.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Load environment variables
+  await dotenv.load(fileName: '.env');
 
   runApp(const MyApp());
 }

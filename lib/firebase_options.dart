@@ -3,6 +3,7 @@
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
@@ -14,7 +15,12 @@ import 'package:flutter/foundation.dart'
 ///   options: DefaultFirebaseOptions.currentPlatform,
 /// );
 /// ```
+
 class DefaultFirebaseOptions {
+  // String appleKey = dotenv.env['GOOGLE_API_KEY_APPLE'] == null ? '' : "$dotenv.env['GOOGLE_API_KEY_APPLE']";
+  // final String androidKey = dotenv.env['GOOGLE_API_KEY_ANDROID'] == null ? '' : "$dotenv.env['GOOGLE_API_KEY_ANDROID']";
+  // final String webKey = dotenv.env['GOOGLE_API_KEY_WEB'] == null ? '' : "$dotenv.env['GOOGLE_API_KEY_WEB']";
+
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
       return web;
@@ -43,8 +49,8 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBXMfDQuu4Kip0FcHDT4h_STqL4rKnKIQg',
+  static final FirebaseOptions web = FirebaseOptions(
+    apiKey: dotenv.env['GOOGLE_API_KEY_WEB'] == null ? '' : "${dotenv.env['GOOGLE_API_KEY_WEB']}",
     appId: '1:872903978882:web:456e624549768f3466a99b',
     messagingSenderId: '872903978882',
     projectId: 'gomiko-app',
@@ -53,16 +59,16 @@ class DefaultFirebaseOptions {
     measurementId: 'G-Q0DB03E77C',
   );
 
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAjvw7XVL3wb8fsxgea6p7XwILfe3O5qmA',
+  static final FirebaseOptions android = FirebaseOptions(
+    apiKey: dotenv.env['GOOGLE_API_KEY_ANDROID'] == null ? '' : "${dotenv.env['GOOGLE_API_KEY_ANDROID']}",
     appId: '1:872903978882:android:f3de32c101827d7766a99b',
     messagingSenderId: '872903978882',
     projectId: 'gomiko-app',
     storageBucket: 'gomiko-app.appspot.com',
   );
 
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDv__SwDfsaPaqZB6QO-PCq3xqIwUSuoeE',
+  static final FirebaseOptions ios = FirebaseOptions(
+    apiKey: dotenv.env['GOOGLE_API_KEY_APPLE'] == null ? '' : "${dotenv.env['GOOGLE_API_KEY_APPLE']}",
     appId: '1:872903978882:ios:c6c36e0429bd2f3166a99b',
     messagingSenderId: '872903978882',
     projectId: 'gomiko-app',
@@ -70,8 +76,8 @@ class DefaultFirebaseOptions {
     iosBundleId: 'com.example.recycle',
   );
 
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyDv__SwDfsaPaqZB6QO-PCq3xqIwUSuoeE',
+  static final FirebaseOptions macos = FirebaseOptions(
+    apiKey: dotenv.env['GOOGLE_API_KEY_APPLE'] == null ? '' : "${dotenv.env['GOOGLE_API_KEY_APPLE']}",
     appId: '1:872903978882:ios:8462633dd3ecb05466a99b',
     messagingSenderId: '872903978882',
     projectId: 'gomiko-app',
