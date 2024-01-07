@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:recycle/app_state.dart';
 import 'package:provider/provider.dart';
 
 import 'login.dart';
-import '../main.dart';
 
 class HomePage extends StatefulWidget {
   // title parameter is not necessary here, its just for testing.
@@ -15,26 +16,28 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      var appState = Provider.of<MyAppChangeNotifier>(context, listen: false);
-
-      // Check if user is logged in, if not, push login page to screen.
-      if (!appState.loggedIn) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const LoginPage(title: "Login"),
-          ),
-        );
-      }
-    });
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   WidgetsBinding.instance.addPostFrameCallback((_) {
+  //     // Check if user is logged in, if not, push login page to screen.
+  //     );
+  //   });
+  // }
   
   @override
   Widget build(BuildContext context) {
+    var appState = context.watch<ApplicationState>();
+
+    // Check if user is logged in, if not, push login page to screen.
+    if (!appState.loggedIn) {
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) {
+          context.replace('/login');
+        }
+      );
+    }
+
     return Scaffold(
       body: Center(
         child: Text("Hello, world! I'm ${widget.title}."),

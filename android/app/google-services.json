@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "872903978882",
+    "project_id": "gomiko-app",
+    "storage_bucket": "gomiko-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:872903978882:android:f3de32c101827d7766a99b",
+        "android_client_info": {
+          "package_name": "com.example.recycle"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "process.env['GOOGLE_API_KEY_ANDROID']"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
