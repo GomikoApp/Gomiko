@@ -1,39 +1,42 @@
-import '../utils/extensions.dart';
-
 class Waste {
   final WasteCategory category;
-  final WasteType type;
   final String image;
 
   Waste({
     required this.category,
-    required this.type,
     required this.image,
   });
 
-  get name => category.name.capitalize();
+  get name => category.name;
 }
 
 ///
 /// List of all wastes.
 ///
 enum WasteCategory {
-  plastic, // eg. bottles
-  paper, // eg. cardboard
-  glass, // eg. bottles
-  metal, // eg. aluminum
-  organic, // eg. food
-  eWaste, // eg. electronics
-  hazardous, // eg. batteries
-  other, // eg. diapers, clothes
+  burnable,
+  nonBurnable, // includes sharp objects that need to be wrapped
+  recyclable, // includes cans, glass, paper, etc.
+  paper, // but large cardboard boxes are kept separate
+  hazardous, // includes batteries, light bulbs, etc.
+  oversized, // Need to call local facility to pick up. Includes furniture, etc.
 }
 
-///
-/// List of all waste types.
-/// This is used to determine which bin the waste should go into.
-enum WasteType {
-  recyclable, // eg. plastic bottles
-  compostable, // eg. food, paper
-  landfill, // eg. diapers
-  hazardous, // eg. batteries
+extension WasteCategoryExtension on WasteCategory {
+  String get name {
+    switch (this) {
+      case WasteCategory.burnable:
+        return "Burnable";
+      case WasteCategory.nonBurnable:
+        return "Non-Burnable";
+      case WasteCategory.recyclable:
+        return "Recyclable";
+      case WasteCategory.paper:
+        return "Paper";
+      case WasteCategory.hazardous:
+        return "Hazardous";
+      case WasteCategory.oversized:
+        return "Oversized";
+    }
+  }
 }

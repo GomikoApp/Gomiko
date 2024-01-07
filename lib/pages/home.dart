@@ -5,6 +5,7 @@ import 'login.dart';
 import '../main.dart';
 import '../widgets/waste.dart';
 import '../models/waste.dart';
+import '../widgets/progressbar.dart';
 
 class HomePage extends StatefulWidget {
   // title parameter is not necessary here, its just for testing.
@@ -40,18 +41,15 @@ class HomePageState extends State<HomePage> {
     Waste(
       // Use assets instead of network images in the future.
       image: "https://cdn-icons-png.flaticon.com/512/5835/5835713.png",
-      category: WasteCategory.plastic,
-      type: WasteType.recyclable,
+      category: WasteCategory.burnable,
     ),
     Waste(
       image: "https://cdn-icons-png.flaticon.com/512/7030/7030877.png",
-      category: WasteCategory.glass,
-      type: WasteType.recyclable,
+      category: WasteCategory.nonBurnable,
     ),
     Waste(
       image: "https://cdn-icons-png.flaticon.com/512/7030/7030877.png",
-      category: WasteCategory.glass,
-      type: WasteType.recyclable,
+      category: WasteCategory.nonBurnable,
     ),
   ];
 
@@ -63,92 +61,97 @@ class HomePageState extends State<HomePage> {
           // I want to add animations to these elements that is a simple fade
           // and transform up.
 
-          // Stack(
-          //   children: [
-          //     Transform.scale(
-          //       alignment: Alignment.center,
-          //       scale: 1.1,
-          //       child: Container(
-          //         height: 200,
-          //         decoration: ShapeDecoration(
-          //           shape: const CircleBorder(
-          //             side: BorderSide.none,
-          //           ),
-          //           gradient: LinearGradient(
-          //             begin: Alignment.topRight,
-          //             end: Alignment.bottomLeft,
-          //             colors: [
-          //               Colors.green[300]!,
-          //               Colors.green[300]!,
-          //               Colors.white,
-          //               Colors.white,
-          //               Colors.white,
-          //             ],
-          //           ),
-          //         ),
-          //       ),
-          //     ),
-          //     Transform.scale(
-          //       alignment: Alignment.centerRight,
-          //       scale: 1.7,
-          //       child: Container(
-          //         height: 200,
-          //         decoration: ShapeDecoration(
-          //           shape: const CircleBorder(
-          //             side: BorderSide.none,
-          //           ),
-          //           gradient: LinearGradient(
-          //             begin: Alignment.topLeft,
-          //             end: Alignment.bottomRight,
-          //             colors: [
-          //               Colors.green[400]!,
-          //               Colors.green[200]!,
-          //               Colors.white,
-          //             ],
-          //           ),
-          //         ),
-          //       ),
-          //     ),
-          //     const Padding(
-          //       padding: EdgeInsets.only(top: 50, left: 20),
-          //       child: Text(
-          //         "Gomiko",
-          //         style: TextStyle(
-          //           color: Colors.black,
-          //           fontWeight: FontWeight.bold,
-          //           fontSize: 30,
-          //         ),
-          //       ),
-          //     ),
-          //     const Column(
-          //       children: [
-          //         SizedBox(height: 100),
-          //         Padding(
-          //           padding: EdgeInsets.only(left: 20),
-          //           child: Text(
-          //             "Keep going!",
-          //             style: TextStyle(
-          //               color: Colors.black,
-          //               fontWeight: FontWeight.bold,
-          //               fontSize: 20,
-          //             ),
-          //           ),
-          //         ),
-          //         Padding(
-          //           padding: EdgeInsets.only(left: 20),
-          //           child: Text(
-          //             "You're 80 points away from leveling up!",
-          //             style: TextStyle(
-          //               color: Colors.black,
-          //               fontWeight: FontWeight.bold,
-          //               fontSize: 20,
-          //             ),
-          //           ),
-          //         ),
-          //       ],
-          //     )
-          //   ],
-          // ),
+          Row(
+            children: [
+              const Padding(
+                padding: EdgeInsets.only(left: 15, top: 15),
+                child: Text(
+                  //TODO: Change this to the user's name.
+                  "Hi, World!",
+                  style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              const Spacer(),
+              Padding(
+                padding: const EdgeInsets.only(right: 15, top: 15),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: const Color.fromARGB(255, 217, 217, 217),
+                    borderRadius: BorderRadius.circular(100),
+                  ),
+                  child: IconButton(
+                    icon: const Icon(Icons.person),
+                    onPressed: () {
+                      print("profile pressed!");
+                    },
+                  ),
+                ),
+              )
+            ],
+          ),
+          const SizedBox(height: 10),
+          Container(
+            height: 200,
+            width: double.infinity,
+            margin: const EdgeInsets.all(15),
+            decoration: BoxDecoration(
+              color: const Color.fromARGB(255, 217, 217, 217),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: const Padding(
+              padding: EdgeInsets.all(10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  SizedBox(height: 10),
+                  Text(
+                    "Keep going! You're doing great!",
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    "You're 80 points away from leveling up!",
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: Text(
+                      "120/200",
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  // Progress bar
+                  Padding(
+                    padding: EdgeInsets.only(top: 10, bottom: 10),
+                    child: ProgressBar(
+                      width: double.infinity,
+                      height: 20,
+                      progress: 0.7,
+                      color: Colors.blue,
+                      backgroundColor: Colors.grey,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
 
           const SizedBox(height: 20),
 
