@@ -1,8 +1,9 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+
+import 'image_result.dart';
 
 Future<void> main() async {
   // Ensure that plugin services are initialized so that `availableCameras()`
@@ -100,7 +101,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
             // If the picture was taken, display it on a new screen.
             await Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => DisplayPictureScreen(
+                builder: (context) => ImageResultPage(
                   // Pass the automatically generated path to
                   // the DisplayPictureScreen widget.
                   imagePath: image.path,
@@ -120,37 +121,20 @@ class TakePictureScreenState extends State<TakePictureScreen> {
               iconSize: 50,
               padding: EdgeInsets.only(bottom: 25),
               constraints: BoxConstraints(),
-              icon: Icon(Icons.circle, color: Colors.white),
+              icon: Icon(Icons.circle, color: Colors.red),
             ),
             Container(
               width: 50,
               height: 50,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(color: Colors.white, width: 2),
+                border: Border.all(color: Colors.red, width: 2),
               ),
             )
           ],
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-    );
-  }
-}
-
-// A widget that displays the picture taken by the user.
-class DisplayPictureScreen extends StatelessWidget {
-  final String imagePath;
-
-  const DisplayPictureScreen({super.key, required this.imagePath});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Display the Picture')),
-      // The image is stored as a file on the device. Use the `Image.file`
-      // constructor with the given path to display the image.
-      body: Image.file(File(imagePath)),
     );
   }
 }
