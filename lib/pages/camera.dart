@@ -69,7 +69,6 @@ class TakePictureScreenState extends State<TakePictureScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Take a picture')),
       // You must wait until the controller is initialized before displaying the
       // camera preview. Use a FutureBuilder to display a loading spinner until the
       // controller has finished initializing.
@@ -85,11 +84,9 @@ class TakePictureScreenState extends State<TakePictureScreen> {
           }
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        // Provide an onPressed callback.
-        onPressed: () async {
-          // Take the Picture in a try / catch block. If anything goes wrong,
-          // catch the error.
+      floatingActionButton: GestureDetector(
+        onTap: () async {
+          // Your onPressed logic
           try {
             // Ensure that the camera is initialized.
             await _initializeControllerFuture;
@@ -115,8 +112,28 @@ class TakePictureScreenState extends State<TakePictureScreen> {
             print(e);
           }
         },
-        child: const Icon(Icons.camera_alt),
+        child: Stack(
+          children: [
+            const IconButton(
+              // Provide an onPressed callback.
+              onPressed: null,
+              iconSize: 50,
+              padding: EdgeInsets.only(bottom: 25),
+              constraints: BoxConstraints(),
+              icon: Icon(Icons.circle, color: Colors.white),
+            ),
+            Container(
+              width: 50,
+              height: 50,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(color: Colors.white, width: 2),
+              ),
+            )
+          ],
+        ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
