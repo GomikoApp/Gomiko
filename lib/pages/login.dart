@@ -61,7 +61,6 @@ class _LoginPageState extends State<LoginPage> {
                       hintText: "Enter your email",
                     ),
                     // Validate string
-                    // TODO: validators need to be implemented later
                     validator: (String? email) {
                       if (email == null ||
                           email.isEmpty ||
