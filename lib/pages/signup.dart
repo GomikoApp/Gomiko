@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import 'package:recycle/app_state.dart';
 import 'package:recycle/widgets/login_signup_widgets.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -16,6 +20,8 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
+    var appState = context.watch<ApplicationState>();
+
     double windowWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
@@ -73,7 +79,8 @@ class _SignUpPageState extends State<SignUpPage> {
                   contextLabel: "Already have an account?",
                   linkLabel: "Login",
                   onTap: () {
-                    print("Pressed link!");
+                    // Link to login page
+                    context.go('/login');
                   },
                 ),
                 const GomikoTextDivider(
@@ -85,6 +92,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   children: [
                     IconButton(
                       onPressed: () {
+                        // Google Auth
                         print("Pressed G button!");
                       }, 
                       icon: const Icon(Icons.g_mobiledata)
@@ -94,7 +102,8 @@ class _SignUpPageState extends State<SignUpPage> {
                 GomikoLink(
                   label: "Continue without an account",
                   onTap: () {
-                    print("Pressed guest link!");
+                    appState.guestSignIn();
+                    context.push('/');
                   },
                 )
               ],

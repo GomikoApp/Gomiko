@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 import 'package:recycle/app_state.dart';
 import 'package:provider/provider.dart';
 
-import 'login.dart';
 
 class HomePage extends StatefulWidget {
   // title parameter is not necessary here, its just for testing.
@@ -16,21 +15,13 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   WidgetsBinding.instance.addPostFrameCallback((_) {
-  //     // Check if user is logged in, if not, push login page to screen.
-  //     );
-  //   });
-  // }
-  
   @override
   Widget build(BuildContext context) {
     var appState = context.watch<ApplicationState>();
 
     // Check if user is logged in, if not, push login page to screen.
-    if (!appState.loggedIn) {
+    if (!appState.loggedIn &&
+        !appState.guestMode) {
       WidgetsBinding.instance.addPostFrameCallback(
         (_) {
           context.replace('/login');

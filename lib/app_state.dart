@@ -21,6 +21,11 @@ class ApplicationState extends ChangeNotifier {
   // FIREBASE AUTH VARS
   bool _loggedIn = false;
   bool get loggedIn => _loggedIn;
+  bool _guestMode = false;
+  /// Denotes if the user is currently signed in using guest mode.
+  /// 
+  /// This value automatically updates to false if the user signs in by themselves.
+  bool get guestMode => _guestMode;
 
   Future<void> init() async {
     // FIREBASE AUTH START
@@ -30,11 +35,20 @@ class ApplicationState extends ChangeNotifier {
     FirebaseAuth.instance.userChanges().listen((user) {
       if (user != null) {
         _loggedIn = true;
+        _guestMode = false;
       } else {
         _loggedIn = false;
+        _guestMode = false;
       }
       notifyListeners();
     });
     // FIREBASE AUTH END
+  }
+
+  /// Signs in as a guest.
+  /// 
+  /// Always include this in anything that signs in the user as a guest.
+  void guestSignIn() {
+    _guestMode = true;
   }
 }
