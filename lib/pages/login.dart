@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
+import 'package:recycle/app_state.dart';
 import 'package:recycle/widgets/login_signup_widgets.dart';
 
 import 'signup.dart';
@@ -20,7 +21,13 @@ class _LoginPageState extends State<LoginPage> {
 
   // USER SIGN-IN SECTION VARIABLES AND METHODS SECTION
   final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
+  final passwordFormField = GomikoPasswordTextFormField(
+                        hintText: "Password",
+                        controller: TextEditingController(),
+                        validator: (String? password) {
+                          return LSUtilities.passwordFormValidator(password: password);
+                        },
+                      );
   String? errorMessage = '';
 
   /// Try a sign-in with the current email and password in the text fields.
@@ -28,7 +35,7 @@ class _LoginPageState extends State<LoginPage> {
     try {  
       return await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: _emailController.text, 
-        password: _passwordController.text
+        password: passwordFormField.currentPassword
       );
     } on FirebaseAuthException catch (e) {
       setState(() {
@@ -42,6 +49,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     double windowWidth = MediaQuery.of(context).size.width;
+    var appState = context.watch<ApplicationState>();
 
     return Scaffold(
       body: Center(
@@ -72,13 +80,7 @@ class _LoginPageState extends State<LoginPage> {
                         },
                       ),
                       SizedBox(height: formSizedBoxHeight),
-                      GomikoPasswordTextFormField(
-                        hintText: "Password",
-                        controller: _passwordController,
-                        validator: (String? password) {
-                          return LSUtilities.passwordFormValidator(password: password);
-                        },
-                      ),
+                      passwordFormField,
                       SizedBox(height: formSizedBoxHeight),
                       ActionChip(
                         label: const Text("Create Account"),
@@ -105,6 +107,7 @@ class _LoginPageState extends State<LoginPage> {
                               final UserCredential? signInResult = await signInWithEmailAndPassword();
                               if (signInResult != null) {
                                 context.pushReplacement('/');
+                                print(appState.loggedIn);
                               }
                             }
                           },
