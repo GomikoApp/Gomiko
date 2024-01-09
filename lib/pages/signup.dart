@@ -15,8 +15,30 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  final _passwordController = TextEditingController();
-  final _confirmPasswordController = TextEditingController();
+  // FIELDS
+  final _emailController = TextEditingController();
+  final passwordField = GomikoPasswordTextFormField(
+    hintText: "Password",
+    controller: TextEditingController(),
+  );
+
+  final confirmPasswordField = GomikoPasswordTextFormField(
+    hintText: "Confirm Password",
+    controller: TextEditingController(),
+  );
+
+  String? errorMessage = '';
+
+  Future<UserCredential?> createUserWithEmailAndPassword() async {
+    try {
+      return await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: _emailController.text, 
+        password: passwordField.currentPassword
+      );
+    } on FirebaseAuthException catch (e) {
+      errorMessage = e.message;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +56,7 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
             child: Column(
               children: [
+                Text(errorMessage == '' ? '' : "$errorMessage"),
                 const TitleText(
                   text: "Sign Up",
                 ),
@@ -42,37 +65,42 @@ class _SignUpPageState extends State<SignUpPage> {
                   key: _formKey,
                   child: Column(
                     children: [
-                      GomikoTextFormField(
-                        hintText: "Name",
-                        icon: const Icon(Icons.person_outline_outlined),
-                        validator: (String? name) {
-                          return null;
-                        },
-                      ),
+                      // GomikoTextFormField(
+                      //   hintText: "Name",
+                      //   icon: const Icon(Icons.person_outline_outlined),
+                      //   validator: (String? name) {
+                      //     return null;
+                      //   },
+                      // ),
                       GomikoEmailTextFormField(
                         hintText: "Email",
+                        controller: _emailController,
                         validator: (String? email) {
                           return LSUtilities.emailFormValidator(email: email);
                         },
                       ),
-                      GomikoPasswordTextFormField(
-                        hintText: "Password",
-                        controller: _passwordController,
-                      ),
-                      GomikoPasswordTextFormField(
-                        hintText: "Confirm Password",
-                        controller: _confirmPasswordController,
-                      )
+                      passwordField,
+                      confirmPasswordField
                     ]
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: GomikoMainActionButton(
-                    onPressed: () {
-                      Navigator.pop(context);
+                    labelText: "Sign Up",
+                    onPressed: () async {
+                      final UserCredential? result;
+                      // Check if password and confirm password fields are matching
+                      if (passwordField.currentPassword == confirmPasswordField.currentPassword) {
+                        result = await createUserWithEmailAndPassword();
+
+                        // User was created successfully
+                        if (result != null) {
+                          context.push('/login');
+                          print("User Created with ${result.user?.email}");
+                        }
+                      }
                     },
-                    labelText: "Go Back"
                   ),
                 ),
                 GomikoContextLinkRow(
@@ -80,7 +108,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   linkLabel: "Login",
                   onTap: () {
                     // Link to login page
-                    context.go('/login');
+                    context.pushReplacement('/login');
                   },
                 ),
                 const GomikoTextDivider(

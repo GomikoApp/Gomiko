@@ -241,8 +241,8 @@ class GomikoEmailTextFormField extends StatelessWidget {
 class GomikoPasswordTextFormField extends StatelessWidget {
   /// Creates a [GomikoPasswordTextFormField].
   /// 
-  /// NOTE: When using this, your form must have at least ONE of these pre-initialized to grab the password correctly
-  /// for a login/signup.
+  /// NOTE: When using these, your form must pre-initialize them to grab the password correctly or else it grabs
+  /// all the asterisks for a authentication.
   GomikoPasswordTextFormField({Key? key, 
                    required this.hintText, 
                    this.hintColor = Colors.lightGreen,
