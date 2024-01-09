@@ -9,7 +9,7 @@ class LSUtilities {
   /// Returns the RegEx used for email input validation by the Login/Signup Pages
   RegExp get emailRegex => _emailRegex;
 
-  static final RegExp _passwordRegex = RegExp(r"[a-zA-Z0-9.!#@$%&’+/=?^_`{|}~-]");
+  static final RegExp _passwordRegex = RegExp(r"[a-zA-Z0-9.!#@$%&’*+/=?^_`{|}~-]");
   /// Returns the RegEx used for password input validation by the Login/Signup Pages
   RegExp get passwordRegex => _passwordRegex;
 
@@ -53,6 +53,9 @@ class LSUtilities {
 }
 
 
+
+
+
 /// The [Text] that denotes the title of the page for the login/signup page sequence.
 class TitleText extends StatelessWidget {
   /// Creates a [TitleText].
@@ -82,6 +85,10 @@ class TitleText extends StatelessWidget {
     );
   }
 }
+
+
+
+
 
 /// A [TextFormField] used in the login/signup page sequence.
 class GomikoTextFormField extends StatelessWidget {
@@ -150,6 +157,10 @@ class GomikoTextFormField extends StatelessWidget {
     );
   }
 }
+
+
+
+
 
 /// A [TextFormField] used specifically for emails in the login/signup page sequence.
 class GomikoEmailTextFormField extends StatelessWidget {
@@ -222,6 +233,10 @@ class GomikoEmailTextFormField extends StatelessWidget {
   }
 }
 
+
+
+
+
 /// A [TextFormField] used specifically for emails in the login/signup page sequence.
 class GomikoPasswordTextFormField extends StatelessWidget {
   /// Creates a [GomikoPasswordTextFormField].
@@ -278,33 +293,57 @@ class GomikoPasswordTextFormField extends StatelessWidget {
   /// Maximum length of password allowed to be typed by the user.
   final int passwordMaximum;
 
+  String _currentPassword = '';
+  String get currentPassword => _currentPassword;
+  String obscuredText = '';
+  bool showingPassword = false;
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement show password button
-    final _showPasswordButton = IconButton(
+    final showPasswordButton = IconButton(
       onPressed: () {
-        var currentHiddenPassword = controller.text;
+        if (!showingPassword) {
+          obscuredText = _currentPassword.replaceAll(LSUtilities._passwordRegex, '*');
+          controller.text = _currentPassword;
+        } else {
+          controller.text = obscuredText;
+        }
 
-        // controller.
-
-        // controller.text = currentHiddenPassword;
+        showingPassword = !showingPassword;
       }, 
-      style: const ButtonStyle(),
       icon: const Icon(Icons.remove_red_eye_outlined)
     );
+
 
     return TextFormField(
       decoration: InputDecoration(
         prefixIcon: const Icon(Icons.lock_outline_rounded),
         prefixIconColor: iconColor,
-        suffixIcon: _showPasswordButton,
+        suffixIcon: showPasswordButton,
         hintText: hintText,
         hintStyle: TextStyle(
           color: hintColor,
         ),
       ),
       controller: controller,
+      onChanged: (String value) {
+        int valueLength = value.characters.length;
+        // When inputting characters, save the new character to the password, then hide the other characters
+        // Adding character
+        if (valueLength > _currentPassword.characters.length) {
+          // Add last character to password field
+          _currentPassword += value[valueLength - 1];
+          if (valueLength > 1) {
+            // Obscure all characters except the last inputted one with asterisks.
+            // Also, move the pointer to the new spot.
+            controller.text = '*' * (valueLength - 1) + value[valueLength - 1];
+          }
+        }
+        // When deleting characters, delete the last character from the current password.
+        else if (valueLength < _currentPassword.characters.length) {
+          _currentPassword = _currentPassword.substring(0, _currentPassword.length - 1);
+        }
+      },
       // Validate string
       validator: validator,
       inputFormatters: inputFormatters,
@@ -312,6 +351,9 @@ class GomikoPasswordTextFormField extends StatelessWidget {
     );
   }
 }
+
+
+
 
 /// A big, green button used in the login/signup sequence as the main button
 class GomikoMainActionButton extends StatelessWidget {
@@ -344,6 +386,10 @@ class GomikoMainActionButton extends StatelessWidget {
     );
   }
 }
+
+
+
+
 
 /// A Cupertino-style link for our app.
 class GomikoLink extends StatelessWidget {
@@ -401,6 +447,9 @@ class GomikoLink extends StatelessWidget {
   }
 }
 
+
+
+
 /// A [Row] that contains a regular text and [GomikoLink] side by side. 
 /// Used for things such as the "Already have an account? Login" text on the starting page.
 class GomikoContextLinkRow extends StatelessWidget {
@@ -448,6 +497,10 @@ class GomikoContextLinkRow extends StatelessWidget {
     );
   }
 }
+
+
+
+
 
 /// A [Divider] with [Text] in the middle used as the context divider for items below it.
 class GomikoTextDivider extends StatelessWidget {
