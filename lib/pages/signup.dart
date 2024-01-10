@@ -38,6 +38,18 @@ class _SignUpPageState extends State<SignUpPage> {
     } on FirebaseAuthException catch (e) {
       errorMessage = e.message;
     }
+    
+    return null;
+  }
+
+  Future<UserCredential?> signInAsAnonymousUser() async {
+    try {
+      return await FirebaseAuth.instance.signInAnonymously();
+    } on FirebaseAuthException catch (e) {
+      errorMessage = e.message;
+    }
+    
+    return null;
   }
 
   @override
@@ -97,7 +109,6 @@ class _SignUpPageState extends State<SignUpPage> {
                         // User was created successfully
                         if (result != null) {
                           context.push('/login');
-                          print("User Created with ${result.user?.email}");
                         }
                       }
                     },
@@ -129,8 +140,8 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
                 GomikoLink(
                   label: "Continue without an account",
-                  onTap: () {
-                    appState.guestSignIn();
+                  onTap: () async {
+                    await signInAsAnonymousUser();
                     context.push('/');
                   },
                 )

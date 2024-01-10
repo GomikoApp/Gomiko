@@ -20,8 +20,7 @@ class HomePageState extends State<HomePage> {
     var appState = context.watch<ApplicationState>();
 
     // Check if user is logged in, if not, push login page to screen.
-    if (!appState.loggedIn &&
-        !appState.guestMode) {
+    if (!appState.loggedIn) {
       WidgetsBinding.instance.addPostFrameCallback(
         (_) {
           context.replace('/login');
