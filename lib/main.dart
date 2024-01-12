@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';  
 import 'package:go_router/go_router.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:recycle/pages/signup.dart';
 import 'app_state.dart';
 
 import '/pages/login.dart';
@@ -52,9 +53,15 @@ final _router = GoRouter(
         GoRoute(
           path: 'login',
           builder: (context, state) {
-            return const LoginPage(title: 'Login');
+            return const LoginPage();
           }
         ),
+        GoRoute(
+          path: 'signup',
+          builder: (context, state) {
+            return const SignUpPage();
+          }
+        )
       ],
     ),
   ],
