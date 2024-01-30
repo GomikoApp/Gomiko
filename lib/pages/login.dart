@@ -20,10 +20,13 @@ class _LoginPageState extends State<LoginPage> {
 
   // USER SIGN-IN SECTION VARIABLES AND METHODS SECTION
   final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-
-  final _emailFocus = FocusNode();
-  final _passwordFocus = FocusNode();
+  final passwordFormField = GomikoPasswordTextFormField(
+    hintText: "Password",
+    controller: TextEditingController(),
+    validator: (String? password) {
+      return LSUtilities.passwordFormValidator(password: password);
+    },
+  );
 
   double formSizedBoxHeight = 20;
   double textSizedBoxHeight = 50;
@@ -34,7 +37,8 @@ class _LoginPageState extends State<LoginPage> {
   Future<UserCredential?> signInWithEmailAndPassword() async {
     try {
       return await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: _emailController.text, password: _passwordController.text);
+          email: _emailController.text,
+          password: passwordFormField.currentPassword);
     } on FirebaseAuthException catch (e) {
       setState(() {
         errorMessage = e.message;
@@ -49,24 +53,9 @@ class _LoginPageState extends State<LoginPage> {
     double windowWidth = MediaQuery.of(context).size.width;
     var appState = context.watch<ApplicationState>();
 
-    final emailFormField = GomikoEmailTextFormField(
-      hintText: "Email",
-      controller: _emailController,
-      validator: (String? email) {
-        return LSUtilities.emailFormValidator(email: email);
-      },
-    );
-    final passwordFormField = GomikoPasswordTextFormField(
-      hintText: "Password",
-      controller: _passwordController,
-      validator: (String? password) {
-        return LSUtilities.passwordFormValidator(password: password);
-      },
-    );
-
     // check if keyboard is open, if so, move the text up
     // https://stackoverflow.com/questions/56902559/how-to-detect-keyboard-open-in-flutter
-    int keyboardOpen = MediaQuery.of(context).viewInsets.bottom != 0 ? 1 : 0;
+    bool keyboardOpen = MediaQuery.of(context).viewInsets.bottom != 0.0;
 
     return Stack(
       children: [
@@ -80,119 +69,132 @@ class _LoginPageState extends State<LoginPage> {
           child: Scaffold(
             backgroundColor: Colors.transparent,
             body: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  const SizedBox(height: 40),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 54),
-                    child: RichText(
-                      text: const TextSpan(
-                        children: <TextSpan>[
-                          TextSpan(
-                            text: 'GOMI',
-                            style: TextStyle(
-                              color: Color(0xffD7E9B9),
-                              fontSize: 42,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                          TextSpan(
-                            text: 'KO',
-                            style: TextStyle(
-                              color: Color(0xff95CA4A),
-                              fontSize: 42,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: textSizedBoxHeight),
-                  Padding(
-                      padding: const EdgeInsets.only(left: 59),
+              child: AnimatedPadding(
+                padding: EdgeInsets.only(top: keyboardOpen ? 0.0 : 20.0),
+                duration: const Duration(milliseconds: 200),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    const SizedBox(height: 40),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 54),
                       child: RichText(
                         text: const TextSpan(
                           children: <TextSpan>[
                             TextSpan(
-                              text: 'Login',
+                              text: 'GOMI',
                               style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 32,
+                                color: Color(0xffD7E9B9),
+                                fontSize: 42,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            TextSpan(
+                              text: 'KO',
+                              style: TextStyle(
+                                color: Color(0xff95CA4A),
+                                fontSize: 42,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
                           ],
                         ),
-                      ).animate(target: keyboardOpen == 1 ? 1 : 0).slide(
-                          begin: const Offset(0, 0),
-                          end: const Offset(0, -1),
-                          duration: const Duration(milliseconds: 200))),
-                  SizedBox(height: textSizedBoxHeight),
-                  Center(
-                    child: Container(
-                      constraints: BoxConstraints(
-                        maxWidth: windowWidth / 1.25,
-                      ),
-                      child: Column(
-                        children: [
-                          Form(
-                            key: _formKey,
-                            child: Column(
-                              children: <Widget>[
-                                // I'm currently referencing: https://api.flutter.dev/flutter/widgets/Form-class.html
-                                emailFormField
-                                    .animate(target: keyboardOpen == 1 ? 1 : 0)
-                                    .slide(
-                                        begin: const Offset(0, 0),
-                                        end: const Offset(0, -1),
-                                        duration:
-                                            const Duration(milliseconds: 200)),
-                                SizedBox(height: formSizedBoxHeight),
-                                passwordFormField
-                                    .animate(target: keyboardOpen == 1 ? 1 : 0)
-                                    .slide(
-                                        begin: const Offset(0, 0),
-                                        end: const Offset(0, -1),
-                                        duration:
-                                            const Duration(milliseconds: 200)),
-                                Text(errorMessage == '' ? '' : "$errorMessage"),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 16.0),
-                                  child: ElevatedButton(
-                                    child: const Text("Login"),
-                                    onPressed: () async {
-                                      // Validate will return true if the form is valid,
-                                      // or false if the form is invalid.
-                                      if (_formKey.currentState!.validate()) {
-                                        // try sign in, if successful, push to homepage
-                                        final UserCredential? signInResult =
-                                            await signInWithEmailAndPassword();
-                                        if (signInResult != null) {
-                                          context.pushReplacement('/');
-                                          print(appState.loggedIn);
-                                        }
-                                      }
-                                    },
-                                  )
-                                      .animate(
-                                          target: keyboardOpen == 1 ? 1 : 0)
-                                      .slide(
-                                          begin: const Offset(0, 0),
-                                          end: const Offset(0, -1),
-                                          duration: const Duration(
-                                              milliseconds: 200)),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
                       ),
                     ),
-                  ),
-                ],
+                    AnimatedContainer(
+                      duration: const Duration(milliseconds: 200),
+                      height: keyboardOpen ? 15 : textSizedBoxHeight,
+                    ),
+                    AnimatedPadding(
+                      padding: EdgeInsets.only(top: keyboardOpen ? 0.0 : 25.0),
+                      duration: const Duration(milliseconds: 200),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 59),
+                        child: RichText(
+                          text: const TextSpan(
+                            children: <TextSpan>[
+                              TextSpan(
+                                text: 'Login',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 32,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    AnimatedContainer(
+                      duration: const Duration(milliseconds: 200),
+                      height: keyboardOpen ? 25 : textSizedBoxHeight,
+                    ),
+                    Center(
+                      child: Container(
+                        constraints: BoxConstraints(
+                          maxWidth: windowWidth / 1.25,
+                        ),
+                        child: Column(
+                          children: [
+                            Form(
+                              key: _formKey,
+                              child: Column(
+                                children: <Widget>[
+                                  // I'm currently referencing: https://api.flutter.dev/flutter/widgets/Form-class.html
+                                  GomikoEmailTextFormField(
+                                    hintText: "Email",
+                                    controller: _emailController,
+                                    validator: (String? email) {
+                                      return LSUtilities.emailFormValidator(
+                                          email: email);
+                                    },
+                                  ),
+                                  SizedBox(height: formSizedBoxHeight),
+                                  passwordFormField,
+                                  ActionChip(
+                                    label: const Text("Create Account"),
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const SignUpPage(),
+                                          ));
+                                    },
+                                  ),
+                                  Text(errorMessage == ''
+                                      ? ''
+                                      : "$errorMessage"),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 16.0),
+                                    child: ElevatedButton(
+                                      child: const Text("Login"),
+                                      onPressed: () async {
+                                        // Validate will return true if the form is valid,
+                                        // or false if the form is invalid.
+                                        if (_formKey.currentState!.validate()) {
+                                          // try sign in, if successful, push to homepage
+                                          final UserCredential? signInResult =
+                                              await signInWithEmailAndPassword();
+                                          if (signInResult != null) {
+                                            context.pushReplacement('/');
+                                            print(appState.loggedIn);
+                                          }
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -201,55 +203,3 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
-
-// Form(
-//                             key: _formKey,
-//                             child: Column(
-//                               children: <Widget>[
-//                                 // I'm currently referencing: https://api.flutter.dev/flutter/widgets/Form-class.html
-//                                 emailFormField
-//                                     .animate(target: keyboardOpen == 1 ? 1 : 0)
-//                                     .slide(
-//                                         begin: const Offset(0, 0),
-//                                         end: const Offset(0, -1),
-//                                         duration:
-//                                             const Duration(milliseconds: 200)),
-//                                 SizedBox(height: formSizedBoxHeight),
-//                                 passwordFormField
-//                                     .animate(target: keyboardOpen == 1 ? 1 : 0)
-//                                     .slide(
-//                                         begin: const Offset(0, 0),
-//                                         end: const Offset(0, -1),
-//                                         duration:
-//                                             const Duration(milliseconds: 200)),
-//                                 Text(errorMessage == '' ? '' : "$errorMessage"),
-//                                 Padding(
-//                                   padding: const EdgeInsets.symmetric(
-//                                       vertical: 16.0),
-//                                   child: ElevatedButton(
-//                                     child: const Text("Login"),
-//                                     onPressed: () async {
-//                                       // Validate will return true if the form is valid,
-//                                       // or false if the form is invalid.
-//                                       if (_formKey.currentState!.validate()) {
-//                                         // try sign in, if successful, push to homepage
-//                                         final UserCredential? signInResult =
-//                                             await signInWithEmailAndPassword();
-//                                         if (signInResult != null) {
-//                                           context.pushReplacement('/');
-//                                           print(appState.loggedIn);
-//                                         }
-//                                       }
-//                                     },
-//                                   )
-//                                       .animate(
-//                                           target: keyboardOpen == 1 ? 1 : 0)
-//                                       .slide(
-//                                           begin: const Offset(0, 0),
-//                                           end: const Offset(0, -1),
-//                                           duration: const Duration(
-//                                               milliseconds: 200)),
-//                                 ),
-//                               ],
-//                             ),
-//                           ),
