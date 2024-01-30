@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';  
+import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:recycle/pages/signup.dart';
-import 'app_state.dart';
+import 'package:recycle/screens/signup_screen.dart';
+import 'utils/app_state.dart';
 
-import '/pages/login.dart';
+import 'screens/login_screen.dart';
 import 'widgets/home_scaffold.dart';
 
 Future<void> main() async {
@@ -33,8 +33,8 @@ class MyAppState extends State<MyApp> {
         title: 'Gomiko',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          colorScheme:
-              ColorScheme.fromSeed(seedColor: Colors.blue, secondary: Colors.red),
+          colorScheme: ColorScheme.fromSeed(
+              seedColor: Colors.blue, secondary: Colors.red),
         ),
         darkTheme: ThemeData.dark(),
         routerConfig: _router,
@@ -51,17 +51,15 @@ final _router = GoRouter(
       builder: (context, state) => const HomeScaffold(),
       routes: [
         GoRoute(
-          path: 'login',
-          builder: (context, state) {
-            return const LoginPage();
-          }
-        ),
+            path: 'login',
+            builder: (context, state) {
+              return const LoginPage();
+            }),
         GoRoute(
-          path: 'signup',
-          builder: (context, state) {
-            return const SignUpPage();
-          }
-        )
+            path: 'signup',
+            builder: (context, state) {
+              return const SignUpPage();
+            })
       ],
     ),
   ],
