@@ -209,6 +209,9 @@ class GomikoEmailTextFormField extends StatelessWidget {
   /// An optional argument to supply a different [AutovalidateMode]. Default is [AutovalidateMode.onUserInteraction].
   final AutovalidateMode autovalidateMode;
 
+  String _currentEmail = '';
+  String get currentEmail => _currentEmail;
+
   @override
   Widget build(BuildContext context) {
     return TextFormField(
@@ -222,7 +225,9 @@ class GomikoEmailTextFormField extends StatelessWidget {
         ),
         suffixIcon: suffixIcon,
       ),
-
+      onChanged: (String value) {
+        _currentEmail = value;
+      },
       controller: controller,
       // Validate string
       validator: validator,

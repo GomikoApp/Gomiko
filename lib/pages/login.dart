@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
@@ -19,8 +18,14 @@ class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   // USER SIGN-IN SECTION VARIABLES AND METHODS SECTION
-  final _emailController = TextEditingController();
-  final passwordFormField = GomikoPasswordTextFormField(
+  final _emailFormField = GomikoEmailTextFormField(
+    hintText: "Email",
+    controller: TextEditingController(),
+    validator: (String? email) {
+      return LSUtilities.emailFormValidator(email: email);
+    },
+  );
+  final _passwordFormField = GomikoPasswordTextFormField(
     hintText: "Password",
     controller: TextEditingController(),
     validator: (String? password) {
@@ -37,8 +42,8 @@ class _LoginPageState extends State<LoginPage> {
   Future<UserCredential?> signInWithEmailAndPassword() async {
     try {
       return await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: _emailController.text,
-          password: passwordFormField.currentPassword);
+          email: _emailFormField.currentEmail,
+          password: _passwordFormField.currentPassword);
     } on FirebaseAuthException catch (e) {
       setState(() {
         errorMessage = e.message;
@@ -142,49 +147,40 @@ class _LoginPageState extends State<LoginPage> {
                               child: Column(
                                 children: <Widget>[
                                   // I'm currently referencing: https://api.flutter.dev/flutter/widgets/Form-class.html
-                                  GomikoEmailTextFormField(
-                                    hintText: "Email",
-                                    controller: _emailController,
-                                    validator: (String? email) {
-                                      return LSUtilities.emailFormValidator(
-                                          email: email);
+                                  _emailFormField,
+                                  SizedBox(height: formSizedBoxHeight),
+                                  _passwordFormField,
+                                  Text(errorMessage == ''
+                                      ? ''
+                                      : "$errorMessage"),
+                                  ElevatedButton(
+                                    child: const Text("Login"),
+                                    onPressed: () async {
+                                      // Validate will return true if the form is valid,
+                                      // or false if the form is invalid.
+                                      if (_formKey.currentState!.validate()) {
+                                        // try sign in, if successful, push to homepage
+                                        final UserCredential? signInResult =
+                                            await signInWithEmailAndPassword();
+                                        if (signInResult != null) {
+                                          context.pushReplacement('/');
+                                          print(appState.loggedIn);
+                                        }
+                                      }
                                     },
                                   ),
                                   SizedBox(height: formSizedBoxHeight),
-                                  passwordFormField,
                                   ActionChip(
                                     label: const Text("Create Account"),
                                     onPressed: () {
                                       Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const SignUpPage(),
-                                          ));
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const SignUpPage(),
+                                        ),
+                                      );
                                     },
-                                  ),
-                                  Text(errorMessage == ''
-                                      ? ''
-                                      : "$errorMessage"),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 16.0),
-                                    child: ElevatedButton(
-                                      child: const Text("Login"),
-                                      onPressed: () async {
-                                        // Validate will return true if the form is valid,
-                                        // or false if the form is invalid.
-                                        if (_formKey.currentState!.validate()) {
-                                          // try sign in, if successful, push to homepage
-                                          final UserCredential? signInResult =
-                                              await signInWithEmailAndPassword();
-                                          if (signInResult != null) {
-                                            context.pushReplacement('/');
-                                            print(appState.loggedIn);
-                                          }
-                                        }
-                                      },
-                                    ),
                                   ),
                                 ],
                               ),
