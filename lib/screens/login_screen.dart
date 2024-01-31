@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -59,6 +60,59 @@ class _LoginPageState extends State<LoginPage> {
     return null;
   }
 
+  Widget _buildForgotPasswordButton() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        InkWell(
+          onTap: () {
+            print("Forgot Password");
+          },
+          child: const Text(
+            "Forgot Password?",
+            style: TextStyle(
+              color: Color(0xff2364C6),
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSignupButton() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        RichText(
+          text: TextSpan(
+            text: "Don't have an account? ",
+            style: const TextStyle(
+              color: Colors.black,
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+            ),
+            children: <TextSpan>[
+              TextSpan(
+                text: 'Sign Up',
+                style: const TextStyle(
+                  color: Color(0xff2364C6),
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () {
+                    print("Sign Up");
+                  },
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _buildForm(double windowWidth) {
     var appState = context.watch<ApplicationState>();
 
@@ -88,21 +142,31 @@ class _LoginPageState extends State<LoginPage> {
                 children: <Widget>[
                   ErrorText(
                     errorMessage: errorMessage,
+                    // This callback is triggered when the close button of the error message is pressed.
+                    // It clears the error message.
                     onClose: () {
                       setState(() {
                         errorMessage = '';
                       });
                     },
                   ),
-
                   // I'm currently referencing: https://api.flutter.dev/flutter/widgets/Form-class.html
+
+                  // This is the form field for the email input.
                   _emailFormField,
+
                   const SizedBox(height: 8),
+
+                  // This is the form field for the email input.
                   _passwordFormField,
+
+                  // This method builds the "Forgot Password" button. When pressed, it pushes the user to the forgot password page. 
+                  // TODO: Implement forgot password page.
+                  _buildForgotPasswordButton(),
+
                   SizedBox(height: formSizedBoxHeight),
 
-                  // TODO: Add Forgot Password button
-
+                  // This is the "Login" button. When pressed, it validates the form and attempts to sign in the user.
                   ElevatedButton(
                     style: style,
                     child: const Text("Login",
@@ -122,20 +186,10 @@ class _LoginPageState extends State<LoginPage> {
                       }
                     },
                   ),
-
                   SizedBox(height: formSizedBoxHeight),
 
-                  ActionChip(
-                    label: const Text("Create Account"),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const SignUpPage(),
-                        ),
-                      );
-                    },
-                  ),
+                  // This method builds the "Sign Up" button. When pressed, it pushes the user to the sign up page.
+                  _buildSignupButton(),
                 ],
               ),
             ),
