@@ -10,6 +10,7 @@ import 'signup_screen.dart';
 // Widgets
 import '../widgets/logo.dart';
 import '../widgets/custom_rich_text.dart';
+import '../widgets/error_text.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -85,11 +86,23 @@ class _LoginPageState extends State<LoginPage> {
               key: _formKey,
               child: Column(
                 children: <Widget>[
+                  ErrorText(
+                    errorMessage: errorMessage,
+                    onClose: () {
+                      setState(() {
+                        errorMessage = '';
+                      });
+                    },
+                  ),
+
                   // I'm currently referencing: https://api.flutter.dev/flutter/widgets/Form-class.html
                   _emailFormField,
-                  SizedBox(height: formSizedBoxHeight),
+                  const SizedBox(height: 8),
                   _passwordFormField,
-                  Text(errorMessage == '' ? '' : "$errorMessage"),
+                  SizedBox(height: formSizedBoxHeight),
+
+                  // TODO: Add Forgot Password button
+
                   ElevatedButton(
                     style: style,
                     child: const Text("Login",
@@ -109,7 +122,9 @@ class _LoginPageState extends State<LoginPage> {
                       }
                     },
                   ),
+
                   SizedBox(height: formSizedBoxHeight),
+
                   ActionChip(
                     label: const Text("Create Account"),
                     onPressed: () {
