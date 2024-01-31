@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -127,9 +126,6 @@ class GomikoTextFormField extends StatelessWidget {
 
 /// A [TextFormField] used specifically for emails in the login/signup page sequence.
 class GomikoEmailTextFormField extends StatelessWidget {
-  // focus node
-  final FocusNode? focusNode;
-
   /// Creates a [GomikoEmailTextFormField].
   GomikoEmailTextFormField({
     Key? key,
@@ -142,7 +138,6 @@ class GomikoEmailTextFormField extends StatelessWidget {
     this.validator,
     List<TextInputFormatter>? inputFormatters,
     this.autovalidateMode = AutovalidateMode.onUserInteraction,
-    this.focusNode,
   }) : super(key: key) {
     if (inputFormatters != null && inputFormatters.isNotEmpty) {
       for (var formatter in inputFormatters) {
@@ -184,7 +179,6 @@ class GomikoEmailTextFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      focusNode: focusNode,
       decoration: InputDecoration(
         prefixIcon: const Icon(Icons.email_outlined),
         prefixIconColor: iconColor,

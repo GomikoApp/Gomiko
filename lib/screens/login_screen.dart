@@ -61,6 +61,19 @@ class _LoginPageState extends State<LoginPage> {
   Widget _buildForm(double windowWidth) {
     var appState = context.watch<ApplicationState>();
 
+    final ButtonStyle style = ElevatedButton.styleFrom(
+      textStyle: const TextStyle(fontSize: 20),
+      foregroundColor: Colors.black,
+      backgroundColor: const Color(0xFF98CB51),
+      minimumSize: const Size(300, 60),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(5)),
+      ),
+      shadowColor: Colors.black,
+      elevation: 5,
+    );
+
     return Center(
       child: Container(
         constraints: BoxConstraints(
@@ -78,7 +91,10 @@ class _LoginPageState extends State<LoginPage> {
                   _passwordFormField,
                   Text(errorMessage == '' ? '' : "$errorMessage"),
                   ElevatedButton(
-                    child: const Text("Login"),
+                    style: style,
+                    child: const Text("Login",
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w500)),
                     onPressed: () async {
                       // Validate will return true if the form is valid,
                       // or false if the form is invalid.
@@ -141,7 +157,7 @@ class _LoginPageState extends State<LoginPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     const SizedBox(height: 40),
-                    GomikoLogo(),
+                    // GomikoLogo(),
                     AnimatedContainer(
                       duration: const Duration(milliseconds: 200),
                       height: keyboardOpen ? 15 : textSizedBoxHeight,
