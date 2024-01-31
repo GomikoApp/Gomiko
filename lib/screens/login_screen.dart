@@ -68,12 +68,14 @@ class _LoginPageState extends State<LoginPage> {
           onTap: () {
             print("Forgot Password");
           },
-          child: const Text(
-            "Forgot Password?",
-            style: TextStyle(
-              color: Color(0xff2364C6),
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
+          child: RichText(
+            text: const TextSpan(
+              text: "Forgot Password? ",
+              style: TextStyle(
+                color: Color(0xff2364C6),
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
         ),
@@ -93,21 +95,102 @@ class _LoginPageState extends State<LoginPage> {
               fontSize: 14,
               fontWeight: FontWeight.w500,
             ),
-            children: <TextSpan>[
-              TextSpan(
-                text: 'Sign Up',
-                style: const TextStyle(
-                  color: Color(0xff2364C6),
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                ),
-                recognizer: TapGestureRecognizer()
-                  ..onTap = () {
+            children: [
+              WidgetSpan(
+                child: InkWell(
+                  onTap: () {
                     print("Sign Up");
                   },
-              ),
+                  child: const Text(
+                    "Sign Up",
+                    style: TextStyle(
+                      color: Color(0xff2364C6),
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              )
             ],
           ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSocialMediaSignInButtons() {
+    final ButtonStyle style = ElevatedButton.styleFrom(
+      backgroundColor: const Color(0xffebf4dc),
+      minimumSize: const Size(90, 50),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(12)),
+      ),
+    );
+
+    return Column(
+      children: <Widget>[
+        const SizedBox(height: 20),
+        Row(
+          children: <Widget>[
+            Expanded(
+              child: Container(
+                  margin: const EdgeInsets.only(left: 10.0, right: 20.0),
+                  child: const Divider(
+                    color: Colors.black,
+                    height: 36,
+                  )),
+            ),
+            const Text("OR"),
+            Expanded(
+              child: Container(
+                  margin: const EdgeInsets.only(left: 20.0, right: 10.0),
+                  child: const Divider(
+                    color: Colors.black,
+                    height: 36,
+                  )),
+            ),
+          ],
+        ),
+        const SizedBox(height: 20),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            ElevatedButton(
+              style: style,
+              child: const Image(
+                image: AssetImage('assets/Google-Logo.png'),
+                height: 30,
+                width: 30,
+              ),
+              onPressed: () {
+                print("Google Sign In");
+              },
+            ),
+            const SizedBox(width: 20),
+            ElevatedButton(
+              style: style,
+              child: const Image(
+                image: AssetImage('assets/Facebook-Logo.png'),
+                height: 30,
+                width: 30,
+              ),
+              onPressed: () {
+                print("Facebook Sign In");
+              },
+            ),
+            const SizedBox(width: 20),
+            ElevatedButton(
+              style: style,
+              child: const Image(
+                image: AssetImage('assets/Apple-Logo.png'),
+                height: 30,
+                width: 30,
+              ),
+              onPressed: () {
+                print("Apple Sign In");
+              },
+            ),
+          ],
         ),
       ],
     );
@@ -186,10 +269,14 @@ class _LoginPageState extends State<LoginPage> {
                       }
                     },
                   ),
+
                   SizedBox(height: formSizedBoxHeight),
 
                   // This method builds the "Sign Up" button. When pressed, it pushes the user to the sign up page.
                   _buildSignupButton(),
+
+                  // To Do: Implement Google Sign in/Facebook Sign in/Apple Sign in Design
+                  _buildSocialMediaSignInButtons(),
                 ],
               ),
             ),
@@ -228,12 +315,17 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(height: 40),
 
                     // Uncomment if we want the logo to be on the page
-                    // GomikoLogo(),
+                    AnimatedOpacity(
+                      duration: const Duration(milliseconds: 200),
+                      opacity: keyboardOpen ? 0.0 : 1.0,
+                      child: GomikoLogo(),
+                    ),
+
                     // Changes the textSizedBoxHeight variable to 15 is keyboard is open, otherwise it is the default value
-                    // AnimatedContainer(
-                    //   duration: const Duration(milliseconds: 200),
-                    //   height: keyboardOpen ? 15 : textSizedBoxHeight,
-                    // ),
+                    AnimatedContainer(
+                      duration: const Duration(milliseconds: 200),
+                      height: keyboardOpen ? 15 : textSizedBoxHeight - 30,
+                    ),
 
                     AnimatedPadding(
                       padding: EdgeInsets.only(top: keyboardOpen ? 0.0 : 15.0),
