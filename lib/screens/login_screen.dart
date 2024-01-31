@@ -160,7 +160,7 @@ class _LoginPageState extends State<LoginPage> {
                   // This is the form field for the email input.
                   _passwordFormField,
 
-                  // This method builds the "Forgot Password" button. When pressed, it pushes the user to the forgot password page. 
+                  // This method builds the "Forgot Password" button. When pressed, it pushes the user to the forgot password page.
                   // TODO: Implement forgot password page.
                   _buildForgotPasswordButton(),
 
@@ -226,13 +226,17 @@ class _LoginPageState extends State<LoginPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     const SizedBox(height: 40),
+
+                    // Uncomment if we want the logo to be on the page
                     // GomikoLogo(),
-                    AnimatedContainer(
-                      duration: const Duration(milliseconds: 200),
-                      height: keyboardOpen ? 15 : textSizedBoxHeight,
-                    ),
+                    // Changes the textSizedBoxHeight variable to 15 is keyboard is open, otherwise it is the default value
+                    // AnimatedContainer(
+                    //   duration: const Duration(milliseconds: 200),
+                    //   height: keyboardOpen ? 15 : textSizedBoxHeight,
+                    // ),
+
                     AnimatedPadding(
-                      padding: EdgeInsets.only(top: keyboardOpen ? 0.0 : 25.0),
+                      padding: EdgeInsets.only(top: keyboardOpen ? 0.0 : 15.0),
                       duration: const Duration(milliseconds: 200),
                       child: const CustomRichText(
                         text: 'Login',
@@ -241,9 +245,11 @@ class _LoginPageState extends State<LoginPage> {
                         fontWeight: FontWeight.w700,
                       ),
                     ),
+
+                    // Changes the textSizedBoxHeight variable to 5 is keyboard is open, otherwise it is the default value
                     AnimatedContainer(
                       duration: const Duration(milliseconds: 200),
-                      height: keyboardOpen ? 25 : textSizedBoxHeight,
+                      height: keyboardOpen ? 0 : textSizedBoxHeight - 30,
                     ),
                     _buildForm(windowWidth),
                   ],
