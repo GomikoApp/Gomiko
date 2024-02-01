@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:recycle/widgets/login_signup_widgets.dart';
@@ -104,7 +105,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
                     // User was created successfully
                     if (result != null) {
-                      context.push('/login');
+                      if (context.mounted) context.push('/');
                     }
                   }
                 },
@@ -128,7 +129,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 IconButton(
                     onPressed: () {
                       // Google Auth
-                      print("Pressed G button!");
+                      if (kDebugMode) print("Pressed G button!");
                     },
                     icon: const Icon(Icons.g_mobiledata))
               ],
@@ -137,7 +138,7 @@ class _SignUpPageState extends State<SignUpPage> {
               label: "Continue without an account",
               onTap: () async {
                 await signInAsAnonymousUser();
-                context.push('/');
+                if (context.mounted) context.push('/');
               },
             )
           ],

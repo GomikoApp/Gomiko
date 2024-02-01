@@ -1,12 +1,10 @@
-import 'package:flutter/gestures.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:recycle/utils/app_state.dart';
 import 'package:recycle/widgets/login_signup_widgets.dart';
-
-import 'signup_screen.dart';
 
 // Widgets
 import '../widgets/logo.dart';
@@ -66,7 +64,7 @@ class _LoginPageState extends State<LoginPage> {
       children: [
         InkWell(
           onTap: () {
-            print("Forgot Password");
+            if (kDebugMode) print("Forgot Password");
           },
           child: RichText(
             text: const TextSpan(
@@ -99,7 +97,8 @@ class _LoginPageState extends State<LoginPage> {
               WidgetSpan(
                 child: InkWell(
                   onTap: () {
-                    print("Sign Up");
+                    if (context.mounted) context.push('/signup');
+                    if (kDebugMode) ("Sign Up");
                   },
                   child: const Text(
                     "Sign Up",
@@ -163,7 +162,7 @@ class _LoginPageState extends State<LoginPage> {
                 width: 30,
               ),
               onPressed: () {
-                print("Google Sign In");
+                if (kDebugMode) print("Google Sign In");
               },
             ),
             const SizedBox(width: 20),
@@ -175,7 +174,7 @@ class _LoginPageState extends State<LoginPage> {
                 width: 30,
               ),
               onPressed: () {
-                print("Facebook Sign In");
+                if (kDebugMode) print("Facebook Sign In");
               },
             ),
             const SizedBox(width: 20),
@@ -187,7 +186,7 @@ class _LoginPageState extends State<LoginPage> {
                 width: 30,
               ),
               onPressed: () {
-                print("Apple Sign In");
+                if (kDebugMode) print("Apple Sign In");
               },
             ),
           ],
@@ -263,8 +262,8 @@ class _LoginPageState extends State<LoginPage> {
                         final UserCredential? signInResult =
                             await signInWithEmailAndPassword();
                         if (signInResult != null) {
-                          context.pushReplacement('/');
-                          print(appState.loggedIn);
+                          if (context.mounted) context.push('/');
+                          if (kDebugMode) (appState.loggedIn);
                         }
                       }
                     },
@@ -318,7 +317,7 @@ class _LoginPageState extends State<LoginPage> {
                     AnimatedOpacity(
                       duration: const Duration(milliseconds: 200),
                       opacity: keyboardOpen ? 0.0 : 1.0,
-                      child: GomikoLogo(),
+                      child: const GomikoLogo(),
                     ),
 
                     // Changes the textSizedBoxHeight variable to 15 is keyboard is open, otherwise it is the default value

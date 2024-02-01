@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class GomikoLogo extends StatelessWidget {
+  const GomikoLogo({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Padding(

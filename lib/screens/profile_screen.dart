@@ -16,19 +16,15 @@ class ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text("Hello, world! I'm ${widget.title}."),
-            ElevatedButton(
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Text("Hello, world! I'm ${widget.title}."),
+          ElevatedButton(
               onPressed: () async {
                 await FirebaseAuth.instance.signOut();
-                context.push('/');
-              }, 
-              child: const Text("Sign Out")
-            ),
-          ]
-        ),
+                if (context.mounted) context.push('/');
+              },
+              child: const Text("Sign Out")),
+        ]),
       ),
     );
   }
