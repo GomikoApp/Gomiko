@@ -2,9 +2,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:recycle/utils/app_state.dart';
 import 'package:recycle/widgets/login_signup_widgets.dart';
+
+// Services
+import '../services/auth_services.dart';
 
 // Widgets
 import '../widgets/logo.dart';
@@ -44,18 +48,27 @@ class _LoginPageState extends State<LoginPage> {
   );
 
   /// Try a sign-in with the current email and password in the text fields.
-  Future<UserCredential?> signInWithEmailAndPassword() async {
-    try {
-      return await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: _emailFormField.currentEmail,
-          password: _passwordFormField.currentPassword);
-    } on FirebaseAuthException catch (e) {
+  void signInWithEmailAndPassword() async {
+    String? result = await AuthService().signInWithEmailAndPassword(
+        _emailFormField.currentEmail, _passwordFormField.currentPassword);
+    if (result == null) {
+      if (context.mounted) context.push('/');
+    } else {
       setState(() {
-        errorMessage = e.message;
+        errorMessage = result;
       });
     }
+  }
 
-    return null;
+  void signInWithGoogle() async {
+    String? result = await AuthService().signInWithGoogle();
+    if (result != null) {
+      setState(() {
+        errorMessage = result;
+      });
+    } else {
+      if (context.mounted) context.push('/');
+    }
   }
 
   Widget _buildForgotPasswordButton() {
@@ -162,6 +175,7 @@ class _LoginPageState extends State<LoginPage> {
                 width: 30,
               ),
               onPressed: () {
+                signInWithGoogle();
                 if (kDebugMode) print("Google Sign In");
               },
             ),
@@ -259,12 +273,7 @@ class _LoginPageState extends State<LoginPage> {
                       // or false if the form is invalid.
                       if (_formKey.currentState!.validate()) {
                         // try sign in, if successful, push to homepage
-                        final UserCredential? signInResult =
-                            await signInWithEmailAndPassword();
-                        if (signInResult != null) {
-                          if (context.mounted) context.push('/');
-                          if (kDebugMode) (appState.loggedIn);
-                        }
+                        signInWithEmailAndPassword();
                       }
                     },
                   ),
