@@ -47,4 +47,10 @@ class AuthService {
       throw Exception('Facebook Sign In Failed');
     }
   }
+
+  Future<void> resetPassword(String email) async {
+    await FirebaseAuth.instance.sendPasswordResetEmail(
+      email: email.trim(),
+    );
+  }
 }

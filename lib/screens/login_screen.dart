@@ -12,6 +12,7 @@ import '../widgets/logo.dart';
 import '../widgets/custom_rich_text.dart';
 import '../widgets/error_text.dart';
 import '../widgets/social_media_button.dart';
+import 'forgot_password_screen.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -85,18 +86,32 @@ class _LoginPageState extends State<LoginPage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        InkWell(
-          onTap: () {
-            if (context.mounted) context.push('/forgot-password');
-            if (kDebugMode) print("Forgot Password");
-          },
-          child: RichText(
-            text: const TextSpan(
-              text: "Forgot Password? ",
-              style: TextStyle(
-                color: Color(0xff2364C6),
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
+        Padding(
+          padding: const EdgeInsets.only(top: 4.0),
+          child: InkWell(
+            onTap: () {
+              // Solution to transparent screen when going to forgot password page
+
+              // Navigator.push(
+              //   context,
+              //   PageRouteBuilder(
+              //     opaque: false,
+              //     pageBuilder: (context, animation, secondaryAnimation) {
+              //       return const ForgotPasswordPage();
+              //     },
+              //   ),
+              // );
+
+              if (context.mounted) context.push('/forgot-password');
+            },
+            child: RichText(
+              text: const TextSpan(
+                text: "Forgot Password? ",
+                style: TextStyle(
+                  color: Color(0xFF98CB51),
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
           ),
@@ -127,7 +142,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: const Text(
                     "Sign Up",
                     style: TextStyle(
-                      color: Color(0xff2364C6),
+                      color: Color(0xFF98CB51),
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
                     ),
@@ -252,7 +267,7 @@ class _LoginPageState extends State<LoginPage> {
                   // This is the "Login" button. When pressed, it validates the form and attempts to sign in the user.
                   ElevatedButton(
                     style: style,
-                    child: const Text("Login Text",
+                    child: const Text("Login",
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.w500)),
                     onPressed: () async {
