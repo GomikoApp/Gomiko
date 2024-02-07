@@ -87,6 +87,7 @@ class _LoginPageState extends State<LoginPage> {
       children: [
         InkWell(
           onTap: () {
+            if (context.mounted) context.push('/forgot-password');
             if (kDebugMode) print("Forgot Password");
           },
           child: RichText(
@@ -170,7 +171,7 @@ class _LoginPageState extends State<LoginPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             SocialMediaButton(
-              assetName: 'assets/Google-Logo.png',
+              assetName: 'assets/logos/Google-Logo.png',
               onPressed: () {
                 signInWithGoogle();
                 if (kDebugMode) print("Google Sign In");
@@ -178,7 +179,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             const SizedBox(width: 20),
             SocialMediaButton(
-              assetName: 'assets/Facebook-Logo.png',
+              assetName: 'assets/logos/Facebook-Logo.png',
               onPressed: () {
                 signInWithFacebook();
                 if (kDebugMode) print("Facebook Sign In");
@@ -186,7 +187,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             const SizedBox(width: 20),
             SocialMediaButton(
-              assetName: 'assets/Apple-Logo.png',
+              assetName: 'assets/logos/Apple-Logo.png',
               onPressed: () {
                 if (kDebugMode) print("Facebook Sign In");
               },
@@ -251,7 +252,7 @@ class _LoginPageState extends State<LoginPage> {
                   // This is the "Login" button. When pressed, it validates the form and attempts to sign in the user.
                   ElevatedButton(
                     style: style,
-                    child: const Text("Login",
+                    child: const Text("Login Text",
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.w500)),
                     onPressed: () async {
@@ -293,7 +294,7 @@ class _LoginPageState extends State<LoginPage> {
         Container(
           decoration: const BoxDecoration(
             image: DecorationImage(
-              image: AssetImage('assets/Login-Page.png'),
+              image: AssetImage('assets/backgrounds/Login-Page.png'),
               fit: BoxFit.fill,
             ),
           ),

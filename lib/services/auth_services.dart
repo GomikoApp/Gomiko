@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
@@ -41,8 +42,8 @@ class AuthService {
       return await FirebaseAuth.instance
           .signInWithCredential(facebookAuthCredential);
     } else {
-      print(result.status);
-      print(result.message);
+      if (kDebugMode) print(result.status);
+      if (kDebugMode) print(result.message);
       throw Exception('Facebook Sign In Failed');
     }
   }

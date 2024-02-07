@@ -2,10 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:recycle/screens/signup_screen.dart';
+
+// Utils
 import 'utils/app_state.dart';
 
+// Screens
 import 'screens/login_screen.dart';
+import 'screens/forgot_password_screen.dart';
+import 'screens/signup_screen.dart';
+
+// Widgets
 import 'widgets/home_scaffold.dart';
 
 Future<void> main() async {
@@ -59,6 +65,11 @@ final _router = GoRouter(
             path: 'signup',
             builder: (context, state) {
               return const SignUpPage();
+            }),
+        GoRoute(
+            path: 'forgot-password',
+            builder: (context, state) {
+              return const ForgotPasswordPage();
             })
       ],
     ),
