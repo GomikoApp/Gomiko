@@ -1,8 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
-import 'package:recycle/utils/app_state.dart';
 import 'package:recycle/widgets/login_signup_widgets.dart';
 
 // Services
@@ -12,6 +10,7 @@ import '../services/auth_services.dart';
 import '../widgets/logo.dart';
 import '../widgets/custom_rich_text.dart';
 import '../widgets/error_text.dart';
+import '../widgets/social_media_button.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -129,14 +128,6 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _buildSocialMediaSignInButtons() {
-    final ButtonStyle style = ElevatedButton.styleFrom(
-      backgroundColor: const Color(0xffebf4dc),
-      minimumSize: const Size(90, 50),
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(12)),
-      ),
-    );
-
     return Column(
       children: <Widget>[
         const SizedBox(height: 20),
@@ -165,40 +156,25 @@ class _LoginPageState extends State<LoginPage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            ElevatedButton(
-              style: style,
-              child: const Image(
-                image: AssetImage('assets/Google-Logo.png'),
-                height: 30,
-                width: 30,
-              ),
+            SocialMediaButton(
+              assetName: 'assets/Google-Logo.png',
               onPressed: () {
                 signInWithGoogle();
                 if (kDebugMode) print("Google Sign In");
               },
             ),
             const SizedBox(width: 20),
-            ElevatedButton(
-              style: style,
-              child: const Image(
-                image: AssetImage('assets/Facebook-Logo.png'),
-                height: 30,
-                width: 30,
-              ),
+            SocialMediaButton(
+              assetName: 'assets/Facebook-Logo.png',
               onPressed: () {
                 if (kDebugMode) print("Facebook Sign In");
               },
             ),
             const SizedBox(width: 20),
-            ElevatedButton(
-              style: style,
-              child: const Image(
-                image: AssetImage('assets/Apple-Logo.png'),
-                height: 30,
-                width: 30,
-              ),
+            SocialMediaButton(
+              assetName: 'assets/Apple-Logo.png',
               onPressed: () {
-                if (kDebugMode) print("Apple Sign In");
+                if (kDebugMode) print("Facebook Sign In");
               },
             ),
           ],
@@ -208,8 +184,6 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _buildForm(double windowWidth) {
-    var appState = context.watch<ApplicationState>();
-
     final ButtonStyle style = ElevatedButton.styleFrom(
       textStyle: const TextStyle(fontSize: 20),
       foregroundColor: Colors.black,
