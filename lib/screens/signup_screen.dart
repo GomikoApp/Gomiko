@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
-import 'package:recycle/app_state.dart';
 import 'package:recycle/widgets/login_signup_widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+import '../widgets/title_text.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -53,8 +53,6 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
-    // var appState = context.watch<ApplicationState>();
-
     double windowWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(

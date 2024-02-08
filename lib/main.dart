@@ -2,13 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'app_state.dart';
+import 'package:recycle/screens/signup_screen.dart';
+import 'utils/app_state.dart';
 
-// Pages
-import '/pages/login.dart';
-import 'pages/signup.dart';
-
-// Widgets
+import 'screens/login_screen.dart';
 import 'widgets/home_scaffold.dart';
 
 Future<void> main() async {
