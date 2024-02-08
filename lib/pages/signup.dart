@@ -32,13 +32,12 @@ class _SignUpPageState extends State<SignUpPage> {
   Future<UserCredential?> createUserWithEmailAndPassword() async {
     try {
       return await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: _emailController.text, 
-        password: passwordField.currentPassword
-      );
+          email: _emailController.text,
+          password: passwordField.currentPassword);
     } on FirebaseAuthException catch (e) {
       errorMessage = e.message;
     }
-    
+
     return null;
   }
 
@@ -48,108 +47,104 @@ class _SignUpPageState extends State<SignUpPage> {
     } on FirebaseAuthException catch (e) {
       errorMessage = e.message;
     }
-    
+
     return null;
   }
 
   @override
   Widget build(BuildContext context) {
-    var appState = context.watch<ApplicationState>();
+    // var appState = context.watch<ApplicationState>();
 
     double windowWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      body: Center(
-        child: Transform.translate(
-          offset: const Offset(0, 200),
-          child: Container(
-            constraints: BoxConstraints(
-              maxWidth: windowWidth / 1.25,
+        body: Center(
+            child: Transform.translate(
+      offset: const Offset(0, 200),
+      child: Container(
+        constraints: BoxConstraints(
+          maxWidth: windowWidth / 1.25,
+        ),
+        child: Column(
+          children: [
+            Text(errorMessage == '' ? '' : "$errorMessage"),
+            const TitleText(
+              text: "Sign Up",
             ),
-            child: Column(
-              children: [
-                Text(errorMessage == '' ? '' : "$errorMessage"),
-                const TitleText(
-                  text: "Sign Up",
+            const SizedBox(height: 20),
+            Form(
+              key: _formKey,
+              child: Column(children: [
+                // GomikoTextFormField(
+                //   hintText: "Name",
+                //   icon: const Icon(Icons.person_outline_outlined),
+                //   validator: (String? name) {
+                //     return null;
+                //   },
+                // ),
+                GomikoEmailTextFormField(
+                  hintText: "Email",
+                  controller: _emailController,
+                  validator: (String? email) {
+                    return LSUtilities.emailFormValidator(email: email);
+                  },
                 ),
-                const SizedBox(height: 20),
-                Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      // GomikoTextFormField(
-                      //   hintText: "Name",
-                      //   icon: const Icon(Icons.person_outline_outlined),
-                      //   validator: (String? name) {
-                      //     return null;
-                      //   },
-                      // ),
-                      GomikoEmailTextFormField(
-                        hintText: "Email",
-                        controller: _emailController,
-                        validator: (String? email) {
-                          return LSUtilities.emailFormValidator(email: email);
-                        },
-                      ),
-                      passwordField,
-                      confirmPasswordField
-                    ]
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: GomikoMainActionButton(
-                    labelText: "Sign Up",
-                    onPressed: () async {
-                      final UserCredential? result;
-                      // Check if password and confirm password fields are matching
-                      if (passwordField.currentPassword == confirmPasswordField.currentPassword) {
-                        result = await createUserWithEmailAndPassword();
+                passwordField,
+                confirmPasswordField
+              ]),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: GomikoMainActionButton(
+                labelText: "Sign Up",
+                onPressed: () async {
+                  final UserCredential? result;
+                  // Check if password and confirm password fields are matching
+                  if (passwordField.currentPassword ==
+                      confirmPasswordField.currentPassword) {
+                    result = await createUserWithEmailAndPassword();
 
-                        // User was created successfully
-                        if (result != null) {
-                          context.push('/login');
-                        }
-                      }
+                    // User was created successfully
+                    if (result != null) {
+                      context.push('/login');
+                    }
+                  }
+                },
+              ),
+            ),
+            GomikoContextLinkRow(
+              contextLabel: "Already have an account?",
+              linkLabel: "Login",
+              onTap: () {
+                // Link to login page
+                context.pushReplacement('/login');
+              },
+            ),
+            const GomikoTextDivider(
+              label: "Or Sign up with",
+              labelSize: 13.5,
+            ),
+            ButtonBar(
+              alignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                    onPressed: () {
+                      // Google Auth
+                      print("Pressed G button!");
                     },
-                  ),
-                ),
-                GomikoContextLinkRow(
-                  contextLabel: "Already have an account?",
-                  linkLabel: "Login",
-                  onTap: () {
-                    // Link to login page
-                    context.pushReplacement('/login');
-                  },
-                ),
-                const GomikoTextDivider(
-                  label: "Or Sign up with",
-                  labelSize: 13.5,
-                ),
-                ButtonBar(
-                  alignment: MainAxisAlignment.center,
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        // Google Auth
-                        print("Pressed G button!");
-                      }, 
-                      icon: const Icon(Icons.g_mobiledata)
-                    )
-                  ],
-                ),
-                GomikoLink(
-                  label: "Continue without an account",
-                  onTap: () async {
-                    await signInAsAnonymousUser();
-                    context.push('/');
-                  },
-                )
+                    icon: const Icon(Icons.g_mobiledata))
               ],
             ),
-          ),
-        )
-      )
-    );
+            GomikoLink(
+              label: "Continue without an account",
+              onTap: () async {
+                await signInAsAnonymousUser();
+                context.push('/');
+              },
+            )
+          ],
+        ),
+      ),
+    )));
   }
 }

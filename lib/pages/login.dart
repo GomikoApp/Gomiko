@@ -22,21 +22,20 @@ class _LoginPageState extends State<LoginPage> {
   // USER SIGN-IN SECTION VARIABLES AND METHODS SECTION
   final _emailController = TextEditingController();
   final passwordFormField = GomikoPasswordTextFormField(
-                        hintText: "Password",
-                        controller: TextEditingController(),
-                        validator: (String? password) {
-                          return LSUtilities.passwordFormValidator(password: password);
-                        },
-                      );
+    hintText: "Password",
+    controller: TextEditingController(),
+    validator: (String? password) {
+      return LSUtilities.passwordFormValidator(password: password);
+    },
+  );
   String? errorMessage = '';
 
   /// Try a sign-in with the current email and password in the text fields.
   Future<UserCredential?> signInWithEmailAndPassword() async {
-    try {  
+    try {
       return await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: _emailController.text, 
-        password: passwordFormField.currentPassword
-      );
+          email: _emailController.text,
+          password: passwordFormField.currentPassword);
     } on FirebaseAuthException catch (e) {
       setState(() {
         errorMessage = e.message;
@@ -52,75 +51,71 @@ class _LoginPageState extends State<LoginPage> {
     var appState = context.watch<ApplicationState>();
 
     return Scaffold(
-      body: Center(
-        child: Transform.translate(
-          offset: const Offset(0, 250),
-          child: Container(
-            constraints: BoxConstraints(
-              maxWidth: windowWidth / 1.25,
-            ),
-            child: Column(
-              // I want to add animations to these elements that is a simple fade
-              // and transform up.
-              children: [
-                const TitleText(
-                  text: "Log In"
-                ),
-                SizedBox(height: formSizedBoxHeight),
-                Form(
-                  key: _formKey,
-                  child: Column(
-                    children: <Widget>[
-                      // I'm currently referencing: https://api.flutter.dev/flutter/widgets/Form-class.html
-                      GomikoEmailTextFormField(
-                        hintText: "Email",
-                        controller: _emailController,
-                        validator: (String? email) {
-                          return LSUtilities.emailFormValidator(email: email);
-                        },
-                      ),
-                      SizedBox(height: formSizedBoxHeight),
-                      passwordFormField,
-                      SizedBox(height: formSizedBoxHeight),
-                      ActionChip(
-                        label: const Text("Create Account"),
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    const SignUpPage(),
-                              )
-                          );
-                        },
-                      ),
-                      Text(errorMessage == '' ? '' : "$errorMessage"),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 16.0),
-                        child: ElevatedButton(
-                          child: const Text("Login"),
-                          onPressed: () async {
-                            // Validate will return true if the form is valid,
-                            // or false if the form is invalid.
-                            if (_formKey.currentState!.validate()) {
-                              // try sign in, if successful, push to homepage
-                              final UserCredential? signInResult = await signInWithEmailAndPassword();
-                              if (signInResult != null) {
-                                context.pushReplacement('/');
-                                print(appState.loggedIn);
-                              }
+        body: Center(
+      child: Transform.translate(
+        offset: const Offset(0, 250),
+        child: Container(
+          constraints: BoxConstraints(
+            maxWidth: windowWidth / 1.25,
+          ),
+          child: Column(
+            // I want to add animations to these elements that is a simple fade
+            // and transform up.
+            children: [
+              const TitleText(text: "Log In"),
+              SizedBox(height: formSizedBoxHeight),
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: <Widget>[
+                    // I'm currently referencing: https://api.flutter.dev/flutter/widgets/Form-class.html
+                    GomikoEmailTextFormField(
+                      hintText: "Email",
+                      controller: _emailController,
+                      validator: (String? email) {
+                        return LSUtilities.emailFormValidator(email: email);
+                      },
+                    ),
+                    SizedBox(height: formSizedBoxHeight),
+                    passwordFormField,
+                    SizedBox(height: formSizedBoxHeight),
+                    ActionChip(
+                      label: const Text("Create Account"),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const SignUpPage(),
+                            ));
+                      },
+                    ),
+                    Text(errorMessage == '' ? '' : "$errorMessage"),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 16.0),
+                      child: ElevatedButton(
+                        child: const Text("Login"),
+                        onPressed: () async {
+                          // Validate will return true if the form is valid,
+                          // or false if the form is invalid.
+                          if (_formKey.currentState!.validate()) {
+                            // try sign in, if successful, push to homepage
+                            final UserCredential? signInResult =
+                                await signInWithEmailAndPassword();
+                            if (signInResult != null) {
+                              context.pushReplacement('/');
+                              print(appState.loggedIn);
                             }
-                          },
-                        ),
+                          }
+                        },
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
-      )
-    );
+      ),
+    ));
   }
 }
