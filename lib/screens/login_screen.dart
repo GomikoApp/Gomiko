@@ -1,12 +1,12 @@
-import 'package:flutter/gestures.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:recycle/utils/app_state.dart';
 import 'package:recycle/widgets/login_signup_widgets.dart';
 
-import 'signup_screen.dart';
+// Services
+import '../services/auth_services.dart';
 
 // Widgets
 import '../widgets/logo.dart';
@@ -46,18 +46,27 @@ class _LoginPageState extends State<LoginPage> {
   );
 
   /// Try a sign-in with the current email and password in the text fields.
-  Future<UserCredential?> signInWithEmailAndPassword() async {
-    try {
-      return await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: _emailFormField.currentEmail,
-          password: _passwordFormField.currentPassword);
-    } on FirebaseAuthException catch (e) {
+  void signInWithEmailAndPassword() async {
+    String? result = await AuthService().signInWithEmailAndPassword(
+        _emailFormField.currentEmail, _passwordFormField.currentPassword);
+    if (result == null) {
+      if (context.mounted) context.push('/');
+    } else {
       setState(() {
-        errorMessage = e.message;
+        errorMessage = result;
       });
     }
+  }
 
-    return null;
+  void signInWithGoogle() async {
+    String? result = await AuthService().signInWithGoogle();
+    if (result != null) {
+      setState(() {
+        errorMessage = result;
+      });
+    } else {
+      if (context.mounted) context.push('/');
+    }
   }
 
   Widget _buildForgotPasswordButton() {
@@ -66,7 +75,7 @@ class _LoginPageState extends State<LoginPage> {
       children: [
         InkWell(
           onTap: () {
-            print("Forgot Password");
+            if (kDebugMode) print("Forgot Password");
           },
           child: RichText(
             text: const TextSpan(
@@ -99,7 +108,8 @@ class _LoginPageState extends State<LoginPage> {
               WidgetSpan(
                 child: InkWell(
                   onTap: () {
-                    print("Sign Up");
+                    if (context.mounted) context.push('/signup');
+                    if (kDebugMode) ("Sign Up");
                   },
                   child: const Text(
                     "Sign Up",
@@ -163,7 +173,8 @@ class _LoginPageState extends State<LoginPage> {
                 width: 30,
               ),
               onPressed: () {
-                print("Google Sign In");
+                signInWithGoogle();
+                if (kDebugMode) print("Google Sign In");
               },
             ),
             const SizedBox(width: 20),
@@ -175,7 +186,7 @@ class _LoginPageState extends State<LoginPage> {
                 width: 30,
               ),
               onPressed: () {
-                print("Facebook Sign In");
+                if (kDebugMode) print("Facebook Sign In");
               },
             ),
             const SizedBox(width: 20),
@@ -187,7 +198,7 @@ class _LoginPageState extends State<LoginPage> {
                 width: 30,
               ),
               onPressed: () {
-                print("Apple Sign In");
+                if (kDebugMode) print("Apple Sign In");
               },
             ),
           ],
@@ -260,12 +271,7 @@ class _LoginPageState extends State<LoginPage> {
                       // or false if the form is invalid.
                       if (_formKey.currentState!.validate()) {
                         // try sign in, if successful, push to homepage
-                        final UserCredential? signInResult =
-                            await signInWithEmailAndPassword();
-                        if (signInResult != null) {
-                          context.pushReplacement('/');
-                          print(appState.loggedIn);
-                        }
+                        signInWithEmailAndPassword();
                       }
                     },
                   ),
