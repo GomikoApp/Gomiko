@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:recycle/pages/home.dart';
+import 'package:recycle/screens/home_screen.dart';
 
 // import '../pages/home.dart';
-import '../pages/profile.dart';
-import '../pages/search.dart';
-import '../pages/leaderboard.dart';
+import '../screens/profile_screen.dart';
+import '../screens/search_screen.dart';
+import '../screens/leaderboard_screen.dart';
 
 class HomeScaffold extends StatefulWidget {
   const HomeScaffold({Key? key}) : super(key: key);

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:recycle/app_state.dart';
+import 'package:recycle/utils/app_state.dart';
 import 'package:provider/provider.dart';
-
 
 class HomePage extends StatefulWidget {
   // title parameter is not necessary here, its just for testing.
@@ -21,11 +20,9 @@ class HomePageState extends State<HomePage> {
 
     // Check if user is logged in, if not, push login page to screen.
     if (!appState.loggedIn) {
-      WidgetsBinding.instance.addPostFrameCallback(
-        (_) {
-          context.replace('/login');
-        }
-      );
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        context.replace('/login');
+      });
     }
 
     return Scaffold(
