@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -46,25 +47,37 @@ class _LoginPageState extends State<LoginPage> {
 
   /// Try a sign-in with the current email and password in the text fields.
   void signInWithEmailAndPassword() async {
-    String? result = await AuthService().signInWithEmailAndPassword(
-        _emailFormField.currentEmail, _passwordFormField.currentPassword);
-    if (result == null) {
+    try {
+      await AuthService().signInWithEmailAndPassword(
+          _emailFormField.currentEmail, _passwordFormField.currentPassword);
       if (context.mounted) context.push('/');
-    } else {
+    } on FirebaseAuthException catch (e) {
+      // The only error code that you can get is Invalid-Credentials because we have email enumeration protection turned on in firebase settings. To enable other error codes like user-not-found, you need to turn off email enumeration protection in firebase settings.
       setState(() {
-        errorMessage = result;
+        errorMessage = e.message;
       });
     }
   }
 
   void signInWithGoogle() async {
-    String? result = await AuthService().signInWithGoogle();
-    if (result != null) {
-      setState(() {
-        errorMessage = result;
-      });
-    } else {
+    try {
+      await AuthService().signInWithGoogle();
       if (context.mounted) context.push('/');
+    } on FirebaseAuthException catch (e) {
+      setState(() {
+        errorMessage = e.message;
+      });
+    }
+  }
+
+  void signInWithFacebook() async {
+    try {
+      await AuthService().signInWithFacebook();
+      if (context.mounted) context.push('/');
+    } on FirebaseAuthException catch (e) {
+      setState(() {
+        errorMessage = e.message;
+      });
     }
   }
 
@@ -167,6 +180,7 @@ class _LoginPageState extends State<LoginPage> {
             SocialMediaButton(
               assetName: 'assets/Facebook-Logo.png',
               onPressed: () {
+                signInWithFacebook();
                 if (kDebugMode) print("Facebook Sign In");
               },
             ),
