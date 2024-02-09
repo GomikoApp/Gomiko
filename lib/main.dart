@@ -10,6 +10,7 @@ import 'utils/app_state.dart';
 import 'screens/login_screen.dart';
 import 'screens/forgot_password_screen.dart';
 import 'screens/signup_screen.dart';
+import 'screens/landing_screen.dart';
 
 // Widgets
 import 'widgets/home_scaffold.dart';
@@ -31,10 +32,18 @@ class MyApp extends StatefulWidget {
 }
 
 class MyAppState extends State<MyApp> {
+  late ApplicationState _appState;
+
+  @override
+  void initState() {
+    super.initState();
+    _appState = ApplicationState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => ApplicationState(),
+    return ChangeNotifierProvider.value(
+      value: _appState,
       child: MaterialApp.router(
         title: 'Gomiko',
         debugShowCheckedModeBanner: false,
@@ -54,30 +63,27 @@ final _router = GoRouter(
     // This is where the default page goes
     GoRoute(
       path: '/',
-      builder: (context, state) => const HomeScaffold(),
-      routes: [
-        GoRoute(
-            path: 'login',
-            builder: (context, state) {
-              return const LoginPage();
-            }),
-        GoRoute(
-            path: 'login',
-            builder: (context, state) {
-              return const LoginPage();
-            }),
-        GoRoute(
-            path: 'signup',
-            builder: (context, state) {
-              return const SignUpPage();
-            }),
-        GoRoute(
-            path: 'forgot-password',
-            builder: (context, state) {
-              return const ForgotPasswordPage();
-            })
-      ],
+      builder: (context, state) => const LandingPage(),
     ),
+    GoRoute(
+      path: '/home',
+      builder: (context, state) => const HomeScaffold(),
+    ),
+    GoRoute(
+        path: '/login',
+        builder: (context, state) {
+          return const LoginPage();
+        }),
+    GoRoute(
+        path: '/signup',
+        builder: (context, state) {
+          return const SignUpPage();
+        }),
+    GoRoute(
+        path: '/forgot-password',
+        builder: (context, state) {
+          return const ForgotPasswordPage();
+        })
   ],
 );
 // end of GoRouter configuration
