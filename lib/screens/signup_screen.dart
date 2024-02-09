@@ -105,7 +105,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
                     // User was created successfully
                     if (result != null) {
-                      if (context.mounted) context.push('/');
+                      if (context.mounted) context.push('/home');
                     }
                   }
                 },
@@ -138,7 +138,7 @@ class _SignUpPageState extends State<SignUpPage> {
               label: "Continue without an account",
               onTap: () async {
                 await signInAsAnonymousUser();
-                if (context.mounted) context.push('/');
+                if (context.mounted) context.push('/home');
               },
             )
           ],
