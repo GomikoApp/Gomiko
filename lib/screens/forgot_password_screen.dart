@@ -86,7 +86,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   AnimatedOpacity(
                     duration: const Duration(milliseconds: 200),
                     opacity: keyboardOpen ? 0.0 : 1.0,
-                    child: const GomikoLogo(),
+                    child: GomikoLogo(),
                   ),
 
                   AnimatedContainer(

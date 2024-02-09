@@ -328,7 +328,7 @@ class _LoginPageState extends State<LoginPage> {
                     AnimatedOpacity(
                       duration: const Duration(milliseconds: 200),
                       opacity: keyboardOpen ? 0.0 : 1.0,
-                      child: const GomikoLogo(),
+                      child: GomikoLogo(),
                     ),
 
                     // Changes the textSizedBoxHeight variable to 15 is keyboard is open, otherwise it is the default value

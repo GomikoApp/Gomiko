@@ -42,8 +42,6 @@ class MyAppState extends State<MyApp> {
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(
               seedColor: Colors.blue, secondary: Colors.red),
-          colorScheme: ColorScheme.fromSeed(
-              seedColor: Colors.blue, secondary: Colors.red),
         ),
         darkTheme: ThemeData.dark(),
         routerConfig: _router,
@@ -64,6 +62,7 @@ final _router = GoRouter(
             builder: (context, state) {
               return const LoginPage();
             }),
+        GoRoute(
             path: 'login',
             builder: (context, state) {
               return const LoginPage();
