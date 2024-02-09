@@ -12,7 +12,6 @@ import '../widgets/logo.dart';
 import '../widgets/custom_rich_text.dart';
 import '../widgets/error_text.dart';
 import '../widgets/social_media_button.dart';
-import 'forgot_password_screen.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
