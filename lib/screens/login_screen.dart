@@ -119,41 +119,44 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _buildSignupButton() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        RichText(
-          text: TextSpan(
-            text: "Don't have an account? ",
-            style: const TextStyle(
-              color: Colors.black,
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-            ),
-            children: [
-              WidgetSpan(
-                child: InkWell(
-                  onTap: () {
-                    if (context.mounted) context.push('/signup');
-                    if (kDebugMode) ("Sign Up");
-                  },
-                  child: const Text(
-                    "Sign Up",
-                    style: TextStyle(
-                      color: Color(0xFF98CB51),
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-              )
-            ],
-          ),
-        ),
-      ],
-    );
+  void signupOnTap() {
+    if (context.mounted) context.push('/signup');
+    if (kDebugMode) ("Sign Up");
   }
+
+  /// Old signup button
+  // Widget _buildSignupButton() {
+  //   return Row(
+  //     mainAxisAlignment: MainAxisAlignment.center,
+  //     children: [
+  //       RichText(
+  //         text: TextSpan(
+  //           text: "Don't have an account? ",
+  //           style: const TextStyle(
+  //             color: Colors.black,
+  //             fontSize: 14,
+  //             fontWeight: FontWeight.w500,
+  //           ),
+  //           children: [
+  //             WidgetSpan(
+  //               child: InkWell(
+  //                 onTap: signupOnTap,
+  //                 child: const Text(
+  //                   "Sign Up",
+  //                   style: TextStyle(
+  //                     color: Color(0xFF98CB51),
+  //                     fontSize: 14,
+  //                     fontWeight: FontWeight.w500,
+  //                   ),
+  //                 ),
+  //               ),
+  //             )
+  //           ],
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 
   Widget _buildSocialMediaSignInButtons() {
     return Column(
@@ -267,8 +270,10 @@ class _LoginPageState extends State<LoginPage> {
                   ElevatedButton(
                     style: style,
                     child: const Text("Login",
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w500)),
+                      style: TextStyle(
+                        fontSize: 16, 
+                        fontWeight: FontWeight.w500
+                      )),
                     onPressed: () async {
                       // Validate will return true if the form is valid,
                       // or false if the form is invalid.
@@ -282,7 +287,11 @@ class _LoginPageState extends State<LoginPage> {
                   SizedBox(height: formSizedBoxHeight),
 
                   // This method builds the "Sign Up" button. When pressed, it pushes the user to the sign up page.
-                  _buildSignupButton(),
+                  GomikoContextLinkRow(
+                    contextLabel: "Don't have an account?",
+                    linkLabel: "Sign Up",
+                    onTap: signupOnTap,
+                  ),
 
                   // To Do: Implement Google Sign in/Facebook Sign in/Apple Sign in Design
                   _buildSocialMediaSignInButtons(),
