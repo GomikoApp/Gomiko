@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import "package:flutter/material.dart";
+import 'package:go_router/go_router.dart';
 
 // Widgets
 import '../widgets/custom_rich_text.dart';
@@ -148,38 +149,17 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                   ),
                                 ),
 
-                                const SizedBox(height: 20),
-                                
+                                const SizedBox(height: 10),
+
                                 // Go Back Text Button
-                                RichText(
-                                  text: TextSpan(
-                                    text: "Go back to ",
-                                    style: const TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                    children: [
-                                      WidgetSpan(
-                                        child: InkWell(
-                                          onTap: () {
-                                            if (context.mounted) {
-                                              Navigator.pop(context);
-                                            }
-                                          },
-                                          child: const Text(
-                                            "Login",
-                                            style: TextStyle(
-                                              color: Color(0xFF98CB51),
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                )
+                                GomikoContextLinkRow(
+                                  contextLabel: "Go back to",
+                                  linkLabel: "Login",
+                                  onTap: () {
+                                    // Link to login page
+                                    context.pushReplacement('/login');
+                                  },
+                                ),
                               ],
                             ),
                           ),

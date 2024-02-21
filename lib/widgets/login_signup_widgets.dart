@@ -435,7 +435,7 @@ class GomikoLink extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final linkBlue = Colors.blue[700];
+    const linkBlue = Color(0xFF98CB51);
     final effectiveLabelColor = labelColor ?? linkBlue;
 
     return GestureDetector(
@@ -459,7 +459,7 @@ class GomikoContextLinkRow extends StatelessWidget {
     Key? key,
     required this.contextLabel,
     required this.linkLabel,
-    this.gapWidth = 20,
+    this.gapWidth = 5,
     this.onTap,
     this.onDoubleTap,
     this.onLongPress,
