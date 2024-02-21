@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:recycle/screens/signup_screen.dart';
 import 'package:recycle/widgets/login_signup_widgets.dart';
 
 // Services
@@ -11,6 +12,7 @@ import '../services/auth_services.dart';
 import '../widgets/logo.dart';
 import '../widgets/custom_rich_text.dart';
 import '../widgets/error_text.dart';
+import '../widgets/social_media_auth.dart';
 import '../widgets/social_media_button.dart';
 import 'forgot_password_screen.dart';
 
@@ -82,6 +84,17 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
+  void signInAsAnonymousUser() async {
+    try {
+      await AuthService().signInAsAnonymousUser();
+      if (context.mounted) context.push('/');
+    } on FirebaseAuthException catch (e) {
+      setState(() {
+        errorMessage = e.message;
+      });
+    }
+  }
+
   Widget _buildForgotPasswordButton() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
@@ -92,17 +105,15 @@ class _LoginPageState extends State<LoginPage> {
             onTap: () {
               // Solution to transparent screen when going to forgot password page
 
-              // Navigator.push(
-              //   context,
-              //   PageRouteBuilder(
-              //     opaque: false,
-              //     pageBuilder: (context, animation, secondaryAnimation) {
-              //       return const ForgotPasswordPage();
-              //     },
-              //   ),
-              // );
-
-              if (context.mounted) context.push('/forgot-password');
+              Navigator.push(
+                context,
+                PageRouteBuilder(
+                  opaque: false,
+                  pageBuilder: (context, animation, secondaryAnimation) {
+                    return const ForgotPasswordPage();
+                  },
+                ),
+              );
             },
             child: RichText(
               text: const TextSpan(
@@ -120,77 +131,27 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _buildSignupButton() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        RichText(
-          text: TextSpan(
-            text: "Don't have an account? ",
-            style: const TextStyle(
-              color: Colors.black,
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-            ),
-            children: [
-              WidgetSpan(
-                child: InkWell(
-                  onTap: () {
-                    if (context.mounted) context.push('/signup');
-                    if (kDebugMode) ("Sign Up");
-                  },
-                  child: const Text(
-                    "Sign Up",
-                    style: TextStyle(
-                      color: Color(0xFF98CB51),
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-              )
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildSocialMediaSignInButtons() {
+  Widget _buildSocialMediaButtons() {
     return Column(
       children: <Widget>[
-        const SizedBox(height: 20),
+        SizedBox(height: formSizedBoxHeight),
         const GomikoTextDivider(
           label: "Or Sign up with",
           labelSize: 13.5,
         ),
-        const SizedBox(height: 20),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            SocialMediaButton(
-              assetName: 'assets/logos/Google-Logo.png',
-              onPressed: () {
-                signInWithGoogle();
-                if (kDebugMode) print("Google Sign In");
-              },
-            ),
-            const SizedBox(width: 20),
-            SocialMediaButton(
-              assetName: 'assets/logos/Facebook-Logo.png',
-              onPressed: () {
-                signInWithFacebook();
-                if (kDebugMode) print("Facebook Sign In");
-              },
-            ),
-            const SizedBox(width: 20),
-            SocialMediaButton(
-              assetName: 'assets/logos/Apple-Logo.png',
-              onPressed: () {
-                if (kDebugMode) print("Facebook Sign In");
-              },
-            ),
-          ],
+        SocialMediaAuth(
+          onAnonymousSignIn: () {
+            signInAsAnonymousUser();
+            if (kDebugMode) print("Anonymous Sign In");
+          },
+          onGoogleSignIn: () {
+            signInWithGoogle();
+            if (kDebugMode) print("Google Sign In");
+          },
+          onFacebookSignIn: () {
+            signInWithFacebook();
+            if (kDebugMode) print("Facebook Sign In");
+          },
         ),
       ],
     );
@@ -229,7 +190,6 @@ class _LoginPageState extends State<LoginPage> {
                   _passwordFormField,
 
                   // This method builds the "Forgot Password" button. When pressed, it pushes the user to the forgot password page.
-                  // TODO: Implement forgot password page.
                   _buildForgotPasswordButton(),
 
                   SizedBox(height: formSizedBoxHeight),
@@ -255,12 +215,22 @@ class _LoginPageState extends State<LoginPage> {
                     linkLabel: "Sign Up",
                     onTap: () {
                       // Link to Sign Up page
-                      context.pushReplacement('/signup');
+                      // context.pushReplacement('/signup');
+                      Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          opaque: false,
+                          pageBuilder:
+                              (context, animation, secondaryAnimation) {
+                            return const SignUpPage();
+                          },
+                        ),
+                      );
                     },
                   ),
 
                   // To Do: Implement Google Sign in/Facebook Sign in/Apple Sign in Design
-                  _buildSocialMediaSignInButtons(),
+                  _buildSocialMediaButtons(),
                 ],
               ),
             ),

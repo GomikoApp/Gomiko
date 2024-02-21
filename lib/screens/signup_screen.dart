@@ -2,8 +2,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:recycle/widgets/social_media_auth.dart';
 
 // Widgets
+import '../services/auth_services.dart';
 import '../widgets/logo.dart';
 import '../widgets/login_signup_widgets.dart';
 import '../widgets/custom_rich_text.dart';
@@ -37,30 +39,80 @@ class _SignUpPageState extends State<SignUpPage> {
     controller: TextEditingController(),
   );
 
-  Future<UserCredential?> createUserWithEmailAndPassword() async {
+  void signInWithGoogle() async {
     try {
-      return await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: _emailController.text,
-          password: passwordField.currentPassword);
+      await AuthService().signInWithGoogle();
+      if (context.mounted) context.push('/');
     } on FirebaseAuthException catch (e) {
       setState(() {
         errorMessage = e.message;
       });
     }
-
-    return null;
   }
 
-  Future<UserCredential?> signInAsAnonymousUser() async {
+  void signInWithFacebook() async {
     try {
-      return await FirebaseAuth.instance.signInAnonymously();
+      await AuthService().signInWithFacebook();
+      if (context.mounted) context.push('/');
     } on FirebaseAuthException catch (e) {
       setState(() {
         errorMessage = e.message;
       });
     }
+  }
 
-    return null;
+  // // Create User With Email and Password
+  void createUserWithEmailAndPassword() async {
+    try {
+      final UserCredential? createUserResult =
+          await AuthService().createUserWithEmailAndPassword(
+        _emailController.text,
+        passwordField.currentPassword,
+      );
+
+      if (context.mounted && createUserResult != null) context.push('/');
+    } catch (e) {
+      setState(() {
+        errorMessage = e.toString();
+      });
+    }
+  }
+
+  void signInAsAnonymousUser() async {
+    try {
+      await AuthService().signInAsAnonymousUser();
+      if (context.mounted) context.push('/');
+    } on FirebaseAuthException catch (e) {
+      setState(() {
+        errorMessage = e.message;
+      });
+    }
+  }
+
+  Widget _buildSocialMediaButtons() {
+    return Column(
+      children: <Widget>[
+        SizedBox(height: formSizedBoxHeight),
+        const GomikoTextDivider(
+          label: "Or Sign up with",
+          labelSize: 13.5,
+        ),
+        SocialMediaAuth(
+          onAnonymousSignIn: () {
+            signInAsAnonymousUser();
+            if (kDebugMode) print("Anonymous Sign In");
+          },
+          onGoogleSignIn: () {
+            signInWithGoogle();
+            if (kDebugMode) print("Google Sign In");
+          },
+          onFacebookSignIn: () {
+            signInWithFacebook();
+            if (kDebugMode) print("Facebook Sign In");
+          },
+        ),
+      ],
+    );
   }
 
   Widget _buildSignUpForm(double windowWidth) {
@@ -108,17 +160,16 @@ class _SignUpPageState extends State<SignUpPage> {
               child: GomikoMainActionButton(
                 labelText: "Sign Up",
                 onPressed: () async {
-                  final UserCredential? result;
                   // Check if password and confirm password fields are matching
-                  if (passwordField.currentPassword ==
+                  if (passwordField.currentPassword !=
                       confirmPasswordField.currentPassword) {
-                    result = await createUserWithEmailAndPassword();
-
-                    // User was created successfully
-                    if (result != null && context.mounted) {
-                      context.push('/');
-                    }
+                    setState(() {
+                      errorMessage = "Passwords do not match";
+                    });
+                    return;
                   }
+
+                  if (_formKey.currentState!.validate()) {}
                 },
               ),
             ),
@@ -130,45 +181,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 context.pushReplacement('/login');
               },
             ),
-            SizedBox(height: formSizedBoxHeight),
-            const GomikoTextDivider(
-              label: "Or Sign up with",
-              labelSize: 13.5,
-            ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SocialMediaButton(
-                  assetName: 'assets/logos/Google-Logo.png',
-                  onPressed: () {
-                    if (kDebugMode) print("Google Sign In");
-                  },
-                ),
-                const SizedBox(width: 20),
-                SocialMediaButton(
-                  assetName: 'assets/logos/Facebook-Logo.png',
-                  onPressed: () {
-                    if (kDebugMode) print("Facebook Sign In");
-                  },
-                ),
-                const SizedBox(width: 20),
-                SocialMediaButton(
-                  assetName: 'assets/logos/Apple-Logo.png',
-                  onPressed: () {
-                    if (kDebugMode) print("Facebook Sign In");
-                  },
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            GomikoLink(
-              label: "Continue without an account",
-              onTap: () async {
-                await signInAsAnonymousUser();
-                if (context.mounted) context.push('/');
-              },
-            ),
+            _buildSocialMediaButtons()
           ],
         ),
       ),

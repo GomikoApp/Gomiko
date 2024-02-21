@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key, required this.title}) : super(key: key);
@@ -21,7 +23,11 @@ class ProfilePageState extends State<ProfilePage> {
           ElevatedButton(
               onPressed: () async {
                 await FirebaseAuth.instance.signOut();
-                if (context.mounted) context.push('/');
+                await GoogleSignIn().signOut();
+                await FacebookAuth.instance.logOut();
+                if (context.mounted) {
+                  context.push('/login');
+                }
               },
               child: const Text("Sign Out")),
         ]),
