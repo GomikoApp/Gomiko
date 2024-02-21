@@ -81,105 +81,9 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  Widget _buildForgotPasswordButton() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 4.0),
-          child: InkWell(
-            onTap: () {
-              // Solution to transparent screen when going to forgot password page
-
-              // Navigator.push(
-              //   context,
-              //   PageRouteBuilder(
-              //     opaque: false,
-              //     pageBuilder: (context, animation, secondaryAnimation) {
-              //       return const ForgotPasswordPage();
-              //     },
-              //   ),
-              // );
-
-              if (context.mounted) context.push('/forgot-password');
-            },
-            child: RichText(
-              text: const TextSpan(
-                text: "Forgot Password? ",
-                style: TextStyle(
-                  color: Color(0xFF98CB51),
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildSignupButton() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        RichText(
-          text: TextSpan(
-            text: "Don't have an account? ",
-            style: const TextStyle(
-              color: Colors.black,
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-            ),
-            children: [
-              WidgetSpan(
-                child: InkWell(
-                  onTap: () {
-                    if (context.mounted) context.push('/signup');
-                    if (kDebugMode) ("Sign Up");
-                  },
-                  child: const Text(
-                    "Sign Up",
-                    style: TextStyle(
-                      color: Color(0xFF98CB51),
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-              )
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
   Widget _buildSocialMediaSignInButtons() {
     return Column(
       children: <Widget>[
-        const SizedBox(height: 20),
-        Row(
-          children: <Widget>[
-            Expanded(
-              child: Container(
-                  margin: const EdgeInsets.only(left: 10.0, right: 20.0),
-                  child: const Divider(
-                    color: Colors.black,
-                    height: 36,
-                  )),
-            ),
-            const Text("OR"),
-            Expanded(
-              child: Container(
-                  margin: const EdgeInsets.only(left: 20.0, right: 10.0),
-                  child: const Divider(
-                    color: Colors.black,
-                    height: 36,
-                  )),
-            ),
-          ],
-        ),
         const SizedBox(height: 20),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -213,19 +117,6 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _buildForm(double windowWidth) {
-    final ButtonStyle style = ElevatedButton.styleFrom(
-      textStyle: const TextStyle(fontSize: 20),
-      foregroundColor: Colors.black,
-      backgroundColor: const Color(0xFF98CB51),
-      minimumSize: const Size(300, 60),
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(5)),
-      ),
-      shadowColor: Colors.black,
-      elevation: 5,
-    );
-
     return Center(
       child: Container(
         constraints: BoxConstraints(
@@ -259,16 +150,20 @@ class _LoginPageState extends State<LoginPage> {
 
                   // This method builds the "Forgot Password" button. When pressed, it pushes the user to the forgot password page.
                   // TODO: Implement forgot password page.
-                  _buildForgotPasswordButton(),
+                  Container(
+                    alignment: AlignmentDirectional.centerEnd,
+                    child: GomikoLink(
+                      label: "Forgot Password? ",
+                      labelSize: 14,
+                      onTap: () { if (context.mounted) context.push('/forgot-password'); },
+                    )
+                  ),
 
                   SizedBox(height: formSizedBoxHeight),
 
                   // This is the "Login" button. When pressed, it validates the form and attempts to sign in the user.
-                  ElevatedButton(
-                    style: style,
-                    child: const Text("Login",
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w500)),
+                  GomikoMainActionButton(
+                    labelText: "Login",
                     onPressed: () async {
                       // Validate will return true if the form is valid,
                       // or false if the form is invalid.
@@ -276,13 +171,27 @@ class _LoginPageState extends State<LoginPage> {
                         // try sign in, if successful, push to homepage
                         signInWithEmailAndPassword();
                       }
+                    }
+                  ),
+
+                  SizedBox(height: formSizedBoxHeight),
+
+                  // This builds the "Sign Up" button. When pressed, it pushes the user to the sign up page.
+                  GomikoContextLinkRow(
+                    contextLabel: "Don't have an account?",
+                    linkLabel: "Sign Up",
+                    onTap: () {
+                      if (context.mounted) context.push('/signup');
+                      if (kDebugMode) ("Sign Up");
                     },
                   ),
 
                   SizedBox(height: formSizedBoxHeight),
 
-                  // This method builds the "Sign Up" button. When pressed, it pushes the user to the sign up page.
-                  _buildSignupButton(),
+                  const GomikoTextDivider(
+                    label: "OR",
+                    color: Colors.black,
+                  ),
 
                   // To Do: Implement Google Sign in/Facebook Sign in/Apple Sign in Design
                   _buildSocialMediaSignInButtons(),
