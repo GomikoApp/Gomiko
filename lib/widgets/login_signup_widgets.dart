@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class LSUtilities {
+  static final Color textColor = Color(0xFF98CB51);
+
   static final RegExp _emailRegex = RegExp(
       r'[a-zA-Z0-9.!#$%&’+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)(.[a-zA-Z0-9-]+)');
 
@@ -379,21 +381,25 @@ class GomikoMainActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: onPressed,
-      style: const ButtonStyle(
-        backgroundColor: MaterialStatePropertyAll(Color(0xFF98CB51)),
-        foregroundColor: MaterialStatePropertyAll(Colors.black),
-        textStyle: MaterialStatePropertyAll(TextStyle(fontSize: 20)),
-        minimumSize: MaterialStatePropertyAll(Size(300, 60)),
-        padding: MaterialStatePropertyAll(EdgeInsets.symmetric(horizontal: 16)),
-        shape: MaterialStatePropertyAll(
-          RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(5))),
+      style: ElevatedButton.styleFrom(
+        textStyle: const TextStyle(fontSize: 20),
+        foregroundColor: Colors.black,
+        backgroundColor: const Color(0xFF98CB51),
+        minimumSize: const Size(300, 60),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(5)),
         ),
-        shadowColor: MaterialStatePropertyAll(Colors.black),
-        elevation: MaterialStatePropertyAll(5),
+        shadowColor: Colors.black,
+        elevation: 5,
       ),
-      child: Text(labelText,
-          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+      child: Text(
+        labelText,
+        style: const TextStyle(
+          fontSize: 16, 
+          fontWeight: FontWeight.w500
+        )
+      ),
     );
   }
 }
@@ -415,10 +421,10 @@ class GomikoLink extends StatelessWidget {
   /// Text to be displayed in the [GomikoLink].
   final String label;
 
-  /// The text label's [FontSize].
+  /// The text label's [FontSize]. Defaults to 14.
   final double? labelSize;
 
-  /// The text label's [Color]. Defaults to a light blue color.
+  /// The text label's [Color]. Defaults to LSUtilities.textColor, which is a light green.
   final Color? labelColor;
 
   /// The text label's [FontWeight].
@@ -435,19 +441,21 @@ class GomikoLink extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const linkBlue = Color(0xFF98CB51);
-    final effectiveLabelColor = labelColor ?? linkBlue;
+    final linkColor = LSUtilities.textColor;
+    final effectiveLabelColor = labelColor ?? linkColor;
 
     return GestureDetector(
       onTap: onTap,
       onDoubleTap: onDoubleTap,
       onLongPress: onLongPress,
-      child: Text(label,
-          style: TextStyle(
-            fontSize: labelSize,
-            color: effectiveLabelColor,
-            fontWeight: labelWeight,
-          )),
+      child: Text(
+        label,
+        style: TextStyle(
+          fontSize: labelSize,
+          color: effectiveLabelColor,
+          fontWeight: labelWeight,
+        )
+      ),
     );
   }
 }
@@ -459,6 +467,12 @@ class GomikoContextLinkRow extends StatelessWidget {
     Key? key,
     required this.contextLabel,
     required this.linkLabel,
+    this.contextSize,
+    this.contextColor,
+    this.contextWeight = FontWeight.w500,
+    this.linkSize = 14,
+    this.linkColor,
+    this.linkWeight = FontWeight.w500,
     this.gapWidth = 5,
     this.onTap,
     this.onDoubleTap,
@@ -470,6 +484,24 @@ class GomikoContextLinkRow extends StatelessWidget {
 
   /// String of text for the [GomikoLink] on the right portion of the [Row].
   final String linkLabel;
+
+  /// Size of the string of text for the [Text] on the left portion of the [Row].
+  final double? contextSize;
+
+  /// [Color] for the [Text] on the left portion of the [Row].
+  final Color? contextColor;
+
+   /// [FontWeight] for the [GomikoLink] on the right portion of the [Row]. Defaults to [FontWeight.w500]
+  final FontWeight? contextWeight;
+
+  /// Size of the string of text for the [GomikoLink] on the right portion of the [Row].
+  final double? linkSize;
+
+  /// [Color] for the [GomikoLink] on the right portion of the [Row].
+  final Color? linkColor;
+  
+  /// [FontWeight] for the [GomikoLink] on the right portion of the [Row]. Defaults to [FontWeight.w500]
+  final FontWeight linkWeight;
 
   /// Amount of space in between the context [Text] and [GomikoLink].
   final double gapWidth;
@@ -486,12 +518,23 @@ class GomikoContextLinkRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      // NOTE:This might limit some styling by the designers in the future.
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(contextLabel),
+        Text(
+          contextLabel,
+          style: TextStyle(
+            color: contextColor,
+            fontSize: contextSize,
+            fontWeight: contextWeight,
+            ),
+        ),
         SizedBox(width: gapWidth),
         GomikoLink(
           label: linkLabel,
+          labelSize: linkSize,
+          labelColor: linkColor,
+          labelWeight: linkWeight,
           onTap: onTap,
           onDoubleTap: onDoubleTap,
           onLongPress: onLongPress,
@@ -508,10 +551,11 @@ class GomikoTextDivider extends StatelessWidget {
     required this.label,
     this.labelSize,
     this.height,
+    this.color,
     this.thickness = 1.5,
     this.leftIndent,
-    this.leftEndIndent = 10,
-    this.rightIndent = 10,
+    this.leftEndIndent,
+    this.rightIndent,
     this.rightEndIndent,
   }) : super(key: key);
 
@@ -527,6 +571,9 @@ class GomikoTextDivider extends StatelessWidget {
   ///
   /// If this is null, then the [DividerThemeData.space] is used. If that is also null, then this defaults to 16.0.
   final double? height;
+
+  /// The divider's color.
+  final Color? color;
 
   /// The thickness of the line drawn within the divider.
   ///
@@ -561,12 +608,16 @@ class GomikoTextDivider extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Expanded(
-          child: Divider(
-            height: height,
-            thickness: thickness,
-            indent: leftIndent,
-            endIndent: leftEndIndent,
-          ),
+          child: Container(
+            margin: const EdgeInsets.only(left: 10.0, right: 20.0),
+            child: Divider(
+              height: height,
+              thickness: thickness,
+              indent: leftIndent,
+              endIndent: leftEndIndent,
+              color: color,
+            ),
+          )
         ),
         Text(
           label,
@@ -576,12 +627,16 @@ class GomikoTextDivider extends StatelessWidget {
           ),
         ),
         Expanded(
-          child: Divider(
-            height: height,
-            thickness: thickness,
-            indent: rightIndent,
-            endIndent: rightEndIndent,
-          ),
+          child: Container(
+            margin: const EdgeInsets.only(left: 20.0, right: 10.0),
+            child: Divider(
+              height: height,
+              thickness: thickness,
+              indent: rightIndent,
+              endIndent: rightEndIndent,
+              color: color,
+            ),
+          )
         )
       ],
     );

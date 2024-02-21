@@ -14,7 +14,6 @@ import '../widgets/custom_rich_text.dart';
 import '../widgets/error_text.dart';
 import '../widgets/social_media_auth.dart';
 import '../widgets/social_media_button.dart';
-import 'forgot_password_screen.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -53,7 +52,7 @@ class _LoginPageState extends State<LoginPage> {
     try {
       await AuthService().signInWithEmailAndPassword(
           _emailFormField.currentEmail, _passwordFormField.currentPassword);
-      if (context.mounted) context.push('/');
+      if (context.mounted) context.push('/home');
     } on FirebaseAuthException catch (e) {
       // The only error code that you can get is Invalid-Credentials because we have email enumeration protection turned on in firebase settings. To enable other error codes like user-not-found, you need to turn off email enumeration protection in firebase settings.
       setState(() {
@@ -65,7 +64,7 @@ class _LoginPageState extends State<LoginPage> {
   void signInWithGoogle() async {
     try {
       await AuthService().signInWithGoogle();
-      if (context.mounted) context.push('/');
+      if (context.mounted) context.push('/home');
     } on FirebaseAuthException catch (e) {
       setState(() {
         errorMessage = e.message;
@@ -76,7 +75,7 @@ class _LoginPageState extends State<LoginPage> {
   void signInWithFacebook() async {
     try {
       await AuthService().signInWithFacebook();
-      if (context.mounted) context.push('/');
+      if (context.mounted) context.push('/home');
     } on FirebaseAuthException catch (e) {
       setState(() {
         errorMessage = e.message;
@@ -84,74 +83,36 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  void signInAsAnonymousUser() async {
-    try {
-      await AuthService().signInAsAnonymousUser();
-      if (context.mounted) context.push('/');
-    } on FirebaseAuthException catch (e) {
-      setState(() {
-        errorMessage = e.message;
-      });
-    }
-  }
-
-  Widget _buildForgotPasswordButton() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 4.0),
-          child: InkWell(
-            onTap: () {
-              // Solution to transparent screen when going to forgot password page
-
-              Navigator.push(
-                context,
-                PageRouteBuilder(
-                  opaque: false,
-                  pageBuilder: (context, animation, secondaryAnimation) {
-                    return const ForgotPasswordPage();
-                  },
-                ),
-              );
-            },
-            child: RichText(
-              text: const TextSpan(
-                text: "Forgot Password? ",
-                style: TextStyle(
-                  color: Color(0xFF98CB51),
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildSocialMediaButtons() {
+  Widget _buildSocialMediaSignInButtons() {
     return Column(
       children: <Widget>[
-        SizedBox(height: formSizedBoxHeight),
-        const GomikoTextDivider(
-          label: "Or Sign up with",
-          labelSize: 13.5,
-        ),
-        SocialMediaAuth(
-          onAnonymousSignIn: () {
-            signInAsAnonymousUser();
-            if (kDebugMode) print("Anonymous Sign In");
-          },
-          onGoogleSignIn: () {
-            signInWithGoogle();
-            if (kDebugMode) print("Google Sign In");
-          },
-          onFacebookSignIn: () {
-            signInWithFacebook();
-            if (kDebugMode) print("Facebook Sign In");
-          },
+        const SizedBox(height: 20),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            SocialMediaButton(
+              assetName: 'assets/logos/Google-Logo.png',
+              onPressed: () {
+                signInWithGoogle();
+                if (kDebugMode) print("Google Sign In");
+              },
+            ),
+            const SizedBox(width: 20),
+            SocialMediaButton(
+              assetName: 'assets/logos/Facebook-Logo.png',
+              onPressed: () {
+                signInWithFacebook();
+                if (kDebugMode) print("Facebook Sign In");
+              },
+            ),
+            const SizedBox(width: 20),
+            SocialMediaButton(
+              assetName: 'assets/logos/Apple-Logo.png',
+              onPressed: () {
+                if (kDebugMode) print("Facebook Sign In");
+              },
+            ),
+          ],
         ),
       ],
     );
@@ -190,47 +151,52 @@ class _LoginPageState extends State<LoginPage> {
                   _passwordFormField,
 
                   // This method builds the "Forgot Password" button. When pressed, it pushes the user to the forgot password page.
-                  _buildForgotPasswordButton(),
+                  // TODO: Implement forgot password page.
+                  Container(
+                    alignment: AlignmentDirectional.centerEnd,
+                    child: GomikoLink(
+                      label: "Forgot Password? ",
+                      labelSize: 14,
+                      onTap: () { if (context.mounted) context.push('/forgot-password'); },
+                    )
+                  ),
 
                   SizedBox(height: formSizedBoxHeight),
 
                   // This is the "Login" button. When pressed, it validates the form and attempts to sign in the user.
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: GomikoMainActionButton(
-                      labelText: "Login",
-                      onPressed: () async {
-                        // Validate will return true if the form is valid,
-                        // or false if the form is invalid.
-                        if (_formKey.currentState!.validate()) {
-                          // try sign in, if successful, push to homepage
-                          signInWithEmailAndPassword();
-                        }
-                      },
-                    ),
+                  GomikoMainActionButton(
+                    labelText: "Login",
+                    onPressed: () async {
+                      // Validate will return true if the form is valid,
+                      // or false if the form is invalid.
+                      if (_formKey.currentState!.validate()) {
+                        // try sign in, if successful, push to homepage
+                        signInWithEmailAndPassword();
+                      }
+                    }
                   ),
 
+                  SizedBox(height: formSizedBoxHeight),
+
+                  // This builds the "Sign Up" button. When pressed, it pushes the user to the sign up page.
                   GomikoContextLinkRow(
                     contextLabel: "Don't have an account?",
                     linkLabel: "Sign Up",
                     onTap: () {
-                      // Link to Sign Up page
-                      // context.pushReplacement('/signup');
-                      Navigator.push(
-                        context,
-                        PageRouteBuilder(
-                          opaque: false,
-                          pageBuilder:
-                              (context, animation, secondaryAnimation) {
-                            return const SignUpPage();
-                          },
-                        ),
-                      );
+                      if (context.mounted) context.push('/signup');
+                      if (kDebugMode) ("Sign Up");
                     },
                   ),
 
+                  SizedBox(height: formSizedBoxHeight),
+
+                  const GomikoTextDivider(
+                    label: "OR",
+                    color: Colors.black,
+                  ),
+
                   // To Do: Implement Google Sign in/Facebook Sign in/Apple Sign in Design
-                  _buildSocialMediaButtons(),
+                  _buildSocialMediaSignInButtons(),
                 ],
               ),
             ),
@@ -272,7 +238,6 @@ class _LoginPageState extends State<LoginPage> {
                     AnimatedOpacity(
                       duration: const Duration(milliseconds: 200),
                       opacity: keyboardOpen ? 0.0 : 1.0,
-                      // ignore: prefer_const_constructors
                       child: GomikoLogo(),
                     ),
 
