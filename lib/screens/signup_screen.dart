@@ -1,10 +1,14 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:recycle/widgets/login_signup_widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import '../widgets/title_text.dart';
+// Widgets
+import '../widgets/logo.dart';
+import '../widgets/login_signup_widgets.dart';
+import '../widgets/custom_rich_text.dart';
+import '../widgets/error_text.dart';
+import '../widgets/social_media_button.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -15,6 +19,11 @@ class SignUpPage extends StatefulWidget {
 
 class _SignUpPageState extends State<SignUpPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  double formSizedBoxHeight = 20;
+  double textSizedBoxHeight = 50;
+
+  String? errorMessage = '';
 
   // FIELDS
   final _emailController = TextEditingController();
@@ -28,15 +37,15 @@ class _SignUpPageState extends State<SignUpPage> {
     controller: TextEditingController(),
   );
 
-  String? errorMessage = '';
-
   Future<UserCredential?> createUserWithEmailAndPassword() async {
     try {
       return await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: _emailController.text,
           password: passwordField.currentPassword);
     } on FirebaseAuthException catch (e) {
-      errorMessage = e.message;
+      setState(() {
+        errorMessage = e.message;
+      });
     }
 
     return null;
@@ -46,34 +55,33 @@ class _SignUpPageState extends State<SignUpPage> {
     try {
       return await FirebaseAuth.instance.signInAnonymously();
     } on FirebaseAuthException catch (e) {
-      errorMessage = e.message;
+      setState(() {
+        errorMessage = e.message;
+      });
     }
 
     return null;
   }
 
-  @override
-  Widget build(BuildContext context) {
-    double windowWidth = MediaQuery.of(context).size.width;
-
-    return Scaffold(
-        body: Center(
-            child: Transform.translate(
-      offset: const Offset(0, 200),
+  Widget _buildSignUpForm(double windowWidth) {
+    return Center(
       child: Container(
-        constraints: BoxConstraints(
-          maxWidth: windowWidth / 1.25,
-        ),
+        constraints: BoxConstraints(maxWidth: windowWidth / 1.25),
         child: Column(
           children: [
-            Text(errorMessage == '' ? '' : "$errorMessage"),
-            const TitleText(
-              text: "Sign Up",
-            ),
-            const SizedBox(height: 20),
             Form(
               key: _formKey,
               child: Column(children: [
+                ErrorText(
+                  errorMessage: errorMessage,
+                  // This callback is triggered when the close button of the error message is pressed.
+                  // It clears the error message.
+                  onClose: () {
+                    setState(() {
+                      errorMessage = '';
+                    });
+                  },
+                ),
                 // GomikoTextFormField(
                 //   hintText: "Name",
                 //   icon: const Icon(Icons.person_outline_outlined),
@@ -88,10 +96,13 @@ class _SignUpPageState extends State<SignUpPage> {
                     return LSUtilities.emailFormValidator(email: email);
                   },
                 ),
+                const SizedBox(height: 8),
                 passwordField,
+                const SizedBox(height: 8),
                 confirmPasswordField
               ]),
             ),
+            SizedBox(height: formSizedBoxHeight),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: GomikoMainActionButton(
@@ -104,8 +115,8 @@ class _SignUpPageState extends State<SignUpPage> {
                     result = await createUserWithEmailAndPassword();
 
                     // User was created successfully
-                    if (result != null) {
-                      if (context.mounted) context.push('/');
+                    if (result != null && context.mounted) {
+                      context.push('/');
                     }
                   }
                 },
@@ -119,31 +130,118 @@ class _SignUpPageState extends State<SignUpPage> {
                 context.pushReplacement('/login');
               },
             ),
+            SizedBox(height: formSizedBoxHeight),
             const GomikoTextDivider(
               label: "Or Sign up with",
               labelSize: 13.5,
             ),
-            ButtonBar(
-              alignment: MainAxisAlignment.center,
-              children: [
-                IconButton(
-                    onPressed: () {
-                      // Google Auth
-                      if (kDebugMode) print("Pressed G button!");
-                    },
-                    icon: const Icon(Icons.g_mobiledata))
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                SocialMediaButton(
+                  assetName: 'assets/logos/Google-Logo.png',
+                  onPressed: () {
+                    if (kDebugMode) print("Google Sign In");
+                  },
+                ),
+                const SizedBox(width: 20),
+                SocialMediaButton(
+                  assetName: 'assets/logos/Facebook-Logo.png',
+                  onPressed: () {
+                    if (kDebugMode) print("Facebook Sign In");
+                  },
+                ),
+                const SizedBox(width: 20),
+                SocialMediaButton(
+                  assetName: 'assets/logos/Apple-Logo.png',
+                  onPressed: () {
+                    if (kDebugMode) print("Facebook Sign In");
+                  },
+                ),
               ],
             ),
+            const SizedBox(height: 20),
             GomikoLink(
               label: "Continue without an account",
               onTap: () async {
                 await signInAsAnonymousUser();
                 if (context.mounted) context.push('/');
               },
-            )
+            ),
           ],
         ),
       ),
-    )));
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    double windowWidth = MediaQuery.of(context).size.width;
+
+    // check if keyboard is open, if so, move the text up
+    // https://stackoverflow.com/questions/56902559/how-to-detect-keyboard-open-in-flutter
+    bool keyboardOpen = MediaQuery.of(context).viewInsets.bottom != 0.0;
+
+    return Stack(
+      children: [
+        Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/backgrounds/Sign-Up-Page.png"),
+              fit: BoxFit.fill,
+            ),
+          ),
+          child: Scaffold(
+            backgroundColor: Colors.transparent,
+            body: SingleChildScrollView(
+              child: AnimatedPadding(
+                padding: EdgeInsets.only(top: keyboardOpen ? 0.0 : 20.0),
+                duration: const Duration(milliseconds: 200),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    const SizedBox(height: 40),
+
+                    // Uncomment if we want the logo to be on the page
+                    AnimatedOpacity(
+                      duration: const Duration(milliseconds: 200),
+                      opacity: keyboardOpen ? 0.0 : 1.0,
+                      // ignore: prefer_const_constructors
+                      child: GomikoLogo(),
+                    ),
+
+                    // Changes the textSizedBoxHeight variable to 15 is keyboard is open, otherwise it is the default value
+                    AnimatedContainer(
+                      duration: const Duration(milliseconds: 200),
+                      height: keyboardOpen ? 15 : textSizedBoxHeight - 30,
+                    ),
+
+                    AnimatedPadding(
+                      padding: EdgeInsets.only(top: keyboardOpen ? 0.0 : 15.0),
+                      duration: const Duration(milliseconds: 200),
+                      child: const CustomRichText(
+                        text: 'Sign Up',
+                        color: Colors.black,
+                        fontSize: 32,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+
+                    // Changes the textSizedBoxHeight variable to 5 is keyboard is open, otherwise it is the default value
+                    AnimatedContainer(
+                      duration: const Duration(milliseconds: 200),
+                      height: keyboardOpen ? 0 : textSizedBoxHeight - 30,
+                    ),
+
+                    _buildSignUpForm(windowWidth)
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }

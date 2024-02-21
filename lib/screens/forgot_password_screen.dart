@@ -39,19 +39,6 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     // https://stackoverflow.com/questions/56902559/how-to-detect-keyboard-open-in-flutter
     bool keyboardOpen = MediaQuery.of(context).viewInsets.bottom != 0.0;
 
-    final ButtonStyle style = ElevatedButton.styleFrom(
-      textStyle: const TextStyle(fontSize: 20),
-      foregroundColor: Colors.black,
-      backgroundColor: const Color(0xFF98CB51),
-      minimumSize: const Size(300, 60),
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(5)),
-      ),
-      shadowColor: Colors.black,
-      elevation: 5,
-    );
-
     void resetPassword() async {
       try {
         await AuthService().resetPassword(_emailFormField.controller!.text);
@@ -86,7 +73,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   AnimatedOpacity(
                     duration: const Duration(milliseconds: 200),
                     opacity: keyboardOpen ? 0.0 : 1.0,
-                    child: const GomikoLogo(),
+                    // ignore: prefer_const_constructors
+                    child: GomikoLogo(),
                   ),
 
                   AnimatedContainer(
@@ -140,26 +128,28 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                   duration: const Duration(milliseconds: 200),
                                   height: keyboardOpen ? 15 : 20,
                                 ),
-                                ElevatedButton(
-                                  style: style,
-                                  child: const Text("Send",
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500)),
-                                  onPressed: () async {
-                                    // Validate will return true if the form is valid,
-                                    // or false if the form is invalid.
-                                    if (_formKey.currentState!.validate()) {
-                                      // try sign in, if successful, push to homepage
-                                      resetPassword();
-                                      if (kDebugMode) {
-                                        print(
-                                            "Email: ${_emailFormField.controller?.text}");
+
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: GomikoMainActionButton(
+                                    labelText: "Send",
+                                    onPressed: () async {
+                                      // Validate will return true if the form is valid,
+                                      // or false if the form is invalid.
+                                      if (_formKey.currentState!.validate()) {
+                                        // try sign in, if successful, push to homepage
+                                        resetPassword();
+                                        if (kDebugMode) {
+                                          print(
+                                              "Email: ${_emailFormField.controller?.text}");
+                                        }
                                       }
-                                    }
-                                  },
+                                    },
+                                  ),
                                 ),
+
                                 const SizedBox(height: 20),
+                                
                                 // Go Back Text Button
                                 RichText(
                                   text: TextSpan(

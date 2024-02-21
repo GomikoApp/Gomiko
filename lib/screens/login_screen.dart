@@ -160,26 +160,9 @@ class _LoginPageState extends State<LoginPage> {
     return Column(
       children: <Widget>[
         const SizedBox(height: 20),
-        Row(
-          children: <Widget>[
-            Expanded(
-              child: Container(
-                  margin: const EdgeInsets.only(left: 10.0, right: 20.0),
-                  child: const Divider(
-                    color: Colors.black,
-                    height: 36,
-                  )),
-            ),
-            const Text("OR"),
-            Expanded(
-              child: Container(
-                  margin: const EdgeInsets.only(left: 20.0, right: 10.0),
-                  child: const Divider(
-                    color: Colors.black,
-                    height: 36,
-                  )),
-            ),
-          ],
+        const GomikoTextDivider(
+          label: "Or Sign up with",
+          labelSize: 13.5,
         ),
         const SizedBox(height: 20),
         Row(
@@ -214,19 +197,6 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _buildForm(double windowWidth) {
-    final ButtonStyle style = ElevatedButton.styleFrom(
-      textStyle: const TextStyle(fontSize: 20),
-      foregroundColor: Colors.black,
-      backgroundColor: const Color(0xFF98CB51),
-      minimumSize: const Size(300, 60),
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(5)),
-      ),
-      shadowColor: Colors.black,
-      elevation: 5,
-    );
-
     return Center(
       child: Container(
         constraints: BoxConstraints(
@@ -265,25 +235,29 @@ class _LoginPageState extends State<LoginPage> {
                   SizedBox(height: formSizedBoxHeight),
 
                   // This is the "Login" button. When pressed, it validates the form and attempts to sign in the user.
-                  ElevatedButton(
-                    style: style,
-                    child: const Text("Login",
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w500)),
-                    onPressed: () async {
-                      // Validate will return true if the form is valid,
-                      // or false if the form is invalid.
-                      if (_formKey.currentState!.validate()) {
-                        // try sign in, if successful, push to homepage
-                        signInWithEmailAndPassword();
-                      }
-                    },
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: GomikoMainActionButton(
+                      labelText: "Login",
+                      onPressed: () async {
+                        // Validate will return true if the form is valid,
+                        // or false if the form is invalid.
+                        if (_formKey.currentState!.validate()) {
+                          // try sign in, if successful, push to homepage
+                          signInWithEmailAndPassword();
+                        }
+                      },
+                    ),
                   ),
 
-                  SizedBox(height: formSizedBoxHeight),
-
-                  // This method builds the "Sign Up" button. When pressed, it pushes the user to the sign up page.
-                  _buildSignupButton(),
+                  GomikoContextLinkRow(
+                    contextLabel: "Don't have an account?",
+                    linkLabel: "Sign Up",
+                    onTap: () {
+                      // Link to Sign Up page
+                      context.pushReplacement('/signup');
+                    },
+                  ),
 
                   // To Do: Implement Google Sign in/Facebook Sign in/Apple Sign in Design
                   _buildSocialMediaSignInButtons(),
@@ -328,7 +302,8 @@ class _LoginPageState extends State<LoginPage> {
                     AnimatedOpacity(
                       duration: const Duration(milliseconds: 200),
                       opacity: keyboardOpen ? 0.0 : 1.0,
-                      child: const GomikoLogo(),
+                      // ignore: prefer_const_constructors
+                      child: GomikoLogo(),
                     ),
 
                     // Changes the textSizedBoxHeight variable to 15 is keyboard is open, otherwise it is the default value

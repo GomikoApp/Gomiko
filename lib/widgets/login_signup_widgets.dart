@@ -380,11 +380,20 @@ class GomikoMainActionButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed,
       style: const ButtonStyle(
-        backgroundColor: MaterialStatePropertyAll(Colors.lightGreen),
+        backgroundColor: MaterialStatePropertyAll(Color(0xFF98CB51)),
         foregroundColor: MaterialStatePropertyAll(Colors.black),
-        // TODO: style button
+        textStyle: MaterialStatePropertyAll(TextStyle(fontSize: 20)),
+        minimumSize: MaterialStatePropertyAll(Size(300, 60)),
+        padding: MaterialStatePropertyAll(EdgeInsets.symmetric(horizontal: 16)),
+        shape: MaterialStatePropertyAll(
+          RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(5))),
+        ),
+        shadowColor: MaterialStatePropertyAll(Colors.black),
+        elevation: MaterialStatePropertyAll(5),
       ),
-      child: Text(labelText),
+      child: Text(labelText,
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
     );
   }
 }

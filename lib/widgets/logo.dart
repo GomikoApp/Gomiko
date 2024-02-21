@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class GomikoLogo extends StatelessWidget {
-  const GomikoLogo({super.key});
+  const GomikoLogo({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
