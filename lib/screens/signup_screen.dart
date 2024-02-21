@@ -32,9 +32,19 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Future<UserCredential?> createUserWithEmailAndPassword() async {
     try {
-      return await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: _emailController.text,
-          password: passwordField.currentPassword);
+      final UserCredential createUserResult = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: _emailController.text,
+        password: passwordField.currentPassword);
+
+      // User was created successfully because exception was not thrown.
+      User? user = FirebaseAuth.instance.currentUser;
+
+      // Send an email verification to the user's email.
+      if (user != null && !user.emailVerified) {
+        await user.sendEmailVerification();
+      }
+
+      return createUserResult;
     } on FirebaseAuthException catch (e) {
       errorMessage = e.message;
     }
@@ -58,7 +68,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
     return Scaffold(
         body: Center(
-            child: Transform.translate(
+          child: Transform.translate(
       offset: const Offset(0, 200),
       child: Container(
         constraints: BoxConstraints(
