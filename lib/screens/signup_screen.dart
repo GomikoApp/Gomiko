@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:recycle/screens/login_screen.dart';
 import 'package:recycle/widgets/social_media_auth.dart';
 
 // Widgets
@@ -10,7 +11,6 @@ import '../widgets/logo.dart';
 import '../widgets/login_signup_widgets.dart';
 import '../widgets/custom_rich_text.dart';
 import '../widgets/error_text.dart';
-import '../widgets/social_media_button.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -42,7 +42,7 @@ class _SignUpPageState extends State<SignUpPage> {
   void signInWithGoogle() async {
     try {
       await AuthService().signInWithGoogle();
-      if (context.mounted) context.push('/');
+      if (context.mounted) context.push('/home');
     } on FirebaseAuthException catch (e) {
       setState(() {
         errorMessage = e.message;
@@ -53,7 +53,7 @@ class _SignUpPageState extends State<SignUpPage> {
   void signInWithFacebook() async {
     try {
       await AuthService().signInWithFacebook();
-      if (context.mounted) context.push('/');
+      if (context.mounted) context.push('/home');
     } on FirebaseAuthException catch (e) {
       setState(() {
         errorMessage = e.message;
@@ -70,7 +70,7 @@ class _SignUpPageState extends State<SignUpPage> {
         passwordField.currentPassword,
       );
 
-      if (context.mounted && createUserResult != null) context.push('/');
+      if (context.mounted && createUserResult != null) context.push('/home');
     } catch (e) {
       setState(() {
         errorMessage = e.toString();
@@ -81,7 +81,7 @@ class _SignUpPageState extends State<SignUpPage> {
   void signInAsAnonymousUser() async {
     try {
       await AuthService().signInAsAnonymousUser();
-      if (context.mounted) context.push('/');
+      if (context.mounted) context.push('/home');
     } on FirebaseAuthException catch (e) {
       setState(() {
         errorMessage = e.message;
@@ -93,10 +93,6 @@ class _SignUpPageState extends State<SignUpPage> {
     return Column(
       children: <Widget>[
         SizedBox(height: formSizedBoxHeight),
-        const GomikoTextDivider(
-          label: "Or Sign up with",
-          labelSize: 13.5,
-        ),
         SocialMediaAuth(
           onAnonymousSignIn: () {
             signInAsAnonymousUser();
@@ -169,7 +165,9 @@ class _SignUpPageState extends State<SignUpPage> {
                     return;
                   }
 
-                  if (_formKey.currentState!.validate()) {}
+                  if (_formKey.currentState!.validate()) {
+                    createUserWithEmailAndPassword();
+                  }
                 },
               ),
             ),
@@ -178,8 +176,21 @@ class _SignUpPageState extends State<SignUpPage> {
               linkLabel: "Login",
               onTap: () {
                 // Link to login page
-                context.pushReplacement('/login');
+                Navigator.push(
+                  context,
+                  PageRouteBuilder(
+                    opaque: false,
+                    pageBuilder: (context, animation, secondaryAnimation) {
+                      return const LoginPage();
+                    },
+                  ),
+                );
               },
+            ),
+            SizedBox(height: formSizedBoxHeight),
+            const GomikoTextDivider(
+              label: "Or Sign up with",
+              labelSize: 13.5,
             ),
             _buildSocialMediaButtons()
           ],

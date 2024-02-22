@@ -1,8 +1,7 @@
-import 'dart:ffi';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+// Widgets
 import 'login_signup_widgets.dart';
 import 'social_media_button.dart';
 

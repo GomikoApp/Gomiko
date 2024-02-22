@@ -1,19 +1,21 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:recycle/screens/signup_screen.dart';
-import 'package:recycle/widgets/login_signup_widgets.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:recycle/screens/forgot_password_screen.dart';
 
 // Services
 import '../services/auth_services.dart';
 
 // Widgets
+import '../widgets/login_signup_widgets.dart';
 import '../widgets/logo.dart';
 import '../widgets/custom_rich_text.dart';
 import '../widgets/error_text.dart';
 import '../widgets/social_media_auth.dart';
-import '../widgets/social_media_button.dart';
+
+// Screens
+import 'signup_screen.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -83,36 +85,34 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  Widget _buildSocialMediaSignInButtons() {
+  void signInAsAnonymousUser() async {
+    try {
+      await AuthService().signInAsAnonymousUser();
+      if (context.mounted) context.push('/home');
+    } on FirebaseAuthException catch (e) {
+      setState(() {
+        errorMessage = e.message;
+      });
+    }
+  }
+
+  Widget _buildSocialMediaButtons() {
     return Column(
       children: <Widget>[
-        const SizedBox(height: 20),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            SocialMediaButton(
-              assetName: 'assets/logos/Google-Logo.png',
-              onPressed: () {
-                signInWithGoogle();
-                if (kDebugMode) print("Google Sign In");
-              },
-            ),
-            const SizedBox(width: 20),
-            SocialMediaButton(
-              assetName: 'assets/logos/Facebook-Logo.png',
-              onPressed: () {
-                signInWithFacebook();
-                if (kDebugMode) print("Facebook Sign In");
-              },
-            ),
-            const SizedBox(width: 20),
-            SocialMediaButton(
-              assetName: 'assets/logos/Apple-Logo.png',
-              onPressed: () {
-                if (kDebugMode) print("Facebook Sign In");
-              },
-            ),
-          ],
+        SizedBox(height: formSizedBoxHeight),
+        SocialMediaAuth(
+          onAnonymousSignIn: () {
+            signInAsAnonymousUser();
+            if (kDebugMode) print("Anonymous Sign In");
+          },
+          onGoogleSignIn: () {
+            signInWithGoogle();
+            if (kDebugMode) print("Google Sign In");
+          },
+          onFacebookSignIn: () {
+            signInWithFacebook();
+            if (kDebugMode) print("Facebook Sign In");
+          },
         ),
       ],
     );
@@ -153,50 +153,69 @@ class _LoginPageState extends State<LoginPage> {
                   // This method builds the "Forgot Password" button. When pressed, it pushes the user to the forgot password page.
                   // TODO: Implement forgot password page.
                   Container(
-                    alignment: AlignmentDirectional.centerEnd,
-                    child: GomikoLink(
-                      label: "Forgot Password? ",
-                      labelSize: 14,
-                      onTap: () { if (context.mounted) context.push('/forgot-password'); },
-                    )
-                  ),
+                      alignment: AlignmentDirectional.centerEnd,
+                      child: GomikoLink(
+                        label: "Forgot Password? ",
+                        labelSize: 14,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            PageRouteBuilder(
+                              opaque: false,
+                              pageBuilder:
+                                  (context, animation, secondaryAnimation) {
+                                return const ForgotPasswordPage();
+                              },
+                            ),
+                          );
+                        },
+                      )),
 
                   SizedBox(height: formSizedBoxHeight),
 
                   // This is the "Login" button. When pressed, it validates the form and attempts to sign in the user.
-                  GomikoMainActionButton(
-                    labelText: "Login",
-                    onPressed: () async {
-                      // Validate will return true if the form is valid,
-                      // or false if the form is invalid.
-                      if (_formKey.currentState!.validate()) {
-                        // try sign in, if successful, push to homepage
-                        signInWithEmailAndPassword();
-                      }
-                    }
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: GomikoMainActionButton(
+                        labelText: "Login",
+                        onPressed: () async {
+                          // Validate will return true if the form is valid,
+                          // or false if the form is invalid.
+                          if (_formKey.currentState!.validate()) {
+                            // try sign in, if successful, push to homepage
+                            signInWithEmailAndPassword();
+                          }
+                        }),
                   ),
-
-                  SizedBox(height: formSizedBoxHeight),
 
                   // This builds the "Sign Up" button. When pressed, it pushes the user to the sign up page.
                   GomikoContextLinkRow(
                     contextLabel: "Don't have an account?",
                     linkLabel: "Sign Up",
                     onTap: () {
-                      if (context.mounted) context.push('/signup');
-                      if (kDebugMode) ("Sign Up");
+                      // prevents transparent background when pushing to sign up page
+                      Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          opaque: false,
+                          pageBuilder:
+                              (context, animation, secondaryAnimation) {
+                            return const SignUpPage();
+                          },
+                        ),
+                      );
                     },
                   ),
 
                   SizedBox(height: formSizedBoxHeight),
 
                   const GomikoTextDivider(
-                    label: "OR",
-                    color: Colors.black,
+                    label: "Or Sign up with",
+                    labelSize: 13.5,
                   ),
 
                   // To Do: Implement Google Sign in/Facebook Sign in/Apple Sign in Design
-                  _buildSocialMediaSignInButtons(),
+                  _buildSocialMediaButtons(),
                 ],
               ),
             ),

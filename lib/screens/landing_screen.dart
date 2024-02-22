@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+
+import 'login_screen.dart';
+import 'signup_screen.dart';
 
 class LandingPage extends StatelessWidget {
   const LandingPage({super.key});
@@ -75,7 +77,16 @@ class LandingPage extends StatelessWidget {
                   const SizedBox(height: 70),
                   ElevatedButton(
                     onPressed: () {
-                      context.push('/signup');
+                      Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          opaque: false,
+                          pageBuilder:
+                              (context, animation, secondaryAnimation) {
+                            return const SignUpPage();
+                          },
+                        ),
+                      );
                     },
                     style: style,
                     child: const Text('Get Started'),
@@ -93,7 +104,16 @@ class LandingPage extends StatelessWidget {
                         WidgetSpan(
                           child: InkWell(
                             onTap: () {
-                              if (context.mounted) context.push('/login');
+                              Navigator.push(
+                                context,
+                                PageRouteBuilder(
+                                  opaque: false,
+                                  pageBuilder:
+                                      (context, animation, secondaryAnimation) {
+                                    return const LoginPage();
+                                  },
+                                ),
+                              );
                               if (kDebugMode) ("Login");
                             },
                             child: const Text(
