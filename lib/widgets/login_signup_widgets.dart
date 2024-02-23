@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class LSUtilities {
-  static final Color textColor = Color(0xFF98CB51);
+  static const Color textColor = Color(0xFF98CB51);
 
   static final RegExp _emailRegex = RegExp(
       r'[a-zA-Z0-9.!#$%&’+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)(.[a-zA-Z0-9-]+)');
@@ -441,7 +441,7 @@ class GomikoLink extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final linkColor = LSUtilities.textColor;
+    const linkColor = LSUtilities.textColor;
     final effectiveLabelColor = labelColor ?? linkColor;
 
     return GestureDetector(
@@ -473,7 +473,7 @@ class GomikoContextLinkRow extends StatelessWidget {
     this.linkSize = 14,
     this.linkColor,
     this.linkWeight = FontWeight.w500,
-    this.gapWidth = 20,
+    this.gapWidth = 5,
     this.onTap,
     this.onDoubleTap,
     this.onLongPress,

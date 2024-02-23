@@ -68,7 +68,7 @@ flutter:
   assets:
     - assets/backgrounds/
     - assets/logos/
-    - assets/
+    - assets/Landing_Page_Box.png
     - .env
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
