@@ -17,6 +17,7 @@ class LandingPage extends StatelessWidget {
           ),
         ),
         child: Stack(
+          fit: StackFit.expand,
           children: <Widget>[
             Center(
               child: Column(

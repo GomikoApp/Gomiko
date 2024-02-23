@@ -62,6 +62,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
           ),
         ),
         child: Stack(
+          fit: StackFit.expand,
           children: <Widget>[
             Scaffold(
               backgroundColor: Colors.transparent,

@@ -223,6 +223,7 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
         child: Stack(
+          fit: StackFit.expand,
           children: <Widget>[
             SingleChildScrollView(
               child: AnimatedPadding(

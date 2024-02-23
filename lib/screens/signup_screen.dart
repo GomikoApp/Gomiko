@@ -209,6 +209,7 @@ class _SignUpPageState extends State<SignUpPage> {
           ),
         ),
         child: Stack(
+          fit: StackFit.expand,
           children: <Widget>[
             SingleChildScrollView(
               child: AnimatedPadding(
