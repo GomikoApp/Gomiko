@@ -54,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
     try {
       await AuthService().signInWithEmailAndPassword(
           _emailFormField.currentEmail, _passwordFormField.currentPassword);
-      if (context.mounted) context.push('/home');
+      if (context.mounted) context.pushReplacement('/home');
     } on FirebaseAuthException catch (e) {
       // The only error code that you can get is Invalid-Credentials because we have email enumeration protection turned on in firebase settings. To enable other error codes like user-not-found, you need to turn off email enumeration protection in firebase settings.
       setState(() {
@@ -66,7 +66,7 @@ class _LoginPageState extends State<LoginPage> {
   void signInWithGoogle() async {
     try {
       await AuthService().signInWithGoogle();
-      if (context.mounted) context.push('/home');
+      if (context.mounted) context.pushReplacement('/home');
     } on FirebaseAuthException catch (e) {
       setState(() {
         errorMessage = e.message;
@@ -77,7 +77,7 @@ class _LoginPageState extends State<LoginPage> {
   void signInWithFacebook() async {
     try {
       await AuthService().signInWithFacebook();
-      if (context.mounted) context.push('/home');
+      if (context.mounted) context.pushReplacement('/home');
     } on FirebaseAuthException catch (e) {
       setState(() {
         errorMessage = e.message;
@@ -88,7 +88,7 @@ class _LoginPageState extends State<LoginPage> {
   void signInAsAnonymousUser() async {
     try {
       await AuthService().signInAsAnonymousUser();
-      if (context.mounted) context.push('/home');
+      if (context.mounted) context.pushReplacement('/home');
     } on FirebaseAuthException catch (e) {
       setState(() {
         errorMessage = e.message;
@@ -233,63 +233,66 @@ class _LoginPageState extends State<LoginPage> {
     // https://stackoverflow.com/questions/56902559/how-to-detect-keyboard-open-in-flutter
     bool keyboardOpen = MediaQuery.of(context).viewInsets.bottom != 0.0;
 
-    return Stack(
-      children: [
-        Container(
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/backgrounds/Login-Page.png'),
-              fit: BoxFit.fill,
-            ),
+    return Scaffold(
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/backgrounds/Login-Page.png'),
+            fit: BoxFit.fill,
           ),
-          child: Scaffold(
-            backgroundColor: Colors.transparent,
-            body: SingleChildScrollView(
-              child: AnimatedPadding(
-                padding: EdgeInsets.only(top: keyboardOpen ? 0.0 : 20.0),
-                duration: const Duration(milliseconds: 200),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    const SizedBox(height: 40),
+        ),
+        child: Stack(
+          children: <Widget>[
+            Scaffold(
+              backgroundColor: Colors.transparent,
+              body: SingleChildScrollView(
+                child: AnimatedPadding(
+                  padding: EdgeInsets.only(top: keyboardOpen ? 0.0 : 20.0),
+                  duration: const Duration(milliseconds: 200),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      const SizedBox(height: 40),
 
-                    // Uncomment if we want the logo to be on the page
-                    AnimatedOpacity(
-                      duration: const Duration(milliseconds: 200),
-                      opacity: keyboardOpen ? 0.0 : 1.0,
-                      child: GomikoLogo(),
-                    ),
-
-                    // Changes the textSizedBoxHeight variable to 15 is keyboard is open, otherwise it is the default value
-                    AnimatedContainer(
-                      duration: const Duration(milliseconds: 200),
-                      height: keyboardOpen ? 15 : textSizedBoxHeight - 30,
-                    ),
-
-                    AnimatedPadding(
-                      padding: EdgeInsets.only(top: keyboardOpen ? 0.0 : 15.0),
-                      duration: const Duration(milliseconds: 200),
-                      child: const CustomRichText(
-                        text: 'Login',
-                        color: Colors.black,
-                        fontSize: 32,
-                        fontWeight: FontWeight.w700,
+                      // Uncomment if we want the logo to be on the page
+                      AnimatedOpacity(
+                        duration: const Duration(milliseconds: 200),
+                        opacity: keyboardOpen ? 0.0 : 1.0,
+                        child: GomikoLogo(),
                       ),
-                    ),
 
-                    // Changes the textSizedBoxHeight variable to 5 is keyboard is open, otherwise it is the default value
-                    AnimatedContainer(
-                      duration: const Duration(milliseconds: 200),
-                      height: keyboardOpen ? 0 : textSizedBoxHeight - 30,
-                    ),
-                    _buildForm(windowWidth),
-                  ],
+                      // Changes the textSizedBoxHeight variable to 15 is keyboard is open, otherwise it is the default value
+                      AnimatedContainer(
+                        duration: const Duration(milliseconds: 200),
+                        height: keyboardOpen ? 15 : textSizedBoxHeight - 30,
+                      ),
+
+                      AnimatedPadding(
+                        padding:
+                            EdgeInsets.only(top: keyboardOpen ? 0.0 : 15.0),
+                        duration: const Duration(milliseconds: 200),
+                        child: const CustomRichText(
+                          text: 'Login',
+                          color: Colors.black,
+                          fontSize: 32,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+
+                      // Changes the textSizedBoxHeight variable to 5 is keyboard is open, otherwise it is the default value
+                      AnimatedContainer(
+                        duration: const Duration(milliseconds: 200),
+                        height: keyboardOpen ? 0 : textSizedBoxHeight - 30,
+                      ),
+                      _buildForm(windowWidth),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }
