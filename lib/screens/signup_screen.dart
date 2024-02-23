@@ -210,52 +210,48 @@ class _SignUpPageState extends State<SignUpPage> {
         ),
         child: Stack(
           children: <Widget>[
-            Scaffold(
-              backgroundColor: Colors.transparent,
-              body: SingleChildScrollView(
-                child: AnimatedPadding(
-                  padding: EdgeInsets.only(top: keyboardOpen ? 0.0 : 20.0),
-                  duration: const Duration(milliseconds: 200),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      const SizedBox(height: 40),
+            SingleChildScrollView(
+              child: AnimatedPadding(
+                padding: EdgeInsets.only(top: keyboardOpen ? 0.0 : 20.0),
+                duration: const Duration(milliseconds: 200),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    const SizedBox(height: 40),
 
-                      // Uncomment if we want the logo to be on the page
-                      AnimatedOpacity(
-                        duration: const Duration(milliseconds: 200),
-                        opacity: keyboardOpen ? 0.0 : 1.0,
-                        // ignore: prefer_const_constructors
-                        child: GomikoLogo(),
+                    // Uncomment if we want the logo to be on the page
+                    AnimatedOpacity(
+                      duration: const Duration(milliseconds: 200),
+                      opacity: keyboardOpen ? 0.0 : 1.0,
+                      // ignore: prefer_const_constructors
+                      child: GomikoLogo(),
+                    ),
+
+                    // Changes the textSizedBoxHeight variable to 15 is keyboard is open, otherwise it is the default value
+                    AnimatedContainer(
+                      duration: const Duration(milliseconds: 200),
+                      height: keyboardOpen ? 15 : textSizedBoxHeight - 30,
+                    ),
+
+                    AnimatedPadding(
+                      padding: EdgeInsets.only(top: keyboardOpen ? 0.0 : 15.0),
+                      duration: const Duration(milliseconds: 200),
+                      child: const CustomRichText(
+                        text: 'Sign Up',
+                        color: Colors.black,
+                        fontSize: 32,
+                        fontWeight: FontWeight.w700,
                       ),
+                    ),
 
-                      // Changes the textSizedBoxHeight variable to 15 is keyboard is open, otherwise it is the default value
-                      AnimatedContainer(
-                        duration: const Duration(milliseconds: 200),
-                        height: keyboardOpen ? 15 : textSizedBoxHeight - 30,
-                      ),
+                    // Changes the textSizedBoxHeight variable to 5 is keyboard is open, otherwise it is the default value
+                    AnimatedContainer(
+                      duration: const Duration(milliseconds: 200),
+                      height: keyboardOpen ? 0 : textSizedBoxHeight - 30,
+                    ),
 
-                      AnimatedPadding(
-                        padding:
-                            EdgeInsets.only(top: keyboardOpen ? 0.0 : 15.0),
-                        duration: const Duration(milliseconds: 200),
-                        child: const CustomRichText(
-                          text: 'Sign Up',
-                          color: Colors.black,
-                          fontSize: 32,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-
-                      // Changes the textSizedBoxHeight variable to 5 is keyboard is open, otherwise it is the default value
-                      AnimatedContainer(
-                        duration: const Duration(milliseconds: 200),
-                        height: keyboardOpen ? 0 : textSizedBoxHeight - 30,
-                      ),
-
-                      _buildSignUpForm(windowWidth)
-                    ],
-                  ),
+                    _buildSignUpForm(windowWidth)
+                  ],
                 ),
               ),
             ),
