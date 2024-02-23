@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:recycle/screens/forgot_password_screen.dart';
 
 // Services
 import '../services/auth_services.dart';
@@ -13,9 +12,6 @@ import '../widgets/logo.dart';
 import '../widgets/custom_rich_text.dart';
 import '../widgets/error_text.dart';
 import '../widgets/social_media_auth.dart';
-
-// Screens
-import 'signup_screen.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -151,23 +147,15 @@ class _LoginPageState extends State<LoginPage> {
                   _passwordFormField,
 
                   // This method builds the "Forgot Password" button. When pressed, it pushes the user to the forgot password page.
-                  // TODO: Implement forgot password page.
                   Container(
                       alignment: AlignmentDirectional.centerEnd,
                       child: GomikoLink(
                         label: "Forgot Password? ",
                         labelSize: 14,
                         onTap: () {
-                          Navigator.push(
-                            context,
-                            PageRouteBuilder(
-                              opaque: false,
-                              pageBuilder:
-                                  (context, animation, secondaryAnimation) {
-                                return const ForgotPasswordPage();
-                              },
-                            ),
-                          );
+                          if (context.mounted) {
+                            context.push('/forgot-password');
+                          }
                         },
                       )),
 
@@ -194,23 +182,16 @@ class _LoginPageState extends State<LoginPage> {
                     linkLabel: "Sign Up",
                     onTap: () {
                       // prevents transparent background when pushing to sign up page
-                      Navigator.push(
-                        context,
-                        PageRouteBuilder(
-                          opaque: false,
-                          pageBuilder:
-                              (context, animation, secondaryAnimation) {
-                            return const SignUpPage();
-                          },
-                        ),
-                      );
+                      if (context.mounted) {
+                        context.pushReplacement('/signup');
+                      }
                     },
                   ),
 
                   SizedBox(height: formSizedBoxHeight),
 
                   const GomikoTextDivider(
-                    label: "Or Sign up with",
+                    label: "Or Log in with",
                     labelSize: 13.5,
                   ),
 
@@ -237,7 +218,7 @@ class _LoginPageState extends State<LoginPage> {
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/backgrounds/Login-Page.png'),
+            image: AssetImage('assets/images/login_background.jpg'),
             fit: BoxFit.fill,
           ),
         ),
@@ -258,6 +239,7 @@ class _LoginPageState extends State<LoginPage> {
                       AnimatedOpacity(
                         duration: const Duration(milliseconds: 200),
                         opacity: keyboardOpen ? 0.0 : 1.0,
+                        // ignore: prefer_const_constructors
                         child: GomikoLogo(),
                       ),
 

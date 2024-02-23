@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:recycle/screens/login_screen.dart';
 import 'package:recycle/widgets/social_media_auth.dart';
 
 // Widgets
@@ -42,7 +41,7 @@ class _SignUpPageState extends State<SignUpPage> {
   void signInWithGoogle() async {
     try {
       await AuthService().signInWithGoogle();
-      if (context.mounted) context.push('/home');
+      if (context.mounted) context.pushReplacement('/home');
     } on FirebaseAuthException catch (e) {
       setState(() {
         errorMessage = e.message;
@@ -70,7 +69,9 @@ class _SignUpPageState extends State<SignUpPage> {
         passwordField.currentPassword,
       );
 
-      if (context.mounted && createUserResult != null) context.push('/home');
+      if (context.mounted && createUserResult != null) {
+        context.pushReplacement('/home');
+      }
     } catch (e) {
       setState(() {
         errorMessage = e.toString();
@@ -81,7 +82,7 @@ class _SignUpPageState extends State<SignUpPage> {
   void signInAsAnonymousUser() async {
     try {
       await AuthService().signInAsAnonymousUser();
-      if (context.mounted) context.push('/home');
+      if (context.mounted) context.pushReplacement('/home');
     } on FirebaseAuthException catch (e) {
       setState(() {
         errorMessage = e.message;
@@ -176,15 +177,7 @@ class _SignUpPageState extends State<SignUpPage> {
               linkLabel: "Login",
               onTap: () {
                 // Link to login page
-                Navigator.push(
-                  context,
-                  PageRouteBuilder(
-                    opaque: false,
-                    pageBuilder: (context, animation, secondaryAnimation) {
-                      return const LoginPage();
-                    },
-                  ),
-                );
+                context.pushReplacement('/login');
               },
             ),
             SizedBox(height: formSizedBoxHeight),
