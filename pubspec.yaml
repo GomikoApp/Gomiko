@@ -66,7 +66,10 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/backgrounds/
+    - assets/backgrounds/Forgot-Password.png
+    - assets/backgrounds/Landing-Page.png
+    - assets/backgrounds/Login-Page.png
+    - assets/backgrounds/Sign-Up-Page.png
     - assets/logos/
     - assets/Landing_Page_Box.png
     - .env
