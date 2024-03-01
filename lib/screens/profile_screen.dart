@@ -26,7 +26,7 @@ class ProfilePageState extends State<ProfilePage> {
                 await GoogleSignIn().signOut();
                 await FacebookAuth.instance.logOut();
                 if (context.mounted) {
-                  context.push('/login');
+                  context.pushReplacement('/login');
                 }
               },
               child: const Text("Sign Out")),
