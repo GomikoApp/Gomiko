@@ -53,127 +53,120 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       }
     }
 
-    return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/backgrounds/Forgot-Password.png'),
-            fit: BoxFit.fill,
-          ),
+    return Container(
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        image: DecorationImage(
+          image: AssetImage('assets/backgrounds/Forgot-Password.png'),
+          fit: BoxFit.fill,
         ),
-        child: Stack(
-          fit: StackFit.expand,
-          children: <Widget>[
-            Scaffold(
-              backgroundColor: Colors.transparent,
-              body: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    const SizedBox(height: 40),
+      ),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              const SizedBox(height: 40),
 
-                    // Uncomment if we want the logo to be on the page
-                    AnimatedOpacity(
-                      duration: const Duration(milliseconds: 200),
-                      opacity: keyboardOpen ? 0.0 : 1.0,
-                      // ignore: prefer_const_constructors
-                      child: GomikoLogo(),
-                    ),
+              // Uncomment if we want the logo to be on the page
+              AnimatedOpacity(
+                duration: const Duration(milliseconds: 200),
+                opacity: keyboardOpen ? 0.0 : 1.0,
+                // ignore: prefer_const_constructors
+                child: GomikoLogo(),
+              ),
 
-                    AnimatedContainer(
-                      duration: const Duration(milliseconds: 200),
-                      height: keyboardOpen ? 15 : 20,
-                    ),
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                height: keyboardOpen ? 15 : 20,
+              ),
 
-                    AnimatedPadding(
-                      padding: EdgeInsets.only(top: keyboardOpen ? 0.0 : 15.0),
-                      duration: const Duration(milliseconds: 200),
-                      child: const CustomRichText(
-                        text: 'Forgot Password',
-                        color: Colors.black,
-                        fontSize: 32,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
+              AnimatedPadding(
+                padding: EdgeInsets.only(top: keyboardOpen ? 0.0 : 15.0),
+                duration: const Duration(milliseconds: 200),
+                child: const CustomRichText(
+                  text: 'Forgot Password',
+                  color: Colors.black,
+                  fontSize: 32,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
 
-                    Center(
-                      child: Container(
-                        constraints: BoxConstraints(
-                          maxWidth: windowWidth / 1.25,
-                        ),
+              Center(
+                child: Container(
+                  constraints: BoxConstraints(
+                    maxWidth: windowWidth / 1.25,
+                  ),
+                  child: Column(
+                    children: [
+                      Form(
+                        key: _formKey,
                         child: Column(
-                          children: [
-                            Form(
-                              key: _formKey,
-                              child: Column(
-                                children: <Widget>[
-                                  const Padding(
-                                    padding:
-                                        EdgeInsets.only(top: 20.0, left: 10.0),
-                                    child: Text(
-                                      "Enter the email address associated with your account and well send you a link to reset your password",
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                  ),
-                                  ErrorText(
-                                    errorMessage: errorMessage,
-                                    onClose: () {
-                                      setState(() {
-                                        errorMessage = "";
-                                      });
-                                    },
-                                  ),
-                                  _emailFormField,
-                                  AnimatedContainer(
-                                    duration: const Duration(milliseconds: 200),
-                                    height: keyboardOpen ? 15 : 20,
-                                  ),
-
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: GomikoMainActionButton(
-                                      labelText: "Send",
-                                      onPressed: () async {
-                                        // Validate will return true if the form is valid,
-                                        // or false if the form is invalid.
-                                        if (_formKey.currentState!.validate()) {
-                                          // try sign in, if successful, push to homepage
-                                          resetPassword();
-                                          if (kDebugMode) {
-                                            print(
-                                                "Email: ${_emailFormField.controller?.text}");
-                                          }
-                                        }
-                                      },
-                                    ),
-                                  ),
-
-                                  const SizedBox(height: 10),
-
-                                  // Go Back Text Button
-                                  GomikoContextLinkRow(
-                                    contextLabel: "Go back to",
-                                    linkLabel: "Login",
-                                    onTap: () {
-                                      // Link to login page
-                                      context.pushReplacement('/login');
-                                    },
-                                  ),
-                                ],
+                          children: <Widget>[
+                            const Padding(
+                              padding: EdgeInsets.only(top: 20.0, left: 10.0),
+                              child: Text(
+                                "Enter the email address associated with your account and well send you a link to reset your password",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                ),
                               ),
+                            ),
+                            ErrorText(
+                              errorMessage: errorMessage,
+                              onClose: () {
+                                setState(() {
+                                  errorMessage = "";
+                                });
+                              },
+                            ),
+                            _emailFormField,
+                            AnimatedContainer(
+                              duration: const Duration(milliseconds: 200),
+                              height: keyboardOpen ? 15 : 20,
+                            ),
+
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: GomikoMainActionButton(
+                                labelText: "Send",
+                                onPressed: () async {
+                                  // Validate will return true if the form is valid,
+                                  // or false if the form is invalid.
+                                  if (_formKey.currentState!.validate()) {
+                                    // try sign in, if successful, push to homepage
+                                    resetPassword();
+                                    if (kDebugMode) {
+                                      print(
+                                          "Email: ${_emailFormField.controller?.text}");
+                                    }
+                                  }
+                                },
+                              ),
+                            ),
+
+                            const SizedBox(height: 10),
+
+                            // Go Back Text Button
+                            GomikoContextLinkRow(
+                              contextLabel: "Go back to",
+                              linkLabel: "Login",
+                              onTap: () {
+                                // Link to login page
+                                context.pushReplacement('/login');
+                              },
                             ),
                           ],
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
