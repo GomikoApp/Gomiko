@@ -55,7 +55,7 @@ class _MyHomeScaffoldState extends State<HomeScaffold> {
     LeaderboardPage(title: 'Leaderboard'),
     ProfilePage(title: 'Profile'),
   ];
-      
+
   @override
   Widget build(BuildContext context) {
     return Center(
