@@ -7,10 +7,10 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'utils/app_state.dart';
 
 // Screens
-import 'screens/login_screen.dart';
-import 'screens/forgot_password_screen.dart';
-import 'screens/signup_screen.dart';
-import 'screens/landing_screen.dart';
+import 'views/auth/login_screen.dart';
+import 'views/auth/forgot_password_screen.dart';
+import 'views/auth/signup_screen.dart';
+import 'views/landing_screen.dart';
 
 // Widgets
 import 'widgets/home_scaffold.dart';

@@ -4,14 +4,14 @@ import 'package:go_router/go_router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 // Services
-import '../services/auth_services.dart';
+import '../../services/auth_services.dart';
 
 // Widgets
-import '../widgets/login_signup_widgets.dart';
-import '../widgets/logo.dart';
-import '../widgets/custom_rich_text.dart';
-import '../widgets/error_text.dart';
-import '../widgets/social_media_auth.dart';
+import '../../widgets/login_signup_widgets.dart';
+import '../../widgets/logo.dart';
+import '../../widgets/custom_rich_text.dart';
+import '../../widgets/error_text.dart';
+import '../../widgets/social_media_auth.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
