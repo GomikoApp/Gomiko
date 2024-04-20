@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:recycle/screens/home_screen.dart';
 
-// import '../pages/home.dart';
+import '../screens/home_screen.dart';
+import '../screens/leaderboard_screen.dart';
 import '../screens/profile_screen.dart';
 import '../screens/search_screen.dart';
-import '../screens/leaderboard_screen.dart';
 
 class HomeScaffold extends StatefulWidget {
   const HomeScaffold({Key? key}) : super(key: key);
@@ -24,12 +23,12 @@ class _MyHomeScaffoldState extends State<HomeScaffold> {
 
   final List<Widget> _destinations = const <NavigationDestination>[
     NavigationDestination(
-      icon: Icon(Icons.home),
-      label: 'Home',
+      icon: Icon(Icons.home_outlined),
+      label: '',
     ),
     NavigationDestination(
       icon: Icon(Icons.search),
-      label: 'Search',
+      label: '',
     ),
     //Scuffed way to fix the floating action button position
     NavigationDestination(
@@ -40,11 +39,11 @@ class _MyHomeScaffoldState extends State<HomeScaffold> {
     ),
     NavigationDestination(
       icon: Icon(Icons.leaderboard),
-      label: 'Leaderboard',
+      label: '',
     ),
     NavigationDestination(
       icon: Icon(Icons.person),
-      label: 'Profile',
+      label: '',
     ),
   ];
 
@@ -55,7 +54,7 @@ class _MyHomeScaffoldState extends State<HomeScaffold> {
     LeaderboardPage(title: 'Leaderboard'),
     ProfilePage(title: 'Profile'),
   ];
-      
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -68,35 +67,27 @@ class _MyHomeScaffoldState extends State<HomeScaffold> {
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: SizedBox(
-          height: 75,
-          width: 75,
+          height: 70,
+          width: 70,
           child: FloatingActionButton(
             //TODO: Add functionality to scan button
             onPressed: () {},
             tooltip: 'Scan',
             shape: const CircleBorder(),
+            backgroundColor: Colors.white,
             child: const Icon(
               Icons.camera_alt,
               size: 40,
             ),
           ),
         ),
-        bottomNavigationBar: Stack(
-          alignment: Alignment.bottomCenter,
-          children: [
-            NavigationBar(
-              selectedIndex: _selectedIndex,
-              onDestinationSelected: _onDestinationSelected,
-              destinations: _destinations,
-            ),
-            Positioned(
-              bottom: MediaQuery.of(context).size.height *
-                  0.03, // Adjust this to adjust the position of the text
-              child: const Text(
-                'Scan',
-              ),
-            ),
-          ],
+        bottomNavigationBar: NavigationBar(
+          height: 60,
+          selectedIndex: _selectedIndex,
+          onDestinationSelected: _onDestinationSelected,
+          destinations: _destinations,
+          indicatorColor: const Color(0xFF95CA4A),
+          surfaceTintColor: Colors.white,
         ),
       ),
     );
