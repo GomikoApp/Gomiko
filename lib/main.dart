@@ -47,11 +47,11 @@ class MyAppState extends State<MyApp> {
       child: MaterialApp.router(
         title: 'Gomiko',
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(
-              seedColor: Colors.blue, secondary: Colors.red),
-        ),
-        darkTheme: ThemeData.dark(),
+        // theme: ThemeData(
+        //   colorScheme: ColorScheme.fromSeed(
+        //       seedColor: Colors.blue, secondary: Colors.red),
+        // ),
+        // darkTheme: ThemeData.dark(),
         routerConfig: _router,
       ),
     );

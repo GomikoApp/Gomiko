@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:recycle/views/home_screen.dart';
 
-// import '../pages/home.dart';
+import 'package:iconsax/iconsax.dart';
+
+import '../views/home_screen.dart';
 import '../views/profile_screen.dart';
 import '../views/search_screen.dart';
 import '../views/leaderboard_screen.dart';
+
+import '../constants.dart';
 
 class HomeScaffold extends StatefulWidget {
   const HomeScaffold({Key? key}) : super(key: key);
@@ -22,32 +25,6 @@ class _MyHomeScaffoldState extends State<HomeScaffold> {
     });
   }
 
-  final List<Widget> _destinations = const <NavigationDestination>[
-    NavigationDestination(
-      icon: Icon(Icons.home),
-      label: 'Home',
-    ),
-    NavigationDestination(
-      icon: Icon(Icons.search),
-      label: 'Search',
-    ),
-    //Scuffed way to fix the floating action button position
-    NavigationDestination(
-      icon: Icon(Icons.add, size: 0),
-      label: '',
-      tooltip: null,
-      enabled: false,
-    ),
-    NavigationDestination(
-      icon: Icon(Icons.leaderboard),
-      label: 'Leaderboard',
-    ),
-    NavigationDestination(
-      icon: Icon(Icons.person),
-      label: 'Profile',
-    ),
-  ];
-
   final List<Widget> _pages = const <Widget>[
     HomePage(title: 'Home'),
     SearchPage(title: 'Search'),
@@ -58,45 +35,89 @@ class _MyHomeScaffoldState extends State<HomeScaffold> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Gomiko'),
-        ),
-        body: Center(
-          child: _pages.elementAt(_selectedIndex),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: SizedBox(
-          height: 75,
-          width: 75,
-          child: FloatingActionButton(
-            //TODO: Add functionality to scan button
-            onPressed: () {},
-            tooltip: 'Scan',
-            shape: const CircleBorder(),
-            child: const Icon(
-              Icons.camera_alt,
-              size: 40,
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Gomiko'),
+      ),
+      body: Center(
+        child: _pages.elementAt(_selectedIndex),
+      ),
+      bottomNavigationBar: Transform.translate(
+        offset: const Offset(0, -24),
+        child: SafeArea(
+          child: Container(
+            padding:
+                const EdgeInsets.only(left: 12, top: 5, right: 12, bottom: 5),
+            margin: const EdgeInsets.symmetric(horizontal: 24),
+            decoration: BoxDecoration(
+              color: bottomNavBgColor.withOpacity(0.8),
+              borderRadius: BorderRadius.circular(24),
+              boxShadow: [
+                BoxShadow(
+                  color: bottomNavBgColor.withOpacity(0.3),
+                  offset: const Offset(0, 20),
+                  blurRadius: 20,
+                ),
+              ],
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    _onDestinationSelected(0);
+                  },
+                  icon: Icon(
+                    Iconsax.home,
+                    color: _selectedIndex == 0
+                        ? bottomNavSelectedColor
+                        : bottomNavUnselectedColor,
+                  ),
+                ),
+                IconButton(
+                  onPressed: () {
+                    _onDestinationSelected(1);
+                  },
+                  icon: Icon(
+                    Iconsax.search_normal,
+                    color: _selectedIndex == 1
+                        ? bottomNavSelectedColor
+                        : bottomNavUnselectedColor,
+                  ),
+                ),
+                IconButton(
+                  // TODO: Scan functionality
+                  onPressed: () {},
+                  icon: const Icon(
+                    Iconsax.camera,
+                    color: bottomNavSelectedColor,
+                  ),
+                ),
+                IconButton(
+                  onPressed: () {
+                    _onDestinationSelected(3);
+                  },
+                  icon: Icon(
+                    Iconsax.award,
+                    color: _selectedIndex == 3
+                        ? bottomNavSelectedColor
+                        : bottomNavUnselectedColor,
+                  ),
+                ),
+                IconButton(
+                  onPressed: () {
+                    _onDestinationSelected(4);
+                  },
+                  icon: Icon(
+                    Iconsax.user,
+                    color: _selectedIndex == 4
+                        ? bottomNavSelectedColor
+                        : bottomNavUnselectedColor,
+                  ),
+                ),
+              ],
             ),
           ),
-        ),
-        bottomNavigationBar: Stack(
-          alignment: Alignment.bottomCenter,
-          children: [
-            NavigationBar(
-              selectedIndex: _selectedIndex,
-              onDestinationSelected: _onDestinationSelected,
-              destinations: _destinations,
-            ),
-            Positioned(
-              bottom: MediaQuery.of(context).size.height *
-                  0.03, // Adjust this to adjust the position of the text
-              child: const Text(
-                'Scan',
-              ),
-            ),
-          ],
         ),
       ),
     );
