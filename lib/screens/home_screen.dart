@@ -25,10 +25,63 @@ class HomePageState extends State<HomePage> {
       });
     }
 
-    return Scaffold(
-      body: Center(
-        child: Text("Hello, world! I'm ${widget.title}."),
-      ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: DefaultTabController(
+          length: 3,
+          child: Scaffold(
+            appBar: AppBar(
+              bottom: const PreferredSize(
+                preferredSize: Size.fromHeight(0),
+                child: Align(
+                  alignment: Alignment.topLeft,
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 10.0),
+                    child: SizedBox(
+                      width: 245,
+                      child: TabBar(
+                        indicator: UnderlineTabIndicator(
+                          borderSide: BorderSide(
+                            width: 3.0,
+                            color: Color(0xff98CB51),
+                          ),
+                        ),
+                        tabAlignment: TabAlignment.start,
+                        isScrollable: true,
+                        labelStyle: TextStyle(
+                          fontSize: 14,
+                        ),
+                        tabs: [
+                          Tab(
+                            child: Text('Home'),
+                          ),
+                          Tab(
+                            child: Text('Community'),
+                          ),
+                          Tab(
+                            child: Text('Learn'),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            body: const TabBarView(
+              children: [
+                Center(
+                  child: Text('Home Page'),
+                ),
+                Center(
+                  child: Text('Community Page'),
+                ),
+                Center(
+                  child: Text('Learn Page'),
+                ),
+              ],
+            ),
+          )),
     );
   }
 }
