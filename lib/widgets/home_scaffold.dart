@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:iconsax/iconsax.dart';
 
-import '../screens/home_screen.dart';
+import 'tabBar_widget.dart';
 import '../screens/leaderboard_screen.dart';
 import '../screens/profile_screen.dart';
 import '../screens/search_screen.dart';
@@ -26,9 +26,9 @@ class _MyHomeScaffoldState extends State<HomeScaffold> {
   }
 
   final List<Widget> _pages = const <Widget>[
-    HomePage(title: 'Home'),
+    TabBarWidget(title: 'Home'),
     SearchPage(title: 'Search'),
-    HomePage(title: 'Don\'t touch me :)'),
+    TabBarWidget(title: 'Don\'t touch me :)'),
     LeaderboardPage(title: 'Leaderboard'),
     ProfilePage(title: 'Profile'),
   ];
@@ -39,8 +39,9 @@ class _MyHomeScaffoldState extends State<HomeScaffold> {
       appBar: AppBar(
         title: const Text('Gomiko'),
       ),
-      body: Center(
-        child: _pages.elementAt(_selectedIndex),
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: _pages,
       ),
       bottomNavigationBar: Transform.translate(
         offset: const Offset(0, -24),

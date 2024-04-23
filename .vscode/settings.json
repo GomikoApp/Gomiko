@@ -1,4 +1,11 @@
 {
   "java.configuration.updateBuildConfiguration": "interactive",
-  "cSpell.words": ["GOMI", "Gomiko", "Iconsax", "Leaderboard", "signup"]
+  "cSpell.words": [
+    "GOMI",
+    "Gomiko",
+    "Iconsax",
+    "Leaderboard",
+    "signup",
+    "vsync"
+  ]
 }
