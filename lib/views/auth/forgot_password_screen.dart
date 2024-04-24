@@ -4,13 +4,13 @@ import "package:flutter/material.dart";
 import 'package:go_router/go_router.dart';
 
 // Widgets
-import '../widgets/custom_rich_text.dart';
-import '../widgets/error_text.dart';
-import '../widgets/login_signup_widgets.dart';
-import '../widgets/logo.dart';
+import '../../widgets/custom_rich_text.dart';
+import '../../widgets/error_text.dart';
+import '../../widgets/login_signup_widgets.dart';
+import '../../widgets/logo.dart';
 
 // Utilities
-import '../services/auth_services.dart';
+import '../../services/auth_services.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({super.key});
