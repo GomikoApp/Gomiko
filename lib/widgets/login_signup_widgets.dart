@@ -303,20 +303,6 @@ class GomikoPasswordTextFormField extends StatelessWidget {
 
     return TextFormField(
       decoration: InputDecoration(
-        // Save for sign up screen
-        // enabledBorder: const OutlineInputBorder(
-        //   borderSide: BorderSide(color: Color(0xFFE6E6E6), width: 2.0),
-        //   borderRadius: BorderRadius.all(Radius.circular(15.0)),
-        // ),
-        // focusedBorder: const OutlineInputBorder(
-        //   borderSide: BorderSide(color: Color(0xFF98CB51), width: 2.0),
-        //   borderRadius: BorderRadius.all(Radius.circular(15.0)),
-        // ),
-        // focusedErrorBorder: const OutlineInputBorder(
-        //   borderSide: BorderSide(color: Color(0xFFF08181), width: 2.0),
-        //   borderRadius: BorderRadius.all(Radius.circular(15.0)),
-        // ),
-
         enabledBorder: const OutlineInputBorder(
           borderSide: BorderSide(color: Color(0xFFE6E6E6), width: 2.0),
           borderRadius: BorderRadius.all(Radius.circular(15.0)),
