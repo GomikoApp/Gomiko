@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:recycle/widgets/tabBar_widget.dart';
 
-import '../views/home_screen.dart';
 import '../views/profile_screen.dart';
 import '../views/search_screen.dart';
 import '../views/leaderboard_screen.dart';
