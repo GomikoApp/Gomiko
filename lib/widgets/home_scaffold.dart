@@ -34,9 +34,9 @@ class _MyHomeScaffoldState extends State<HomeScaffold> {
   }
 
   final List<Widget> _pages = const <Widget>[
-    HomePage(title: 'Home'),
+    TabBarWidget(title: 'Home'),
     SearchPage(title: 'Search'),
-    HomePage(title: 'Don\'t touch me :)'),
+    TabBarWidget(title: 'Don\'t touch me :)'),
     LeaderboardPage(title: 'Leaderboard'),
     ProfilePage(title: 'Profile'),
   ];
@@ -47,8 +47,9 @@ class _MyHomeScaffoldState extends State<HomeScaffold> {
       appBar: AppBar(
         title: const Text('Gomiko'),
       ),
-      body: Center(
-        child: _pages.elementAt(_selectedIndex),
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: _pages,
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
