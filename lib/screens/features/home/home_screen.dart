@@ -10,6 +10,17 @@ class HomeTab extends StatefulWidget {
 }
 
 class _MyHomeState extends State<HomeTab> {
+  List<String> categories = [
+    'Plastic',
+    'Recyclable',
+    'Burnable',
+    'Non-burnable',
+    'Oversized Burnable',
+    'Oversized Non-burnable',
+    'Hazardous Waste',
+    "We Don't Collect",
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,9 +68,7 @@ class _MyHomeState extends State<HomeTab> {
 
           // Points Container
           Container(
-            margin: const EdgeInsets.only(top: 20),
-            height: 150,
-            width: 400,
+            margin: const EdgeInsets.only(top: 10, left: 20, right: 20),
             decoration: BoxDecoration(
               color: Colors.grey[200],
               borderRadius: BorderRadius.circular(20),
@@ -99,6 +108,53 @@ class _MyHomeState extends State<HomeTab> {
                   ),
                 ],
               ),
+            ),
+          ),
+
+          // Waste Categories
+          const Padding(
+            padding: EdgeInsets.only(left: 20.0, top: 20.0),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "Waste Categories",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+
+          // Waste Categories List
+          Flexible(
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: categories.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Container(
+                  margin: const EdgeInsets.only(top: 10, left: 20, right: 20),
+                  height: 100,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 20.0, top: 20.0),
+                    child: Row(
+                      children: <Widget>[
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              categories[index],
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.w500),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
             ),
           ),
         ],
