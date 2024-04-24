@@ -39,13 +39,13 @@ class TabBarWidgetState extends State<TabBarWidget> {
         child: Scaffold(
           appBar: AppBar(
             bottom: const PreferredSize(
-              preferredSize: Size.fromHeight(0),
+              preferredSize: Size.fromHeight(20),
               child: Align(
                 alignment: Alignment.topLeft,
                 child: Padding(
                   padding: EdgeInsets.only(left: 10.0),
                   child: SizedBox(
-                    width: 245,
+                    width: 250,
                     child: TabBar(
                       dividerColor: Colors.transparent,
                       indicator: UnderlineTabIndicator(

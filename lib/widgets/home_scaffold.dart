@@ -45,9 +45,6 @@ class _MyHomeScaffoldState extends State<HomeScaffold> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Gomiko'),
-      ),
       body: IndexedStack(
         index: _selectedIndex,
         children: _pages,
