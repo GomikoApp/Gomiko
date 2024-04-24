@@ -47,6 +47,7 @@ class TabBarWidgetState extends State<TabBarWidget> {
                   child: SizedBox(
                     width: 245,
                     child: TabBar(
+                      dividerColor: Colors.transparent,
                       indicator: UnderlineTabIndicator(
                         borderSide: BorderSide(
                           width: 3.0,
