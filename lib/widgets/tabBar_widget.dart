@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:recycle/screens/features/home/community_screen.dart';
-import 'package:recycle/screens/features/home/learn_screen.dart';
+import 'package:recycle/views/features/home/community_screen.dart';
+import 'package:recycle/views/features/home/learn_screen.dart';
 
 // utils
 import 'package:recycle/utils/app_state.dart';
 
 // views
-import 'package:recycle/screens/features/home/home_screen.dart';
+import 'package:recycle/views/features/home/home_screen.dart';
 
 class TabBarWidget extends StatefulWidget {
   // title parameter is not necessary here, its just for testing.
