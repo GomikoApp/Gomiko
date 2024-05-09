@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
-import 'package:recycle/views/profile_screen.dart';
 
 class HomeTab extends StatefulWidget {
   const HomeTab({Key? key}) : super(key: key);
@@ -30,37 +28,17 @@ class _MyHomeState extends State<HomeTab> {
             height: 20,
           ),
           // Welcome User Row
-          Padding(
-            padding: const EdgeInsets.only(left: 20.0),
+          const Padding(
+            padding: EdgeInsets.only(left: 20.0),
             child: Row(
               children: <Widget>[
-                const Text(
+                Text(
                   'Hi, ',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
-                const Text(
+                Text(
                   'User!',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-                const Spacer(),
-                Padding(
-                  padding: const EdgeInsets.only(right: 20.0),
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              const ProfilePage(title: 'Profile'),
-                        ),
-                      );
-                    },
-                    child: const Icon(
-                      Iconsax.user,
-                      size: 30,
-                      color: Colors.black,
-                    ),
-                  ),
                 ),
               ],
             ),

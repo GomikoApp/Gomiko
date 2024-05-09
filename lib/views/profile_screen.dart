@@ -22,6 +22,9 @@ class ProfilePage extends StatefulWidget {
 class ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
+    double windowWidth = MediaQuery.of(context).size.width;
+    double windowHeight = MediaQuery.of(context).size.height;
+
     Future<void> signOut() async {
       await FirebaseAuth.instance.signOut();
       await GoogleSignIn().signOut();
@@ -32,22 +35,29 @@ class ProfilePageState extends State<ProfilePage> {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title,
-            style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
-      ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(
-            height: 10,
+          SizedBox(height: windowHeight * 0.05),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Padding(
+              padding: EdgeInsets.only(left: windowWidth * 0.05),
+              child: const Text(
+                'Profile',
+                style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+
+          SizedBox(
+            height: windowHeight * 0.02,
           ),
           // User Profile Row
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Padding(
-                padding: const EdgeInsets.only(right: 20.0),
+                padding: const EdgeInsets.only(left: 20.0, right: 20.0),
                 child: GestureDetector(
                   child: const CircleAvatar(
                     radius: 30,
@@ -74,7 +84,7 @@ class ProfilePageState extends State<ProfilePage> {
                 ],
               ),
               SizedBox(
-                width: MediaQuery.of(context).size.width * 0.4,
+                width: windowWidth * 0.4,
               ),
               Padding(
                 padding: const EdgeInsets.only(right: 20.0),
@@ -97,6 +107,81 @@ class ProfilePageState extends State<ProfilePage> {
               ),
             ],
           ),
+          // Stats Section
+          SizedBox(height: windowHeight * 0.02),
+          const Padding(
+            padding: EdgeInsets.only(left: 20.0),
+            child: Text("My Stats",
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+          ),
+          Container(
+            margin: const EdgeInsets.only(top: 10, left: 20, right: 20),
+            decoration: BoxDecoration(
+              color: Colors.grey[200],
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Column(
+                    children: [
+                      Row(
+                        children: [
+                          const Icon(
+                            Iconsax.star,
+                            size: 30,
+                            color: Colors.black,
+                          ),
+                          SizedBox(width: windowWidth * 0.02),
+                          const Text("1200"),
+                        ],
+                      ),
+                      SizedBox(height: windowHeight * 0.01),
+                      const Text("Total Points"),
+                    ],
+                  ),
+                  SizedBox(width: windowWidth * 0.05),
+                  Column(
+                    children: [
+                      Row(
+                        children: [
+                          const Icon(
+                            Iconsax.ranking_1,
+                            size: 30,
+                            color: Colors.black,
+                          ),
+                          SizedBox(width: windowWidth * 0.02),
+                          const Text("43"),
+                        ],
+                      ),
+                      SizedBox(height: windowHeight * 0.01),
+                      const Text("Ranking"),
+                    ],
+                  ),
+                  SizedBox(width: windowWidth * 0.05),
+                  Column(
+                    children: [
+                      Row(
+                        children: [
+                          const Icon(
+                            Iconsax.layer,
+                            size: 30,
+                            color: Colors.black,
+                          ),
+                          SizedBox(width: windowWidth * 0.02),
+                          const Text("83"),
+                        ],
+                      ),
+                      SizedBox(height: windowHeight * 0.01),
+                      const Text("Photos Taken"),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          )
         ],
       ),
     );
