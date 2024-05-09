@@ -16,23 +16,28 @@ class ProfilePage extends StatefulWidget {
 class ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
+    Future<void> signOut() async {
+      await FirebaseAuth.instance.signOut();
+      await GoogleSignIn().signOut();
+      await FacebookAuth.instance.logOut();
+      if (context.mounted) {
+        context.pushReplacement('/login');
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Padding(
+          padding: const EdgeInsets.only(left: 16.0, top: 16.0),
+          child: Text(widget.title,
+              style:
+                  const TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
+        ),
       ),
       body: Center(
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           Text("Hello, world! I'm ${widget.title}."),
-          ElevatedButton(
-              onPressed: () async {
-                await FirebaseAuth.instance.signOut();
-                await GoogleSignIn().signOut();
-                await FacebookAuth.instance.logOut();
-                if (context.mounted) {
-                  context.pushReplacement('/login');
-                }
-              },
-              child: const Text("Sign Out")),
+          ElevatedButton(onPressed: signOut, child: const Text("Sign Out")),
         ]),
       ),
     );
