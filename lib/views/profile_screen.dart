@@ -189,27 +189,75 @@ class ProfilePageState extends State<ProfilePage> {
             child: Text("Theme",
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
           ),
-          SizedBox(height: windowHeight * 0.01),
-          Row(
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(left: windowWidth * 0.08, right: 12.0),
-                child: const Icon(Iconsax.moon, size: 30, color: Colors.black),
-              ),
-              const Text("Dark Mode"),
-              SizedBox(width: windowWidth * 0.5),
-              // TODO: Implement dark mode
-              Switch(
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+            child: ListTile(
+              leading: const Icon(Iconsax.moon),
+              title: const Text("Dark Mode"),
+              trailing: Switch(
                 value: dark,
                 activeColor: const Color(0xff98cb51),
-                onChanged: (bool value) {
+                onChanged: (value) {
                   setState(() {
                     dark = value;
                   });
                 },
               ),
-            ],
-          )
+            ),
+          ),
+          // Settings Section
+          const Padding(
+            padding: EdgeInsets.only(left: 20.0),
+            child: Text("Settings",
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+            child: Column(
+              children: <Widget>[
+                ListTile(
+                    leading: const Icon(Iconsax.heart),
+                    trailing: const Icon(Iconsax.arrow_right_3),
+                    title: const Text("Liked Posts"),
+                    onTap: () {}),
+                const Divider(
+                  height: 12,
+                  thickness: 2,
+                  indent: 20,
+                  endIndent: 20,
+                ),
+                ListTile(
+                    leading: const Icon(Iconsax.archive_1),
+                    trailing: const Icon(Iconsax.arrow_right_3),
+                    title: const Text("Saved Items"),
+                    onTap: () {}),
+                const Divider(
+                  height: 12,
+                  thickness: 2,
+                  indent: 20,
+                  endIndent: 20,
+                ),
+                ListTile(
+                  leading: const Icon(Iconsax.lock),
+                  title: const Text("Privacy"),
+                  trailing: const Icon(Iconsax.arrow_right_3),
+                  onTap: () {},
+                ),
+                const Divider(
+                  height: 12,
+                  thickness: 2,
+                  indent: 20,
+                  endIndent: 20,
+                ),
+                ListTile(
+                  leading: const Icon(Iconsax.logout),
+                  title: const Text("Log Out",
+                      style: TextStyle(color: Colors.red)),
+                  onTap: signOut,
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );

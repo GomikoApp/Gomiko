@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:iconsax/iconsax.dart';
-import 'package:recycle/widgets/tabBar_widget.dart';
+import 'package:recycle/widgets/tab_bar_widget.dart';
 
 import '../views/profile_screen.dart';
 import '../views/search_screen.dart';
