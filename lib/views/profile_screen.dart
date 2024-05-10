@@ -10,6 +10,9 @@ import 'package:google_sign_in/google_sign_in.dart';
 // Views
 import 'package:recycle/views/profile/edit_profile.dart';
 
+// Constants
+import 'package:recycle/constants.dart';
+
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key, required this.title}) : super(key: key);
 
@@ -70,7 +73,8 @@ class ProfilePageState extends State<ProfilePage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => EditProfile(title: "Edit Profile"),
+                    builder: (context) =>
+                        const EditProfile(title: "Edit Profile"),
                   ),
                 );
               },
@@ -87,7 +91,7 @@ class ProfilePageState extends State<ProfilePage> {
             margin: const EdgeInsets.only(top: 10, left: 20, right: 20),
             decoration: BoxDecoration(
               // TODO: Update background color
-              color: Colors.grey[200],
+              color: primaryGray,
               borderRadius: BorderRadius.circular(20),
             ),
             child: Padding(
@@ -102,7 +106,7 @@ class ProfilePageState extends State<ProfilePage> {
                           const Icon(
                             Iconsax.star,
                             size: 30,
-                            color: Colors.black,
+                            color: primaryGreen,
                           ),
                           SizedBox(width: windowWidth * 0.02),
                           const Text("1200"),
@@ -120,7 +124,7 @@ class ProfilePageState extends State<ProfilePage> {
                           const Icon(
                             Iconsax.ranking_1,
                             size: 30,
-                            color: Colors.black,
+                            color: primaryGreen,
                           ),
                           SizedBox(width: windowWidth * 0.02),
                           const Text("43"),
@@ -138,7 +142,7 @@ class ProfilePageState extends State<ProfilePage> {
                           const Icon(
                             Iconsax.layer,
                             size: 30,
-                            color: Colors.black,
+                            color: primaryGreen,
                           ),
                           SizedBox(width: windowWidth * 0.02),
                           const Text("83"),
@@ -168,7 +172,7 @@ class ProfilePageState extends State<ProfilePage> {
               title: const Text("Dark Mode"),
               trailing: Switch(
                 value: dark,
-                activeColor: const Color(0xff98cb51),
+                activeColor: primaryGreen,
                 onChanged: (value) {
                   setState(() {
                     dark = value;
@@ -225,8 +229,10 @@ class ProfilePageState extends State<ProfilePage> {
                 ),
                 ListTile(
                   leading: const Icon(Iconsax.logout),
-                  title: const Text("Log Out",
-                      style: TextStyle(color: Colors.red)),
+                  title: const Text(
+                    "Log Out",
+                    style: TextStyle(color: primaryRed),
+                  ),
                   onTap: signOut,
                 ),
               ],

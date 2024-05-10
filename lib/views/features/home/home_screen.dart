@@ -77,13 +77,12 @@ class _MyHomeState extends State<HomeTab> {
                     ),
                   ),
                   LinearProgressIndicator(
-                    value: 0.8,
-                    backgroundColor: Colors.grey[300],
-                    minHeight: 20,
-                    borderRadius: BorderRadius.circular(10),
-                    valueColor:
-                        const AlwaysStoppedAnimation<Color>(Colors.green),
-                  ),
+                      value: 0.8,
+                      backgroundColor: Colors.grey[300],
+                      minHeight: 20,
+                      borderRadius: BorderRadius.circular(10),
+                      valueColor: const AlwaysStoppedAnimation<Color>(
+                          Color.fromRGBO(152, 203, 81, 1))),
                 ],
               ),
             ),
