@@ -56,55 +56,25 @@ class ProfilePageState extends State<ProfilePage> {
             height: windowHeight * 0.02,
           ),
           // User Profile Row
-          Row(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(left: 20.0, right: 20.0),
-                child: GestureDetector(
-                  child: const CircleAvatar(
-                    radius: 30,
-                    backgroundColor: Color(0xff98cb51),
-                    child: Icon(
-                      Iconsax.user,
-                      size: 30,
-                      color: Colors.black,
-                    ),
+          ListTile(
+            leading: const CircleAvatar(
+              radius: 30,
+              backgroundImage: NetworkImage(
+                  'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'),
+            ),
+            title: const Text("John Doe"),
+            subtitle: const Text("johndoe@gmail.com"),
+            trailing: IconButton(
+              icon: const Icon(Iconsax.edit),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EditProfile(title: "Edit Profile"),
                   ),
-                ),
-              ),
-              const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text("John Doe",
-                      style:
-                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-                  Text(
-                    "johndoe@gmail.com",
-                    style:
-                        TextStyle(fontSize: 12, fontWeight: FontWeight.normal),
-                  ),
-                ],
-              ),
-              SizedBox(
-                width: windowWidth * 0.4,
-              ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          const EditProfile(title: 'Edit Profile'),
-                    ),
-                  );
-                },
-                child: const Icon(
-                  Iconsax.edit,
-                  size: 30,
-                  color: Colors.black,
-                ),
-              ),
-            ],
+                );
+              },
+            ),
           ),
           // Stats Section
           SizedBox(height: windowHeight * 0.02),
@@ -190,7 +160,9 @@ class ProfilePageState extends State<ProfilePage> {
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+            padding: const EdgeInsets.only(
+              left: 8.0,
+            ),
             child: ListTile(
               leading: const Icon(Iconsax.moon),
               title: const Text("Dark Mode"),
@@ -212,7 +184,9 @@ class ProfilePageState extends State<ProfilePage> {
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+            padding: const EdgeInsets.only(
+              left: 8.0,
+            ),
             child: Column(
               children: <Widget>[
                 ListTile(
