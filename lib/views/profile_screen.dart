@@ -188,9 +188,11 @@ class ProfilePageState extends State<ProfilePage> {
             ),
             child: Column(
               children: <Widget>[
+                // Liked Posts
                 CustomInkWell(
                   topRight: true,
                   topLeft: true,
+                  // TODO: implement liked posts
                   onTap: () {
                     if (kDebugMode) print("Liked Posts");
                   },
@@ -198,13 +200,17 @@ class ProfilePageState extends State<ProfilePage> {
                   title: const Text("Liked Posts"),
                   trailing: const Icon(Iconsax.arrow_right_3),
                 ),
+
                 Container(
                   height: 2,
                   color: Colors.grey[300],
                 ),
+
+                // Saved Posts
                 CustomInkWell(
                   bottomRight: true,
                   bottomLeft: true,
+                  // TODO: implement saved posts
                   onTap: () {
                     if (kDebugMode) print("Saved Posts");
                   },
@@ -230,10 +236,11 @@ class ProfilePageState extends State<ProfilePage> {
             ),
             child: Column(
               children: <Widget>[
+                // Appearance
                 CustomInkWell(
-                  // Appearance)
                   topRight: true,
                   topLeft: true,
+                  // TODO: implement appearance
                   onTap: () {
                     if (kDebugMode) print("Appearance");
                   },
@@ -241,11 +248,15 @@ class ProfilePageState extends State<ProfilePage> {
                   title: const Text("Appearance"),
                   trailing: const Icon(Iconsax.arrow_right_3),
                 ),
+
                 Container(
                   height: 2,
                   color: Colors.grey[300],
                 ),
+
+                // Login and Security
                 CustomInkWell(
+                  // TODO: implement login and security
                   onTap: () {
                     if (kDebugMode) print("Login and Security");
                   },
@@ -253,11 +264,15 @@ class ProfilePageState extends State<ProfilePage> {
                   title: const Text("Login and Security"),
                   trailing: const Icon(Iconsax.arrow_right_3),
                 ),
+
                 Container(
                   height: 2,
                   color: Colors.grey[300],
                 ),
+
+                // Privacy
                 CustomInkWell(
+                  // TODO: implement privacy
                   onTap: () {
                     if (kDebugMode) print("Privacy");
                   },
@@ -265,10 +280,13 @@ class ProfilePageState extends State<ProfilePage> {
                   title: const Text("Privacy"),
                   trailing: const Icon(Iconsax.arrow_right_3),
                 ),
+
                 Container(
                   height: 2,
                   color: Colors.grey[300],
                 ),
+
+                // Sign Out
                 CustomInkWell(
                   bottomLeft: true,
                   bottomRight: true,
@@ -277,7 +295,10 @@ class ProfilePageState extends State<ProfilePage> {
                     signOut();
                   },
                   leading: const Icon(Iconsax.logout),
-                  title: const Text("Log Out"),
+                  title: const Text(
+                    "Log Out",
+                    style: TextStyle(color: primaryRed),
+                  ),
                   trailing: const Icon(Iconsax.arrow_right_3),
                 ),
               ],
