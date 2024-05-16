@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
@@ -9,6 +10,9 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 // Views
 import 'package:recycle/views/profile/edit_profile.dart';
+
+// Widgets
+import 'package:recycle/widgets/profile_widgets.dart';
 
 // Constants
 import 'package:recycle/constants.dart';
@@ -184,55 +188,29 @@ class ProfilePageState extends State<ProfilePage> {
             ),
             child: Column(
               children: <Widget>[
-                Ink(
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                    ),
-                  ),
-                  child: InkWell(
-                    customBorder: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        topRight: Radius.circular(20),
-                      ),
-                    ),
-                    onTap: () {},
-                    child: const ListTile(
-                      leading: Icon(Iconsax.heart),
-                      trailing: Icon(Iconsax.arrow_right_3),
-                      title: Text("Liked Posts"),
-                    ),
-                  ),
+                CustomInkWell(
+                  topRight: true,
+                  topLeft: true,
+                  onTap: () {
+                    if (kDebugMode) print("Liked Posts");
+                  },
+                  leading: const Icon(Iconsax.camera),
+                  title: const Text("Liked Posts"),
+                  trailing: const Icon(Iconsax.arrow_right_3),
                 ),
                 Container(
                   height: 2,
                   color: Colors.grey[300],
                 ),
-                Ink(
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(20),
-                      bottomRight: Radius.circular(20),
-                    ),
-                  ),
-                  child: InkWell(
-                    customBorder: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(20),
-                        bottomRight: Radius.circular(20),
-                      ),
-                    ),
-                    onTap: () {},
-                    child: const ListTile(
-                      leading: Icon(Iconsax.archive_1),
-                      trailing: Icon(Iconsax.arrow_right_3),
-                      title: Text("Saved Items"),
-                    ),
-                  ),
+                CustomInkWell(
+                  bottomRight: true,
+                  bottomLeft: true,
+                  onTap: () {
+                    if (kDebugMode) print("Saved Posts");
+                  },
+                  leading: const Icon(Iconsax.archive_1),
+                  title: const Text("Saved Posts"),
+                  trailing: const Icon(Iconsax.arrow_right_3),
                 ),
               ],
             ),
@@ -250,90 +228,60 @@ class ProfilePageState extends State<ProfilePage> {
               right: 20.0,
               bottom: 10.0,
             ),
-            child: Column(children: <Widget>[
-              Ink(
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20),
-                  ),
+            child: Column(
+              children: <Widget>[
+                CustomInkWell(
+                  // Appearance)
+                  topRight: true,
+                  topLeft: true,
+                  onTap: () {
+                    if (kDebugMode) print("Appearance");
+                  },
+                  leading: const Icon(Iconsax.moon),
+                  title: const Text("Appearance"),
+                  trailing: const Icon(Iconsax.arrow_right_3),
                 ),
-                child: InkWell(
-                  customBorder: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                    ),
-                  ),
-                  onTap: () {},
-                  child: const ListTile(
-                    leading: Icon(Iconsax.moon),
-                    title: Text("Appearance"),
-                    trailing: Icon(Iconsax.arrow_right_3),
-                  ),
+                Container(
+                  height: 2,
+                  color: Colors.grey[300],
                 ),
-              ),
-              Container(
-                height: 2,
-                color: Colors.grey[300],
-              ),
-              Ink(
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                ),
-                child: ListTile(
+                CustomInkWell(
+                  onTap: () {
+                    if (kDebugMode) print("Login and Security");
+                  },
                   leading: const Icon(Iconsax.lock),
                   title: const Text("Login and Security"),
                   trailing: const Icon(Iconsax.arrow_right_3),
-                  onTap: () {},
                 ),
-              ),
-              Container(
-                height: 2,
-                color: Colors.grey[300],
-              ),
-              Ink(
-                decoration: const BoxDecoration(
-                  color: Colors.white,
+                Container(
+                  height: 2,
+                  color: Colors.grey[300],
                 ),
-                child: ListTile(
+                CustomInkWell(
+                  onTap: () {
+                    if (kDebugMode) print("Privacy");
+                  },
                   leading: const Icon(Iconsax.information),
                   title: const Text("Privacy"),
                   trailing: const Icon(Iconsax.arrow_right_3),
-                  onTap: () {},
                 ),
-              ),
-              Container(
-                height: 2,
-                color: Colors.grey[300],
-              ),
-              Ink(
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(20),
-                    bottomRight: Radius.circular(20),
-                  ),
+                Container(
+                  height: 2,
+                  color: Colors.grey[300],
                 ),
-                child: InkWell(
-                  customBorder: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(20),
-                      bottomRight: Radius.circular(20),
-                    ),
-                  ),
-                  onTap: signOut,
-                  child: const ListTile(
-                    leading: Icon(Iconsax.logout),
-                    title: Text(
-                      "Log Out",
-                      style: TextStyle(color: primaryRed),
-                    ),
-                  ),
+                CustomInkWell(
+                  bottomLeft: true,
+                  bottomRight: true,
+                  onTap: () {
+                    if (kDebugMode) print("Sign Out");
+                    signOut();
+                  },
+                  leading: const Icon(Iconsax.logout),
+                  title: const Text("Log Out"),
+                  trailing: const Icon(Iconsax.arrow_right_3),
                 ),
-              ),
-            ]),
+              ],
+            ),
           )
         ],
       ),
