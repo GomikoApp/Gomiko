@@ -2,8 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:iconsax/iconsax.dart';
+import 'package:recycle/widgets/tab_bar_widget.dart';
 
-import '../views/home_screen.dart';
 import '../views/profile_screen.dart';
 import '../views/search_screen.dart';
 import '../views/leaderboard_screen.dart';
@@ -53,8 +53,8 @@ class _MyHomeScaffoldState extends State<HomeScaffold> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        selectedItemColor: bottomNavSelectedColor,
-        unselectedItemColor: bottomNavUnselectedColor,
+        selectedItemColor: primaryGreen,
+        unselectedItemColor: secondaryGray,
         currentIndex: _selectedIndex,
         onTap: _onDestinationSelected,
         showUnselectedLabels: true,

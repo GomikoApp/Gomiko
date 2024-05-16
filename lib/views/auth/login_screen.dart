@@ -114,7 +114,8 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _buildForm(double windowWidth) {
+  Widget _buildForm(
+      double windowWidth, double windowHeight, bool keyboardOpen) {
     return Center(
       child: Container(
         constraints: BoxConstraints(
@@ -176,6 +177,8 @@ class _LoginPageState extends State<LoginPage> {
                         }),
                   ),
 
+                  SizedBox(height: formSizedBoxHeight / 4),
+
                   // This builds the "Sign Up" button. When pressed, it pushes the user to the sign up page.
                   GomikoContextLinkRow(
                     contextLabel: "Don't have an account?",
@@ -188,14 +191,16 @@ class _LoginPageState extends State<LoginPage> {
                     },
                   ),
 
-                  SizedBox(height: formSizedBoxHeight),
+                  // add spacing and push to bottom of screen
+                  AnimatedContainer(
+                      duration: const Duration(milliseconds: 200),
+                      height: keyboardOpen ? 50 : windowHeight / 5),
 
                   const GomikoTextDivider(
                     label: "Or Log in with",
                     labelSize: 13.5,
                   ),
 
-                  // To Do: Implement Google Sign in/Facebook Sign in/Apple Sign in Design
                   _buildSocialMediaButtons(),
                 ],
               ),
@@ -208,11 +213,12 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    double windowWidth = MediaQuery.of(context).size.width;
-
     // check if keyboard is open, if so, move the text up
     // https://stackoverflow.com/questions/56902559/how-to-detect-keyboard-open-in-flutter
     bool keyboardOpen = MediaQuery.of(context).viewInsets.bottom != 0.0;
+
+    double windowWidth = MediaQuery.of(context).size.width;
+    double windowHeight = MediaQuery.of(context).size.height;
 
     return Container(
       decoration: const BoxDecoration(
@@ -231,19 +237,20 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                const SizedBox(height: 40),
+                SizedBox(height: windowHeight * 0.1),
 
                 // Uncomment if we want the logo to be on the page
                 AnimatedOpacity(
                   duration: const Duration(milliseconds: 200),
                   opacity: keyboardOpen ? 0.0 : 1.0,
+                  // ignore: prefer_const_constructors
                   child: GomikoLogo(),
                 ),
 
                 // Changes the textSizedBoxHeight variable to 15 is keyboard is open, otherwise it is the default value
                 AnimatedContainer(
                   duration: const Duration(milliseconds: 200),
-                  height: keyboardOpen ? 15 : textSizedBoxHeight - 30,
+                  height: keyboardOpen ? 0 : textSizedBoxHeight,
                 ),
 
                 AnimatedPadding(
@@ -262,7 +269,8 @@ class _LoginPageState extends State<LoginPage> {
                   duration: const Duration(milliseconds: 200),
                   height: keyboardOpen ? 0 : textSizedBoxHeight - 30,
                 ),
-                _buildForm(windowWidth),
+
+                _buildForm(windowWidth, windowHeight, keyboardOpen),
               ],
             ),
           ),
