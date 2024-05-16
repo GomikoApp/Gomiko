@@ -40,6 +40,7 @@ class ProfilePageState extends State<ProfilePage> {
     }
 
     return Scaffold(
+      backgroundColor: bgColor,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -55,43 +56,53 @@ class ProfilePageState extends State<ProfilePage> {
             ),
           ),
 
-          SizedBox(
-            height: windowHeight * 0.02,
-          ),
           // User Profile Row
-          ListTile(
-            leading: const CircleAvatar(
-              radius: 30,
-              backgroundImage: NetworkImage(
-                  'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'),
-            ),
-            title: const Text("John Doe"),
-            subtitle: const Text("johndoe@gmail.com"),
-            trailing: IconButton(
-              icon: const Icon(Iconsax.edit),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        const EditProfile(title: "Edit Profile"),
+          Padding(
+            padding: const EdgeInsets.only(
+                top: 10.0, bottom: 10.0, left: 20.0, right: 20.0),
+            child: Container(
+              height: windowHeight * 0.1,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Center(
+                child: ListTile(
+                  leading: const CircleAvatar(
+                    radius: 30,
+                    backgroundImage: NetworkImage(
+                        'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'),
                   ),
-                );
-              },
+                  title: const Text("John Doe"),
+                  subtitle: const Text("johndoe@gmail.com"),
+                  trailing: IconButton(
+                    color: primaryGreen,
+                    icon: const Icon(Iconsax.edit),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              const EditProfile(title: "Edit Profile"),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
             ),
           ),
+
           // Stats Section
-          SizedBox(height: windowHeight * 0.02),
           const Padding(
-            padding: EdgeInsets.only(left: 20.0),
+            padding: EdgeInsets.only(left: 20.0, bottom: 5.0),
             child: Text("My Stats",
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
           ),
           Container(
-            margin: const EdgeInsets.only(top: 10, left: 20, right: 20),
+            margin: const EdgeInsets.only(left: 20, right: 20, bottom: 10.0),
             decoration: BoxDecoration(
-              // TODO: Update background color
-              color: primaryGray,
+              color: Colors.white,
               borderRadius: BorderRadius.circular(20),
             ),
             child: Padding(
@@ -156,88 +167,174 @@ class ProfilePageState extends State<ProfilePage> {
               ),
             ),
           ),
-          // Theme Settings
-          SizedBox(height: windowHeight * 0.01),
+
+          // Collections Section
           const Padding(
-            padding: EdgeInsets.only(left: 20.0),
-            child: Text("Theme",
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+            padding: EdgeInsets.only(left: 20.0, bottom: 5.0),
+            child: Text(
+              "Collections",
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
           ),
           Padding(
             padding: const EdgeInsets.only(
-              left: 8.0,
+              left: 20.0,
+              right: 20.0,
+              bottom: 10.0,
             ),
-            child: ListTile(
-              leading: const Icon(Iconsax.moon),
-              title: const Text("Dark Mode"),
-              trailing: Switch(
-                value: dark,
-                activeColor: primaryGreen,
-                onChanged: (value) {
-                  setState(() {
-                    dark = value;
-                  });
-                },
-              ),
+            child: Column(
+              children: <Widget>[
+                Ink(
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20),
+                    ),
+                  ),
+                  child: InkWell(
+                    customBorder: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20),
+                      ),
+                    ),
+                    onTap: () {},
+                    child: const ListTile(
+                      leading: Icon(Iconsax.heart),
+                      trailing: Icon(Iconsax.arrow_right_3),
+                      title: Text("Liked Posts"),
+                    ),
+                  ),
+                ),
+                Container(
+                  height: 2,
+                  color: Colors.grey[300],
+                ),
+                Ink(
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(20),
+                      bottomRight: Radius.circular(20),
+                    ),
+                  ),
+                  child: InkWell(
+                    customBorder: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(20),
+                        bottomRight: Radius.circular(20),
+                      ),
+                    ),
+                    onTap: () {},
+                    child: const ListTile(
+                      leading: Icon(Iconsax.archive_1),
+                      trailing: Icon(Iconsax.arrow_right_3),
+                      title: Text("Saved Items"),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
+
           // Settings Section
           const Padding(
-            padding: EdgeInsets.only(left: 20.0),
+            padding: EdgeInsets.only(left: 20.0, bottom: 5.0),
             child: Text("Settings",
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
           ),
           Padding(
             padding: const EdgeInsets.only(
-              left: 8.0,
+              left: 20.0,
+              right: 20.0,
+              bottom: 10.0,
             ),
-            child: Column(
-              children: <Widget>[
-                ListTile(
-                    leading: const Icon(Iconsax.heart),
-                    trailing: const Icon(Iconsax.arrow_right_3),
-                    title: const Text("Liked Posts"),
-                    onTap: () {}),
-                const Divider(
-                  height: 12,
-                  thickness: 2,
-                  indent: 20,
-                  endIndent: 20,
+            child: Column(children: <Widget>[
+              Ink(
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
+                  ),
                 ),
-                ListTile(
-                    leading: const Icon(Iconsax.archive_1),
-                    trailing: const Icon(Iconsax.arrow_right_3),
-                    title: const Text("Saved Items"),
-                    onTap: () {}),
-                const Divider(
-                  height: 12,
-                  thickness: 2,
-                  indent: 20,
-                  endIndent: 20,
+                child: InkWell(
+                  customBorder: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20),
+                    ),
+                  ),
+                  onTap: () {},
+                  child: const ListTile(
+                    leading: Icon(Iconsax.moon),
+                    title: Text("Appearance"),
+                    trailing: Icon(Iconsax.arrow_right_3),
+                  ),
                 ),
-                ListTile(
+              ),
+              Container(
+                height: 2,
+                color: Colors.grey[300],
+              ),
+              Ink(
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                ),
+                child: ListTile(
                   leading: const Icon(Iconsax.lock),
+                  title: const Text("Login and Security"),
+                  trailing: const Icon(Iconsax.arrow_right_3),
+                  onTap: () {},
+                ),
+              ),
+              Container(
+                height: 2,
+                color: Colors.grey[300],
+              ),
+              Ink(
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                ),
+                child: ListTile(
+                  leading: const Icon(Iconsax.information),
                   title: const Text("Privacy"),
                   trailing: const Icon(Iconsax.arrow_right_3),
                   onTap: () {},
                 ),
-                const Divider(
-                  height: 12,
-                  thickness: 2,
-                  indent: 20,
-                  endIndent: 20,
+              ),
+              Container(
+                height: 2,
+                color: Colors.grey[300],
+              ),
+              Ink(
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(20),
+                    bottomRight: Radius.circular(20),
+                  ),
                 ),
-                ListTile(
-                  leading: const Icon(Iconsax.logout),
-                  title: const Text(
-                    "Log Out",
-                    style: TextStyle(color: primaryRed),
+                child: InkWell(
+                  customBorder: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(20),
+                      bottomRight: Radius.circular(20),
+                    ),
                   ),
                   onTap: signOut,
+                  child: const ListTile(
+                    leading: Icon(Iconsax.logout),
+                    title: Text(
+                      "Log Out",
+                      style: TextStyle(color: primaryRed),
+                    ),
+                  ),
                 ),
-              ],
-            ),
-          ),
+              ),
+            ]),
+          )
         ],
       ),
     );

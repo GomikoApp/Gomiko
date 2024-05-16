@@ -115,6 +115,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 },
               ),
             ),
+            SizedBox(height: formSizedBoxHeight / 4),
             GomikoContextLinkRow(
               contextLabel: "Already have an account?",
               linkLabel: "Login",
