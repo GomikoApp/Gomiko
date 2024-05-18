@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-// Widgets
+// utilities
 import '../../services/auth_services.dart';
-import '../../widgets/logo.dart';
-import '../../widgets/login_signup_widgets.dart';
-import '../../widgets/custom_rich_text.dart';
-import '../../widgets/error_text.dart';
+
+// widgets
+import 'widgets/login_signup_widgets.dart';
+import 'widgets/custom_rich_text.dart';
+import 'widgets/logo.dart';
+import 'widgets/error_text.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);

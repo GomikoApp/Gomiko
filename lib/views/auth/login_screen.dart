@@ -7,11 +7,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../../services/auth_services.dart';
 
 // Widgets
-import '../../widgets/login_signup_widgets.dart';
-import '../../widgets/logo.dart';
-import '../../widgets/custom_rich_text.dart';
-import '../../widgets/error_text.dart';
-import '../../widgets/social_media_auth.dart';
+import 'widgets/login_signup_widgets.dart';
+import 'widgets/logo.dart';
+import 'widgets/social_media_auth.dart';
+import 'widgets/custom_rich_text.dart';
+import 'widgets/error_text.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);

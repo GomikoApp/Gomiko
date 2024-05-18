@@ -11,9 +11,7 @@ import 'views/auth/login_screen.dart';
 import 'views/auth/forgot_password_screen.dart';
 import 'views/auth/signup_screen.dart';
 import 'views/landing_screen.dart';
-
-// Widgets
-import 'widgets/home_scaffold.dart';
+import 'views/features/home/widgets/home_scaffold.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
