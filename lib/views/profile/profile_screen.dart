@@ -9,7 +9,7 @@ import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 // Views
-import 'package:recycle/views/profile/edit_profile.dart';
+import 'package:recycle/views/profile/edit_profile_screen.dart';
 
 // Widgets
 import 'widgets/profile_widget.dart';
