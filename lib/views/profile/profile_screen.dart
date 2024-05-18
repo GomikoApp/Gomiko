@@ -45,266 +45,268 @@ class ProfilePageState extends State<ProfilePage> {
 
     return Scaffold(
       backgroundColor: bgColor,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          SizedBox(height: windowHeight * 0.05),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Padding(
-              padding: EdgeInsets.only(left: windowWidth * 0.05),
-              child: const Text(
-                'Profile',
-                style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            SizedBox(height: windowHeight * 0.05),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: EdgeInsets.only(left: windowWidth * 0.05),
+                child: const Text(
+                  'Profile',
+                  style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+                ),
               ),
             ),
-          ),
 
-          // User Profile Row
-          Padding(
-            padding: const EdgeInsets.only(
-                top: 10.0, bottom: 10.0, left: 20.0, right: 20.0),
-            child: Container(
-              height: windowHeight * 0.1,
+            // User Profile Row
+            Padding(
+              padding: const EdgeInsets.only(
+                  top: 10.0, bottom: 10.0, left: 20.0, right: 20.0),
+              child: Container(
+                height: windowHeight * 0.1,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Center(
+                  child: ListTile(
+                    leading: const CircleAvatar(
+                      radius: 30,
+                      backgroundImage: NetworkImage(
+                          'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'),
+                    ),
+                    title: const Text("John Doe"),
+                    subtitle: const Text("johndoe@gmail.com"),
+                    trailing: IconButton(
+                      color: primaryGreen,
+                      icon: const Icon(Iconsax.edit),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                const EditProfile(title: "Edit Profile"),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            ),
+
+            // Stats Section
+            const Padding(
+              padding: EdgeInsets.only(left: 20.0, bottom: 5.0),
+              child: Text("My Stats",
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+            ),
+            Container(
+              margin: const EdgeInsets.only(left: 20, right: 20, bottom: 10.0),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: Center(
-                child: ListTile(
-                  leading: const CircleAvatar(
-                    radius: 30,
-                    backgroundImage: NetworkImage(
-                        'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'),
-                  ),
-                  title: const Text("John Doe"),
-                  subtitle: const Text("johndoe@gmail.com"),
-                  trailing: IconButton(
-                    color: primaryGreen,
-                    icon: const Icon(Iconsax.edit),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              const EditProfile(title: "Edit Profile"),
+              child: Padding(
+                padding: const EdgeInsets.all(30.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Column(
+                      children: <Widget>[
+                        Row(
+                          children: <Widget>[
+                            const Icon(
+                              Iconsax.star,
+                              size: 30,
+                              color: primaryGreen,
+                            ),
+                            SizedBox(width: windowWidth * 0.02),
+                            const Text("1200"),
+                          ],
                         ),
-                      );
-                    },
-                  ),
+                        SizedBox(height: windowHeight * 0.01),
+                        const Text("Total Points"),
+                      ],
+                    ),
+                    SizedBox(width: windowWidth * 0.05),
+                    Column(
+                      children: <Widget>[
+                        Row(
+                          children: <Widget>[
+                            const Icon(
+                              Iconsax.ranking_1,
+                              size: 30,
+                              color: primaryGreen,
+                            ),
+                            SizedBox(width: windowWidth * 0.02),
+                            const Text("43"),
+                          ],
+                        ),
+                        SizedBox(height: windowHeight * 0.01),
+                        const Text("Ranking"),
+                      ],
+                    ),
+                    SizedBox(width: windowWidth * 0.05),
+                    Column(
+                      children: <Widget>[
+                        Row(
+                          children: <Widget>[
+                            const Icon(
+                              Iconsax.layer,
+                              size: 30,
+                              color: primaryGreen,
+                            ),
+                            SizedBox(width: windowWidth * 0.02),
+                            const Text("83"),
+                          ],
+                        ),
+                        SizedBox(height: windowHeight * 0.01),
+                        const Text("Photos Taken"),
+                      ],
+                    ),
+                  ],
                 ),
               ),
             ),
-          ),
 
-          // Stats Section
-          const Padding(
-            padding: EdgeInsets.only(left: 20.0, bottom: 5.0),
-            child: Text("My Stats",
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-          ),
-          Container(
-            margin: const EdgeInsets.only(left: 20, right: 20, bottom: 10.0),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
+            // Collections Section
+            const Padding(
+              padding: EdgeInsets.only(left: 20.0, bottom: 5.0),
+              child: Text(
+                "Collections",
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
             ),
-            child: Padding(
-              padding: const EdgeInsets.all(30.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            Padding(
+              padding: const EdgeInsets.only(
+                left: 20.0,
+                right: 20.0,
+                bottom: 10.0,
+              ),
+              child: Column(
                 children: <Widget>[
-                  Column(
-                    children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          const Icon(
-                            Iconsax.star,
-                            size: 30,
-                            color: primaryGreen,
-                          ),
-                          SizedBox(width: windowWidth * 0.02),
-                          const Text("1200"),
-                        ],
-                      ),
-                      SizedBox(height: windowHeight * 0.01),
-                      const Text("Total Points"),
-                    ],
+                  // Liked Posts
+                  CustomInkWell(
+                    topRight: true,
+                    topLeft: true,
+                    // TODO: implement liked posts
+                    onTap: () {
+                      if (kDebugMode) print("Liked Posts");
+                    },
+                    leading: const Icon(Iconsax.camera),
+                    title: const Text("Liked Posts"),
+                    trailing: const Icon(Iconsax.arrow_right_3),
                   ),
-                  SizedBox(width: windowWidth * 0.05),
-                  Column(
-                    children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          const Icon(
-                            Iconsax.ranking_1,
-                            size: 30,
-                            color: primaryGreen,
-                          ),
-                          SizedBox(width: windowWidth * 0.02),
-                          const Text("43"),
-                        ],
-                      ),
-                      SizedBox(height: windowHeight * 0.01),
-                      const Text("Ranking"),
-                    ],
+
+                  Container(
+                    height: 2,
+                    color: Colors.grey[300],
                   ),
-                  SizedBox(width: windowWidth * 0.05),
-                  Column(
-                    children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          const Icon(
-                            Iconsax.layer,
-                            size: 30,
-                            color: primaryGreen,
-                          ),
-                          SizedBox(width: windowWidth * 0.02),
-                          const Text("83"),
-                        ],
-                      ),
-                      SizedBox(height: windowHeight * 0.01),
-                      const Text("Photos Taken"),
-                    ],
+
+                  // Saved Posts
+                  CustomInkWell(
+                    bottomRight: true,
+                    bottomLeft: true,
+                    // TODO: implement saved posts
+                    onTap: () {
+                      if (kDebugMode) print("Saved Posts");
+                    },
+                    leading: const Icon(Iconsax.archive_1),
+                    title: const Text("Saved Posts"),
+                    trailing: const Icon(Iconsax.arrow_right_3),
                   ),
                 ],
               ),
             ),
-          ),
 
-          // Collections Section
-          const Padding(
-            padding: EdgeInsets.only(left: 20.0, bottom: 5.0),
-            child: Text(
-              "Collections",
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            // Settings Section
+            const Padding(
+              padding: EdgeInsets.only(left: 20.0, bottom: 5.0),
+              child: Text("Settings",
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 20.0,
-              right: 20.0,
-              bottom: 10.0,
-            ),
-            child: Column(
-              children: <Widget>[
-                // Liked Posts
-                CustomInkWell(
-                  topRight: true,
-                  topLeft: true,
-                  // TODO: implement liked posts
-                  onTap: () {
-                    if (kDebugMode) print("Liked Posts");
-                  },
-                  leading: const Icon(Iconsax.camera),
-                  title: const Text("Liked Posts"),
-                  trailing: const Icon(Iconsax.arrow_right_3),
-                ),
-
-                Container(
-                  height: 2,
-                  color: Colors.grey[300],
-                ),
-
-                // Saved Posts
-                CustomInkWell(
-                  bottomRight: true,
-                  bottomLeft: true,
-                  // TODO: implement saved posts
-                  onTap: () {
-                    if (kDebugMode) print("Saved Posts");
-                  },
-                  leading: const Icon(Iconsax.archive_1),
-                  title: const Text("Saved Posts"),
-                  trailing: const Icon(Iconsax.arrow_right_3),
-                ),
-              ],
-            ),
-          ),
-
-          // Settings Section
-          const Padding(
-            padding: EdgeInsets.only(left: 20.0, bottom: 5.0),
-            child: Text("Settings",
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 20.0,
-              right: 20.0,
-              bottom: 10.0,
-            ),
-            child: Column(
-              children: <Widget>[
-                // Appearance
-                CustomInkWell(
-                  topRight: true,
-                  topLeft: true,
-                  // TODO: implement appearance
-                  onTap: () {
-                    if (kDebugMode) print("Appearance");
-                  },
-                  leading: const Icon(Iconsax.moon),
-                  title: const Text("Appearance"),
-                  trailing: const Icon(Iconsax.arrow_right_3),
-                ),
-
-                Container(
-                  height: 2,
-                  color: Colors.grey[300],
-                ),
-
-                // Login and Security
-                CustomInkWell(
-                  // TODO: implement login and security
-                  onTap: () {
-                    if (kDebugMode) print("Login and Security");
-                  },
-                  leading: const Icon(Iconsax.lock),
-                  title: const Text("Login and Security"),
-                  trailing: const Icon(Iconsax.arrow_right_3),
-                ),
-
-                Container(
-                  height: 2,
-                  color: Colors.grey[300],
-                ),
-
-                // Privacy
-                CustomInkWell(
-                  // TODO: implement privacy
-                  onTap: () {
-                    if (kDebugMode) print("Privacy");
-                  },
-                  leading: const Icon(Iconsax.information),
-                  title: const Text("Privacy"),
-                  trailing: const Icon(Iconsax.arrow_right_3),
-                ),
-
-                Container(
-                  height: 2,
-                  color: Colors.grey[300],
-                ),
-
-                // Sign Out
-                CustomInkWell(
-                  bottomLeft: true,
-                  bottomRight: true,
-                  onTap: () {
-                    if (kDebugMode) print("Sign Out");
-                    signOut();
-                  },
-                  leading: const Icon(Iconsax.logout),
-                  title: const Text(
-                    "Log Out",
-                    style: TextStyle(color: primaryRed),
+            Padding(
+              padding: const EdgeInsets.only(
+                left: 20.0,
+                right: 20.0,
+                bottom: 10.0,
+              ),
+              child: Column(
+                children: <Widget>[
+                  // Appearance
+                  CustomInkWell(
+                    topRight: true,
+                    topLeft: true,
+                    // TODO: implement appearance
+                    onTap: () {
+                      if (kDebugMode) print("Appearance");
+                    },
+                    leading: const Icon(Iconsax.moon),
+                    title: const Text("Appearance"),
+                    trailing: const Icon(Iconsax.arrow_right_3),
                   ),
-                  trailing: const Icon(Iconsax.arrow_right_3),
-                ),
-              ],
-            ),
-          )
-        ],
+
+                  Container(
+                    height: 2,
+                    color: Colors.grey[300],
+                  ),
+
+                  // Login and Security
+                  CustomInkWell(
+                    // TODO: implement login and security
+                    onTap: () {
+                      if (kDebugMode) print("Login and Security");
+                    },
+                    leading: const Icon(Iconsax.lock),
+                    title: const Text("Login and Security"),
+                    trailing: const Icon(Iconsax.arrow_right_3),
+                  ),
+
+                  Container(
+                    height: 2,
+                    color: Colors.grey[300],
+                  ),
+
+                  // Privacy
+                  CustomInkWell(
+                    // TODO: implement privacy
+                    onTap: () {
+                      if (kDebugMode) print("Privacy");
+                    },
+                    leading: const Icon(Iconsax.information),
+                    title: const Text("Privacy"),
+                    trailing: const Icon(Iconsax.arrow_right_3),
+                  ),
+
+                  Container(
+                    height: 2,
+                    color: Colors.grey[300],
+                  ),
+
+                  // Sign Out
+                  CustomInkWell(
+                    bottomLeft: true,
+                    bottomRight: true,
+                    onTap: () {
+                      if (kDebugMode) print("Sign Out");
+                      signOut();
+                    },
+                    leading: const Icon(Iconsax.logout),
+                    title: const Text(
+                      "Log Out",
+                      style: TextStyle(color: primaryRed),
+                    ),
+                    trailing: const Icon(Iconsax.arrow_right_3),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
