@@ -2,9 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:recycle/utils/data_classes.dart';
 
 class AuthService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   // Sign In With Google
   Future<UserCredential> signInWithGoogle() async {
@@ -22,7 +25,11 @@ class AuthService {
     );
 
     // Once signed in, return the UserCredential
-    return await FirebaseAuth.instance.signInWithCredential(credential);
+    final signInCred = await FirebaseAuth.instance.signInWithCredential(credential);
+
+    createUserDocument(signInCred);
+
+    return signInCred;
   }
 
   // Sign In With Facebook
@@ -30,10 +37,16 @@ class AuthService {
     final LoginResult result = await FacebookAuth.instance.login();
     if (result.status == LoginStatus.success) {
       final AccessToken accessToken = result.accessToken!;
+
       final facebookAuthCredential =
           FacebookAuthProvider.credential(accessToken.token);
-      return await FirebaseAuth.instance
+
+      final signInCred = await FirebaseAuth.instance
           .signInWithCredential(facebookAuthCredential);
+
+      createUserDocument(signInCred);
+      
+      return signInCred;
     } else {
       if (kDebugMode) print(result.status);
       if (kDebugMode) print(result.message);
@@ -67,6 +80,8 @@ class AuthService {
         await user.sendEmailVerification();
       }
 
+      createUserDocument(createUserResult);
+
       return createUserResult;
     } on FirebaseAuthException catch (e) {
       // Return the error message
@@ -76,7 +91,11 @@ class AuthService {
 
   Future<UserCredential?> signInAsAnonymousUser() async {
     try {
-      return await FirebaseAuth.instance.signInAnonymously();
+      final result = await FirebaseAuth.instance.signInAnonymously();
+
+      createUserDocument(result);
+
+      return result;
     } on FirebaseAuthException catch (e) {
       return Future.error(e.message ?? 'An unknown error occurred');
     }
@@ -87,5 +106,33 @@ class AuthService {
     await FirebaseAuth.instance.sendPasswordResetEmail(
       email: email.trim(),
     );
+  }
+
+  // Add user to users collection in Firestore
+  Future<DocumentReference> createUserDocument(UserCredential credential) async {
+    final User? user = credential.user;
+
+    // Check for duplicate user
+    final checkUserResponse = await _firestore.collection("/users")
+      .where("uid", isEqualTo: user?.uid)
+      .get()
+      .then((value) => value.docs.firstOrNull);
+
+    if (checkUserResponse != null) {
+      return checkUserResponse.reference;
+    }
+
+    // Get user data and create a new document
+    final userData = UserData(
+      uid: user?.uid,
+      email: user?.email,
+      oauthProvider: credential.credential?.signInMethod
+    ).toMap();
+
+    final response = await _firestore
+      .collection("/users")
+      .add(userData);
+
+    return response;
   }
 }
