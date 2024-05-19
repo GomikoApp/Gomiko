@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:recycle/constants.dart';
 import 'package:recycle/utils/firebase_options.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // Utils
 // import 'utils/app_state.dart';
@@ -26,6 +28,13 @@ Future<void> main() async {
   await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform);
 
+  // If local storage doesn't have a logged in key, initialize it to false.
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+
+  if (!prefs.containsKey(Constants.keyLoggedIn)) {
+    prefs.setBool(Constants.keyLoggedIn, false);
+  }
+
   runApp(
     const ProviderScope(
       child: MyApp()
@@ -41,8 +50,6 @@ class MyApp extends StatefulWidget {
 }
 
 class MyAppState extends State<MyApp> {
-  
-
   @override
   void initState() {
     super.initState();

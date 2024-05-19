@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:recycle/constants.dart';
 import 'package:recycle/views/features/home/community_screen.dart';
 import 'package:recycle/views/features/home/learn_screen.dart';
 
 // utils
-import 'package:recycle/utils/app_state.dart';
+import 'package:recycle/utils/providers/login_state_provider.dart';
 
 // views
 import 'package:recycle/views/features/home/home_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TabBarWidget extends ConsumerStatefulWidget {
   // title parameter is not necessary here, its just for testing.
@@ -31,6 +33,7 @@ class TabBarWidgetState extends ConsumerState<TabBarWidget> {
         context.replace('/login');
       });
     }
+
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
