@@ -46,7 +46,10 @@ class UserDataMapper extends ClassMapperBase<UserData> {
   static String? _$profilePictureUrl(UserData v) => v.profilePictureUrl;
   static const Field<UserData, String> _f$profilePictureUrl = Field(
       'profilePictureUrl', _$profilePictureUrl,
-      key: 'profile_picture_url', opt: true);
+      key: 'profile_picture_url',
+      opt: true,
+      def:
+          "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png");
   static String? _$profileUsername(UserData v) => v.profileUsername;
   static const Field<UserData, String> _f$profileUsername = Field(
       'profileUsername', _$profileUsername,
@@ -75,6 +78,8 @@ class UserDataMapper extends ClassMapperBase<UserData> {
     #savedPosts: _f$savedPosts,
   };
 
+  @override
+  final MappingHook hook = const CamelCaseHook();
   static UserData _instantiate(DecodingData data) {
     return UserData(
         uid: data.dec(_f$uid),
