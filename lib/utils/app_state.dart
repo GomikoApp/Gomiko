@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart'
     hide EmailAuthProvider, PhoneAuthProvider;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'firebase_options.dart';
 
@@ -13,14 +14,42 @@ import 'firebase_options.dart';
 
 // from https://firebase.google.com/codelabs/firebase-get-to-know-flutter?authuser=0#4
 /// This section is responsible for notifying listeners if the authentication state changes or not.
-class ApplicationState extends ChangeNotifier {
-  ApplicationState() {
+// class ApplicationState extends ChangeNotifier {
+//   ApplicationState() {
+//     init();
+//   }
+
+//   // FIREBASE AUTH VARS
+//   bool _loggedIn = false;
+//   bool get loggedIn => _loggedIn;
+
+//   Future<void> init() async {
+//     // FIREBASE AUTH START
+//     await Firebase.initializeApp(
+//         options: DefaultFirebaseOptions.currentPlatform);
+
+//     FirebaseAuth.instance.userChanges().listen((user) {
+//       if (user != null) {
+//         _loggedIn = true;
+//       } else {
+//         _loggedIn = false;
+//       }
+//       notifyListeners();
+//     });
+//     // FIREBASE AUTH END
+//   }
+// }
+
+
+final loginStateNotifier = 
+  StateNotifierProvider<LoginStateNotifier, bool>((ref) {
+    return LoginStateNotifier();
+});
+
+class LoginStateNotifier extends StateNotifier<bool> {
+  LoginStateNotifier() : super(false) {
     init();
   }
-
-  // FIREBASE AUTH VARS
-  bool _loggedIn = false;
-  bool get loggedIn => _loggedIn;
 
   Future<void> init() async {
     // FIREBASE AUTH START
@@ -29,11 +58,10 @@ class ApplicationState extends ChangeNotifier {
 
     FirebaseAuth.instance.userChanges().listen((user) {
       if (user != null) {
-        _loggedIn = true;
+        state = true;
       } else {
-        _loggedIn = false;
+        state = false;
       }
-      notifyListeners();
     });
     // FIREBASE AUTH END
   }

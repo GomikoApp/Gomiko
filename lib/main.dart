@@ -1,10 +1,12 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:recycle/utils/firebase_options.dart';
 
 // Utils
-import 'utils/app_state.dart';
+// import 'utils/app_state.dart';
 
 // Screens
 import 'views/auth/login_screen.dart';
@@ -21,7 +23,14 @@ Future<void> main() async {
   // Load environment variables
   await dotenv.load(fileName: '.env');
 
-  runApp(const MyApp());
+  await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform);
+
+  runApp(
+    const ProviderScope(
+      child: MyApp()
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {
@@ -32,28 +41,24 @@ class MyApp extends StatefulWidget {
 }
 
 class MyAppState extends State<MyApp> {
-  late ApplicationState _appState;
+  
 
   @override
   void initState() {
     super.initState();
-    _appState = ApplicationState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider.value(
-      value: _appState,
-      child: MaterialApp.router(
-        title: 'Gomiko',
-        debugShowCheckedModeBanner: false,
-        // theme: ThemeData(
-        //   colorScheme: ColorScheme.fromSeed(
-        //       seedColor: Colors.blue, secondary: Colors.red),
-        // ),
-        // darkTheme: ThemeData.dark(),
-        routerConfig: _router,
-      ),
+    return MaterialApp.router(
+      title: 'Gomiko',
+      debugShowCheckedModeBanner: false,
+      // theme: ThemeData(
+      //   colorScheme: ColorScheme.fromSeed(
+      //       seedColor: Colors.blue, secondary: Colors.red),
+      // ),
+      // darkTheme: ThemeData.dark(),
+      routerConfig: _router,
     );
   }
 }
