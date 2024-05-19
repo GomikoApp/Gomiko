@@ -11,13 +11,13 @@ import '../firebase_options.dart';
 /// Reference: https://riverpod.dev/docs/from_provider/provider_vs_riverpod
 /// To use this provider in your widgets, create a ConsumerStatefulWidget or ConsumerStatelessWidget
 /// and call ref.read() with the notifier you'd like to use.
-/// 
+///
 /// This should probably be persistent, actually.
-/// 
+///
 /// We have Shared Preferences for this now using Constants.keyLoggedIn
-final loginStateNotifier = 
-  StateNotifierProvider<LoginStateNotifier, bool>((ref) {
-    return LoginStateNotifier();
+final loginStateNotifier =
+    StateNotifierProvider<LoginStateNotifier, bool>((ref) {
+  return LoginStateNotifier();
 });
 
 class LoginStateNotifier extends StateNotifier<bool> {
@@ -31,13 +31,13 @@ class LoginStateNotifier extends StateNotifier<bool> {
         options: DefaultFirebaseOptions.currentPlatform);
     final prefs = await SharedPreferences.getInstance();
 
-    FirebaseAuth.instance.userChanges().listen((user) {
+    FirebaseAuth.instance.userChanges().listen((user) async {
       if (user != null) {
         state = true;
-        prefs.setBool(Constants.keyLoggedIn, true);
+        await prefs.setBool(Constants.keyLoggedIn, true);
       } else {
         state = false;
-        prefs.setBool(Constants.keyLoggedIn, false);
+        await prefs.setBool(Constants.keyLoggedIn, false);
       }
     });
     // FIREBASE AUTH END
