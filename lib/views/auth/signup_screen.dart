@@ -134,11 +134,12 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
-    double windowWidth = MediaQuery.of(context).size.width;
-
     // check if keyboard is open, if so, move the text up
     // https://stackoverflow.com/questions/56902559/how-to-detect-keyboard-open-in-flutter
     bool keyboardOpen = MediaQuery.of(context).viewInsets.bottom != 0.0;
+
+    double windowWidth = MediaQuery.of(context).size.width;
+    double windowHeight = MediaQuery.of(context).size.height;
 
     return Container(
       decoration: const BoxDecoration(
@@ -164,7 +165,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   duration: const Duration(milliseconds: 200),
                   opacity: keyboardOpen ? 0.0 : 1.0,
                   // ignore: prefer_const_constructors
-                  child: GomikoLogo(),
+                  child: windowHeight < 600 ? GomikoLogo() : Container(),
                 ),
 
                 // Changes the textSizedBoxHeight variable to 15 is keyboard is open, otherwise it is the default value

@@ -221,6 +221,7 @@ class _LoginPageState extends State<LoginPage> {
     double windowWidth = MediaQuery.of(context).size.width;
     double windowHeight = MediaQuery.of(context).size.height;
 
+    print("WindowHeight: ${windowHeight}");
     return Container(
       decoration: const BoxDecoration(
         color: Colors.white,
@@ -238,14 +239,14 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                SizedBox(height: windowHeight * 0.1),
+                // SizedBox(height: windowHeight * 0.1),
 
                 // Uncomment if we want the logo to be on the page
                 AnimatedOpacity(
                   duration: const Duration(milliseconds: 200),
                   opacity: keyboardOpen ? 0.0 : 1.0,
                   // ignore: prefer_const_constructors
-                  child: GomikoLogo(),
+                  child: windowHeight < 700 ? GomikoLogo() : Container(),
                 ),
 
                 // Changes the textSizedBoxHeight variable to 15 is keyboard is open, otherwise it is the default value
