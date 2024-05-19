@@ -13,11 +13,11 @@ import 'package:recycle/utils/data_classes.dart';
 import 'package:recycle/utils/providers/login_state_provider.dart';
 
 
-/// This state notifier maintains a global cache of the profile data of the currently logged in user for our app.
-/// Reference: https://riverpod.dev/docs/from_provider/provider_vs_riverpod
+/// This state notifier maintains a global cache of the profile data of the currently logged in user for our app.<br>
+/// Reference: https://riverpod.dev/docs/from_provider/provider_vs_riverpod 
+/// 
 /// To use this provider in your widgets, create a ConsumerStatefulWidget or ConsumerStatelessWidget
-/// and call ref.read() with the notifier you'd like to use.
-
+/// and call ref.read(userDataNotifier) if you want to get the user data, or ref.read(userDataNotifier.notifier) if you want to call its refresh function.
 final userDataNotifier = 
   StateNotifierProvider<UserDataStateNotifier, UserData>((ref) {
     return UserDataStateNotifier();
@@ -31,6 +31,9 @@ class UserDataStateNotifier extends StateNotifier<UserData> {
     refreshData();
   }
 
+  /// Refreshes the current user's profile data as long as the user exists.
+  /// 
+  /// NOTE: This function will CATCH AND IGNORE any permissions errors and just not update the state.
   void refreshData() async {
     User? user = FirebaseAuth.instance.currentUser;
     final bool loggedIn = container.read(loginStateNotifier);
