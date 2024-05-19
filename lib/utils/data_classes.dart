@@ -7,7 +7,7 @@
   and reflected by the users collection on Firestore so we can create type-safe
   document CRUD requests to the Firestore Database.
   
-  - Authored by Anthony
+  - Authored by Anthony 05/18/24
 */
 
 import 'package:cloud_firestore/cloud_firestore.dart';
