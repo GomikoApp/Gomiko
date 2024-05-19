@@ -1,36 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 import 'package:recycle/views/features/home/community_screen.dart';
 import 'package:recycle/views/features/home/learn_screen.dart';
 
 // utils
-import 'package:recycle/utils/app_state.dart';
+import 'package:recycle/utils/providers/login_state_provider.dart';
 
 // views
 import 'package:recycle/views/features/home/home_screen.dart';
 
-class TabBarWidget extends StatefulWidget {
+class TabBarWidget extends ConsumerStatefulWidget {
   // title parameter is not necessary here, its just for testing.
   const TabBarWidget({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
   @override
-  State<StatefulWidget> createState() => TabBarWidgetState();
+  ConsumerState<ConsumerStatefulWidget> createState() => TabBarWidgetState();
 }
 
-class TabBarWidgetState extends State<TabBarWidget> {
+class TabBarWidgetState extends ConsumerState<TabBarWidget> {
   @override
   Widget build(BuildContext context) {
-    var appState = context.watch<ApplicationState>();
+    final loginState = ref.read(loginStateNotifier);
 
     // Check if user is logged in, if not, push login page to screen.
-    if (!appState.loggedIn) {
+    if (!loginState) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         context.replace('/login');
       });
     }
+
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,

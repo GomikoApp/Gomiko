@@ -194,7 +194,7 @@ class _LoginPageState extends State<LoginPage> {
                   // add spacing and push to bottom of screen
                   AnimatedContainer(
                       duration: const Duration(milliseconds: 200),
-                      height: keyboardOpen ? 50 : windowHeight / 5),
+                      height: keyboardOpen ? 50 : windowHeight / 8),
 
                   const GomikoTextDivider(
                     label: "Or Log in with",
@@ -230,49 +230,47 @@ class _LoginPageState extends State<LoginPage> {
       ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        body: SingleChildScrollView(
-          child: AnimatedPadding(
-            padding: EdgeInsets.only(top: keyboardOpen ? 0.0 : 20.0),
-            duration: const Duration(milliseconds: 200),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                SizedBox(height: windowHeight * 0.1),
-
-                // Uncomment if we want the logo to be on the page
-                AnimatedOpacity(
-                  duration: const Duration(milliseconds: 200),
-                  opacity: keyboardOpen ? 0.0 : 1.0,
-                  // ignore: prefer_const_constructors
-                  child: GomikoLogo(),
+        body: AnimatedPadding(
+          padding: EdgeInsets.only(top: keyboardOpen ? 0.0 : 20.0),
+          duration: const Duration(milliseconds: 200),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              SizedBox(height: windowHeight * 0.1),
+        
+              // Uncomment if we want the logo to be on the page
+              AnimatedOpacity(
+                duration: const Duration(milliseconds: 200),
+                opacity: keyboardOpen ? 0.0 : 1.0,
+                // ignore: prefer_const_constructors
+                child: GomikoLogo(),
+              ),
+        
+              // Changes the textSizedBoxHeight variable to 15 is keyboard is open, otherwise it is the default value
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                height: keyboardOpen ? 0 : textSizedBoxHeight,
+              ),
+        
+              AnimatedPadding(
+                padding: EdgeInsets.only(top: keyboardOpen ? 0.0 : 15.0),
+                duration: const Duration(milliseconds: 200),
+                child: const CustomRichText(
+                  text: 'Login',
+                  color: Colors.black,
+                  fontSize: 32,
+                  fontWeight: FontWeight.w700,
                 ),
-
-                // Changes the textSizedBoxHeight variable to 15 is keyboard is open, otherwise it is the default value
-                AnimatedContainer(
-                  duration: const Duration(milliseconds: 200),
-                  height: keyboardOpen ? 0 : textSizedBoxHeight,
-                ),
-
-                AnimatedPadding(
-                  padding: EdgeInsets.only(top: keyboardOpen ? 0.0 : 15.0),
-                  duration: const Duration(milliseconds: 200),
-                  child: const CustomRichText(
-                    text: 'Login',
-                    color: Colors.black,
-                    fontSize: 32,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-
-                // Changes the textSizedBoxHeight variable to 5 is keyboard is open, otherwise it is the default value
-                AnimatedContainer(
-                  duration: const Duration(milliseconds: 200),
-                  height: keyboardOpen ? 0 : textSizedBoxHeight - 30,
-                ),
-
-                _buildForm(windowWidth, windowHeight, keyboardOpen),
-              ],
-            ),
+              ),
+        
+              // Changes the textSizedBoxHeight variable to 5 is keyboard is open, otherwise it is the default value
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                height: keyboardOpen ? 0 : textSizedBoxHeight - 30,
+              ),
+        
+              _buildForm(windowWidth, windowHeight, keyboardOpen),
+            ],
           ),
         ),
       ),
