@@ -84,9 +84,10 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
                     leading: CircleAvatar(
                       radius: 30,
                       backgroundImage: NetworkImage(
-                        profileData.profilePictureUrl ?? ""),
+                        profileData.profilePictureUrl ?? "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"),
                       ),
                     title: Text(profileData.profileUsername ?? "J. Doe"),
+                    // NOTE: What should we put here if the email doesn't exist?
                     subtitle: Text(profileData.email ?? ""),
                     trailing: IconButton(
                       color: primaryGreen,
