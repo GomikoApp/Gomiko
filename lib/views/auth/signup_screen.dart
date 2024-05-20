@@ -165,7 +165,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   duration: const Duration(milliseconds: 200),
                   opacity: keyboardOpen ? 0.0 : 1.0,
                   // ignore: prefer_const_constructors
-                  child: windowHeight < 600 ? GomikoLogo() : Container(),
+                  child: windowHeight > 600 ? GomikoLogo() : Container(),
                 ),
 
                 // Changes the textSizedBoxHeight variable to 15 is keyboard is open, otherwise it is the default value

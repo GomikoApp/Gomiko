@@ -197,6 +197,10 @@ class _LoginPageState extends State<LoginPage> {
                       duration: const Duration(milliseconds: 200),
                       height: keyboardOpen ? 50 : windowHeight / 8),
 
+                  windowHeight > 800
+                      ? SizedBox(height: windowHeight * 0.1)
+                      : Container(),
+
                   const GomikoTextDivider(
                     label: "Or Log in with",
                     labelSize: 13.5,
@@ -244,7 +248,7 @@ class _LoginPageState extends State<LoginPage> {
                   duration: const Duration(milliseconds: 200),
                   opacity: keyboardOpen ? 0.0 : 1.0,
                   // ignore: prefer_const_constructors
-                  child: windowHeight < 700 ? GomikoLogo() : Container(),
+                  child: windowHeight > 800 ? GomikoLogo() : Container(),
                 ),
 
                 // Changes the textSizedBoxHeight variable to 15 is keyboard is open, otherwise it is the default value
