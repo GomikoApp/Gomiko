@@ -23,10 +23,10 @@ class TabBarWidget extends ConsumerStatefulWidget {
 class TabBarWidgetState extends ConsumerState<TabBarWidget> {
   @override
   Widget build(BuildContext context) {
-    final loginState = ref.read(loginStateNotifier);
+    var appState = ref.watch(applicationStateProvider);
 
     // Check if user is logged in, if not, push login page to screen.
-    if (!loginState) {
+    if (!appState.loggedIn) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         context.replace('/login');
       });

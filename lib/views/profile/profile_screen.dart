@@ -34,14 +34,12 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
   bool dark = false;
   @override
   Widget build(BuildContext context) {
-    // Automatically refresh the data whenever this widget is built
-    ref.read(userDataNotifier.notifier).refreshData();
-    final profileData = ref.watch(userDataNotifier);
+    // retrieve user data from the provider
+    final profileData = ref.watch(userDataProvider);
 
     double windowWidth = MediaQuery.of(context).size.width;
     double windowHeight = MediaQuery.of(context).size.height;
 
-    // TODO: Design the sighout settings and call signOut() function
     Future<void> signOut() async {
       await FirebaseAuth.instance.signOut();
       await GoogleSignIn().signOut();
@@ -88,7 +86,7 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
                           "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"),
                     ),
                     title: Text(profileData.profileUsername ?? "J. Doe"),
-                    subtitle: const Text("johndoe@gmail.com"),
+                    subtitle: Text(profileData.email ?? "No email"),
                     trailing: IconButton(
                       color: primaryGreen,
                       icon: const Icon(Iconsax.edit),
@@ -134,7 +132,6 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
                               color: primaryGreen,
                             ),
                             SizedBox(width: windowWidth * 0.02),
-                            // NOTE: might be wrong
                             Text(profileData.points.toString()),
                           ],
                         ),

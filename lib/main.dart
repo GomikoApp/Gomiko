@@ -1,20 +1,20 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:recycle/constants.dart';
-import 'package:recycle/utils/firebase_options.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-// Utils
-// import 'utils/app_state.dart';
+// riverpod
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+// utils
+import 'utils/providers/login_state_provider.dart';
 
 // Screens
 import 'views/auth/login_screen.dart';
 import 'views/auth/forgot_password_screen.dart';
 import 'views/auth/signup_screen.dart';
 import 'views/landing_screen.dart';
+
+// Widgets
 import 'views/features/home/widgets/home_scaffold.dart';
 
 Future<void> main() async {
@@ -23,31 +23,21 @@ Future<void> main() async {
   // Load environment variables
   await dotenv.load(fileName: '.env');
 
-  await Firebase.initializeApp(
-        options: DefaultFirebaseOptions.currentPlatform);
-
-  // If local storage doesn't have a logged in key, initialize it to false.
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-
-  if (!prefs.containsKey(Constants.keyLoggedIn)) {
-    prefs.setBool(Constants.keyLoggedIn, false);
-  }
-
   runApp(
     const ProviderScope(
-      child: MyApp()
+      child: MyApp(),
     ),
   );
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends ConsumerStatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => MyAppState();
+  ConsumerState<ConsumerStatefulWidget> createState() => MyAppState();
 }
 
-class MyAppState extends State<MyApp> {
+class MyAppState extends ConsumerState<MyApp> {
   @override
   void initState() {
     super.initState();
@@ -55,6 +45,9 @@ class MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: unused_local_variable
+    final appState = ref.watch(applicationStateProvider);
+
     return MaterialApp.router(
       title: 'Gomiko',
       debugShowCheckedModeBanner: false,
