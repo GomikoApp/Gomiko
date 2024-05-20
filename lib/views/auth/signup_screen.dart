@@ -158,14 +158,16 @@ class _SignUpPageState extends State<SignUpPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                const SizedBox(height: 40),
+                windowHeight > 800
+                    ? SizedBox(height: windowHeight * 0.1)
+                    : const SizedBox(height: 40),
 
                 // Uncomment if we want the logo to be on the page
                 AnimatedOpacity(
                   duration: const Duration(milliseconds: 200),
                   opacity: keyboardOpen ? 0.0 : 1.0,
                   // ignore: prefer_const_constructors
-                  child: windowHeight > 600 ? GomikoLogo() : Container(),
+                  child: windowHeight > 800 ? GomikoLogo() : Container(),
                 ),
 
                 // Changes the textSizedBoxHeight variable to 15 is keyboard is open, otherwise it is the default value
