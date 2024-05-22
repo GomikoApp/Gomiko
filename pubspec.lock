@@ -210,7 +210,7 @@ packages:
     source: hosted
     version: "1.0.6"
   dart_mappable:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: dart_mappable
       sha256: "47269caf2060533c29b823ff7fa9706502355ffcb61e7f2a374e3a0fb2f2c3f0"

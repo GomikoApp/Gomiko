@@ -15,7 +15,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recycle/utils/data_classes.dart';
 import 'package:recycle/utils/providers/login_state_provider.dart';
 
-final userDataStreamProvider = StreamProvider<UserData>((ref) {
+final userDataStreamProvider = StreamProvider<Map<String, dynamic>>((ref) {
   final User? user = FirebaseAuth.instance.currentUser;
   final bool loggedIn = ref.watch(applicationStateProvider).loggedIn;
 
@@ -25,17 +25,16 @@ final userDataStreamProvider = StreamProvider<UserData>((ref) {
         .where("uid", isEqualTo: user!.uid)
         .snapshots()
         .map((snapshot) {
-      final profileData = snapshot.docs[0].data();
-      return UserDataMapper.fromMap(profileData);
+      return snapshot.docs[0].data();
     });
   } else {
-    return Stream.value(UserData());
+    return Stream.value(UserData.asMap());
   }
 });
 
-final userDataProvider = Provider<UserData>((ref) {
+final userDataProvider = Provider<Map<String, dynamic>>((ref) {
   return ref.watch(userDataStreamProvider).maybeWhen(
         data: (userData) => userData,
-        orElse: () => UserData(),
+        orElse: () => UserData.asMap(),
       );
 });

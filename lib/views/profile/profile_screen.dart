@@ -8,6 +8,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:recycle/utils/data_classes.dart';
 
 // Utils
 import 'package:recycle/utils/providers/user_data_provider.dart';
@@ -83,12 +84,11 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
                   child: ListTile(
                     leading: CircleAvatar(
                       radius: 30,
-                      backgroundImage: NetworkImage(profileData
-                              .profilePictureUrl ??
+                      backgroundImage: NetworkImage(profileData[UserData.keyProfilePictureUrl] ??
                           "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"),
                     ),
-                    title: Text(profileData.profileUsername ?? "J. Doe"),
-                    subtitle: Text(profileData.email ?? "No email"),
+                    title: Text(profileData[UserData.keyProfileUsername] ?? "J. Doe"),
+                    subtitle: Text(profileData[UserData.keyEmail] ?? "No email"),
                     trailing: IconButton(
                       color: primaryGreen,
                       icon: const Icon(Iconsax.edit),
@@ -134,7 +134,7 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
                               color: primaryGreen,
                             ),
                             SizedBox(width: windowWidth * 0.02),
-                            Text(profileData.points.toString()),
+                            Text(profileData[UserData.keyPoints].toString()),
                           ],
                         ),
                         SizedBox(height: windowHeight * 0.01),
