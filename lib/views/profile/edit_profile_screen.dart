@@ -1,5 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:recycle/utils/data_classes.dart';
+import 'package:recycle/utils/providers/user_data_provider.dart';
 
 // widgets
 import 'widgets/profile_widget.dart';
@@ -7,19 +10,21 @@ import 'widgets/profile_widget.dart';
 // constants
 import '../../constants.dart';
 
-class EditProfile extends StatefulWidget {
+class EditProfile extends ConsumerStatefulWidget {
   const EditProfile({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
   @override
-  State<EditProfile> createState() => _EditProfileState();
+  ConsumerState<EditProfile> createState() => _EditProfileState();
 }
 
-class _EditProfileState extends State<EditProfile> {
+class _EditProfileState extends ConsumerState<EditProfile> {
   @override
   Widget build(BuildContext context) {
     double windowWidth = MediaQuery.of(context).size.width;
+
+    final profileData = ref.watch(userDataProvider);
 
     return Scaffold(
       backgroundColor: bgColor,
@@ -51,9 +56,10 @@ class _EditProfileState extends State<EditProfile> {
                       onTap: () {
                         if (kDebugMode) print("Profile Picture Tapped");
                       },
-                      child: const CircleAvatar(
+                      child: CircleAvatar(
                         radius: 70,
                         backgroundImage: NetworkImage(
+                          profileData[UserData.keyProfilePictureUrl] ??
                           'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
                         ),
                       ),
