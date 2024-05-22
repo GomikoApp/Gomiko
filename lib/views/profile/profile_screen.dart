@@ -8,10 +8,10 @@ import 'package:iconsax/iconsax.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:recycle/utils/data_classes.dart';
 
 // Utils
 import 'package:recycle/utils/providers/user_data_provider.dart';
+import 'package:recycle/utils/data_classes.dart';
 
 // Views
 import 'package:recycle/views/profile/edit_profile_screen.dart';
@@ -37,8 +37,6 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
   Widget build(BuildContext context) {
     // retrieve user data from the provider
     final profileData = ref.watch(userDataProvider);
-
-    print("profileData: $profileData");
 
     double windowWidth = MediaQuery.of(context).size.width;
     double windowHeight = MediaQuery.of(context).size.height;
@@ -84,11 +82,14 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
                   child: ListTile(
                     leading: CircleAvatar(
                       radius: 30,
-                      backgroundImage: NetworkImage(profileData[UserData.keyProfilePictureUrl] ??
+                      backgroundImage: NetworkImage(profileData[
+                              UserData.keyProfilePictureUrl] ??
                           "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"),
                     ),
-                    title: Text(profileData[UserData.keyProfileUsername] ?? "J. Doe"),
-                    subtitle: Text(profileData[UserData.keyEmail] ?? "No email"),
+                    title: Text(
+                        profileData[UserData.keyProfileUsername] ?? "J. Doe"),
+                    subtitle:
+                        Text(profileData[UserData.keyEmail] ?? "No email"),
                     trailing: IconButton(
                       color: primaryGreen,
                       icon: const Icon(Iconsax.edit),

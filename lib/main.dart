@@ -47,6 +47,40 @@ class MyAppState extends ConsumerState<MyApp> {
   Widget build(BuildContext context) {
     // ignore: unused_local_variable
     final appState = ref.watch(applicationStateProvider);
+    final initialLocation = appState.loggedIn ? '/home' : '/';
+
+    final router = GoRouter(
+      initialLocation: initialLocation,
+      routes: [
+        // This is where the default page goes
+        GoRoute(
+            path: '/',
+            builder: (context, state) {
+              return const LandingPage();
+            }),
+        GoRoute(
+            path: '/home',
+            builder: (context, state) {
+              return const HomeScaffold();
+            }),
+        GoRoute(
+            path: '/login',
+            builder: (context, state) {
+              return const LoginPage();
+            }),
+        GoRoute(
+            path: '/signup',
+            builder: (context, state) {
+              return const SignUpPage();
+            }),
+        GoRoute(
+          path: '/forgot-password',
+          builder: (context, state) {
+            return const ForgotPasswordPage();
+          },
+        ),
+      ],
+    );
 
     return MaterialApp.router(
       title: 'Gomiko',
@@ -56,37 +90,41 @@ class MyAppState extends ConsumerState<MyApp> {
       //       seedColor: Colors.blue, secondary: Colors.red),
       // ),
       // darkTheme: ThemeData.dark(),
-      routerConfig: _router,
+      routerConfig: router,
     );
   }
 }
 
-final _router = GoRouter(
-  routes: [
-    // This is where the default page goes
-    GoRoute(
-      path: '/',
-      builder: (context, state) => const LandingPage(),
-    ),
-    GoRoute(
-      path: '/home',
-      builder: (context, state) => const HomeScaffold(),
-    ),
-    GoRoute(
-        path: '/login',
-        builder: (context, state) {
-          return const LoginPage();
-        }),
-    GoRoute(
-        path: '/signup',
-        builder: (context, state) {
-          return const SignUpPage();
-        }),
-    GoRoute(
-        path: '/forgot-password',
-        builder: (context, state) {
-          return const ForgotPasswordPage();
-        })
-  ],
-);
+// final _router = GoRouter(
+//   initialLocation: initialLocation,
+//   routes: [
+//     // This is where the default page goes
+//     GoRoute(
+//         path: '/',
+//         builder: (context, state) {
+//           return const LandingPage();
+//         }),
+//     GoRoute(
+//         path: '/home',
+//         builder: (context, state) {
+//           return const HomeScaffold();
+//         }),
+//     GoRoute(
+//         path: '/login',
+//         builder: (context, state) {
+//           return const LoginPage();
+//         }),
+//     GoRoute(
+//         path: '/signup',
+//         builder: (context, state) {
+//           return const SignUpPage();
+//         }),
+//     GoRoute(
+//       path: '/forgot-password',
+//       builder: (context, state) {
+//         return const ForgotPasswordPage();
+//       },
+//     ),
+//   ],
+// );
 // end of GoRouter configuration

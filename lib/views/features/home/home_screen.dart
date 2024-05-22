@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class HomeTab extends StatefulWidget {
+import 'package:recycle/utils/providers/user_data_provider.dart';
+import 'package:recycle/utils/data_classes.dart';
+
+class HomeTab extends ConsumerStatefulWidget {
   const HomeTab({Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _MyHomeState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _MyHomeState();
 }
 
-class _MyHomeState extends State<HomeTab> {
+class _MyHomeState extends ConsumerState<HomeTab> {
   List<String> categories = [
     'Plastic',
     'Recyclable',
@@ -21,6 +25,8 @@ class _MyHomeState extends State<HomeTab> {
 
   @override
   Widget build(BuildContext context) {
+    final userData = ref.watch(userDataProvider);
+
     return Scaffold(
       body: Column(
         children: <Widget>[
@@ -28,17 +34,18 @@ class _MyHomeState extends State<HomeTab> {
             height: 20,
           ),
           // Welcome User Row
-          const Padding(
-            padding: EdgeInsets.only(left: 20.0),
+          Padding(
+            padding: const EdgeInsets.only(left: 20.0),
             child: Row(
               children: <Widget>[
-                Text(
+                const Text(
                   'Hi, ',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  'User!',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  userData[UserData.keyProfileUsername] ?? "J. Doe",
+                  style: const TextStyle(
+                      fontSize: 24, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
