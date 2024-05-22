@@ -18,6 +18,7 @@ import 'package:recycle/utils/providers/login_state_provider.dart';
 final userDataStreamProvider = StreamProvider<UserData>((ref) {
   final User? user = FirebaseAuth.instance.currentUser;
   final bool loggedIn = ref.watch(applicationStateProvider).loggedIn;
+
   if (loggedIn) {
     return FirebaseFirestore.instance
         .collection("/users")

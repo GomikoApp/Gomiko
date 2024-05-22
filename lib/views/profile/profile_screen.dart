@@ -37,6 +37,8 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
     // retrieve user data from the provider
     final profileData = ref.watch(userDataProvider);
 
+    print("profileData: $profileData");
+
     double windowWidth = MediaQuery.of(context).size.width;
     double windowHeight = MediaQuery.of(context).size.height;
 
