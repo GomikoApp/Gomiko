@@ -40,7 +40,7 @@ class AuthService {
       final AccessToken accessToken = result.accessToken!;
 
       final facebookAuthCredential =
-          FacebookAuthProvider.credential(accessToken.token);
+          FacebookAuthProvider.credential(accessToken.tokenString);
 
       final signInCred = await FirebaseAuth.instance
           .signInWithCredential(facebookAuthCredential);
@@ -127,12 +127,12 @@ class AuthService {
 
     // Get user data and create a new document
     final userData = UserData.asMap(
-            uid: user?.uid,
-            email: user?.email,
-            name: user?.displayName,
-            profilePictureUrl: user?.photoURL,
-            profileUsername: user?.displayName,
-            oauthProvider: credential.credential?.signInMethod);
+        uid: user?.uid,
+        email: user?.email,
+        name: user?.displayName,
+        profilePictureUrl: user?.photoURL,
+        profileUsername: user?.displayName,
+        oauthProvider: credential.credential?.signInMethod);
 
     final response = await _firestore.collection("/users").add(userData);
 
