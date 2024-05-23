@@ -7,11 +7,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../../services/auth_services.dart';
 
 // Widgets
-import '../../widgets/login_signup_widgets.dart';
-import '../../widgets/logo.dart';
-import '../../widgets/custom_rich_text.dart';
-import '../../widgets/error_text.dart';
-import '../../widgets/social_media_auth.dart';
+import 'widgets/login_signup_widgets.dart';
+import 'widgets/logo.dart';
+import 'widgets/social_media_auth.dart';
+import 'widgets/custom_rich_text.dart';
+import 'widgets/error_text.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -110,6 +110,7 @@ class _LoginPageState extends State<LoginPage> {
             if (kDebugMode) print("Facebook Sign In");
           },
         ),
+        SizedBox(height: formSizedBoxHeight),
       ],
     );
   }
@@ -196,6 +197,10 @@ class _LoginPageState extends State<LoginPage> {
                       duration: const Duration(milliseconds: 200),
                       height: keyboardOpen ? 50 : windowHeight / 8),
 
+                  windowHeight > 800
+                      ? SizedBox(height: windowHeight * 0.1)
+                      : Container(),
+
                   const GomikoTextDivider(
                     label: "Or Log in with",
                     labelSize: 13.5,
@@ -233,44 +238,47 @@ class _LoginPageState extends State<LoginPage> {
         body: AnimatedPadding(
           padding: EdgeInsets.only(top: keyboardOpen ? 0.0 : 20.0),
           duration: const Duration(milliseconds: 200),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              SizedBox(height: windowHeight * 0.1),
-        
-              // Uncomment if we want the logo to be on the page
-              AnimatedOpacity(
-                duration: const Duration(milliseconds: 200),
-                opacity: keyboardOpen ? 0.0 : 1.0,
-                // ignore: prefer_const_constructors
-                child: GomikoLogo(),
-              ),
-        
-              // Changes the textSizedBoxHeight variable to 15 is keyboard is open, otherwise it is the default value
-              AnimatedContainer(
-                duration: const Duration(milliseconds: 200),
-                height: keyboardOpen ? 0 : textSizedBoxHeight,
-              ),
-        
-              AnimatedPadding(
-                padding: EdgeInsets.only(top: keyboardOpen ? 0.0 : 15.0),
-                duration: const Duration(milliseconds: 200),
-                child: const CustomRichText(
-                  text: 'Login',
-                  color: Colors.black,
-                  fontSize: 32,
-                  fontWeight: FontWeight.w700,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                windowHeight > 800
+                    ? SizedBox(height: windowHeight * 0.1)
+                    : const SizedBox(height: 40),
+
+                AnimatedOpacity(
+                  duration: const Duration(milliseconds: 200),
+                  opacity: keyboardOpen ? 0.0 : 1.0,
+                  // ignore: prefer_const_constructors
+                  child: windowHeight > 800 ? GomikoLogo() : Container(),
                 ),
-              ),
-        
-              // Changes the textSizedBoxHeight variable to 5 is keyboard is open, otherwise it is the default value
-              AnimatedContainer(
-                duration: const Duration(milliseconds: 200),
-                height: keyboardOpen ? 0 : textSizedBoxHeight - 30,
-              ),
-        
-              _buildForm(windowWidth, windowHeight, keyboardOpen),
-            ],
+
+                // Changes the textSizedBoxHeight variable to 15 is keyboard is open, otherwise it is the default value
+                AnimatedContainer(
+                  duration: const Duration(milliseconds: 200),
+                  height: keyboardOpen ? 0 : textSizedBoxHeight - 30,
+                ),
+
+                AnimatedPadding(
+                  padding: EdgeInsets.only(top: keyboardOpen ? 0.0 : 15.0),
+                  duration: const Duration(milliseconds: 200),
+                  child: const CustomRichText(
+                    text: 'Login',
+                    color: Colors.black,
+                    fontSize: 32,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+
+                // Changes the textSizedBoxHeight variable to 5 is keyboard is open, otherwise it is the default value
+                AnimatedContainer(
+                  duration: const Duration(milliseconds: 200),
+                  height: keyboardOpen ? 0 : textSizedBoxHeight - 30,
+                ),
+
+                _buildForm(windowWidth, windowHeight, keyboardOpen),
+              ],
+            ),
           ),
         ),
       ),

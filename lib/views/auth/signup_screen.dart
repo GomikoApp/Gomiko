@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-// Widgets
+// utilities
 import '../../services/auth_services.dart';
-import '../../widgets/logo.dart';
-import '../../widgets/login_signup_widgets.dart';
-import '../../widgets/custom_rich_text.dart';
-import '../../widgets/error_text.dart';
+
+// widgets
+import 'widgets/login_signup_widgets.dart';
+import 'widgets/custom_rich_text.dart';
+import 'widgets/logo.dart';
+import 'widgets/error_text.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -132,11 +134,12 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
-    double windowWidth = MediaQuery.of(context).size.width;
-
     // check if keyboard is open, if so, move the text up
     // https://stackoverflow.com/questions/56902559/how-to-detect-keyboard-open-in-flutter
     bool keyboardOpen = MediaQuery.of(context).viewInsets.bottom != 0.0;
+
+    double windowWidth = MediaQuery.of(context).size.width;
+    double windowHeight = MediaQuery.of(context).size.height;
 
     return Container(
       decoration: const BoxDecoration(
@@ -155,14 +158,16 @@ class _SignUpPageState extends State<SignUpPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                const SizedBox(height: 40),
+                windowHeight > 800
+                    ? SizedBox(height: windowHeight * 0.1)
+                    : const SizedBox(height: 40),
 
                 // Uncomment if we want the logo to be on the page
                 AnimatedOpacity(
                   duration: const Duration(milliseconds: 200),
                   opacity: keyboardOpen ? 0.0 : 1.0,
                   // ignore: prefer_const_constructors
-                  child: GomikoLogo(),
+                  child: windowHeight > 800 ? GomikoLogo() : Container(),
                 ),
 
                 // Changes the textSizedBoxHeight variable to 15 is keyboard is open, otherwise it is the default value

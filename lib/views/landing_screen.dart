@@ -1,7 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:recycle/widgets/login_signup_widgets.dart';
+
+// widgets
+import 'auth/widgets/login_signup_widgets.dart';
 
 class LandingPage extends StatelessWidget {
   const LandingPage({super.key});

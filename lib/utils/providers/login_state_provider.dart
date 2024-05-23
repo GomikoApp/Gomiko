@@ -1,45 +1,48 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:firebase_auth/firebase_auth.dart'
     hide EmailAuthProvider, PhoneAuthProvider;
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:recycle/constants.dart';
+import 'package:flutter/material.dart';
 
-import '../firebase_options.dart';
+import 'package:recycle/utils/firebase_options.dart';
 
-/// This state notifier maintains a global login state variable for our app.
-/// Reference: https://riverpod.dev/docs/from_provider/provider_vs_riverpod
-/// To use this provider in your widgets, create a ConsumerStatefulWidget or ConsumerStatelessWidget
-/// and call ref.read() with the notifier you'd like to use.
-/// 
-/// This should probably be persistent, actually.
-/// 
-/// We have Shared Preferences for this now using Constants.keyLoggedIn
-final loginStateNotifier = 
-  StateNotifierProvider<LoginStateNotifier, bool>((ref) {
-    return LoginStateNotifier();
-});
+/// This change notifier maintains a global state for the app.
+/// Reference: https://docs.flutter.dev/data-and-backend/state-mgmt/simple
+/// In this change notifier, put anything that you want to be accessible throughout the whole app.
+/// Then, in your widgets, you can create a variable that watches the root widget's change notifier state
+/// using 'BuildContext.watch<ApplicationState>()'
 
-class LoginStateNotifier extends StateNotifier<bool> {
-  LoginStateNotifier() : super(false) {
+// from https://firebase.google.com/codelabs/firebase-get-to-know-flutter?authuser=0#4
+/// This section is responsible for notifying listeners if the authentication state changes or not.
+class ApplicationState extends ChangeNotifier {
+  ApplicationState() {
     init();
   }
+
+  // FIREBASE AUTH VARS
+  bool _loggedIn = false;
+  bool get loggedIn => _loggedIn;
 
   Future<void> init() async {
     // FIREBASE AUTH START
     await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform);
-    final prefs = await SharedPreferences.getInstance();
 
     FirebaseAuth.instance.userChanges().listen((user) {
       if (user != null) {
-        state = true;
-        prefs.setBool(Constants.keyLoggedIn, true);
+        _loggedIn = true;
       } else {
-        state = false;
-        prefs.setBool(Constants.keyLoggedIn, false);
+        _loggedIn = false;
       }
+      notifyListeners();
     });
     // FIREBASE AUTH END
   }
 }
+
+// Provider for application state
+final applicationStateProvider =
+    ChangeNotifierProvider<ApplicationState>((ref) {
+  return ApplicationState();
+});

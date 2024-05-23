@@ -25,7 +25,8 @@ class AuthService {
     );
 
     // Once signed in, return the UserCredential
-    final signInCred = await FirebaseAuth.instance.signInWithCredential(credential);
+    final signInCred =
+        await FirebaseAuth.instance.signInWithCredential(credential);
 
     createUserDocument(signInCred);
 
@@ -45,7 +46,7 @@ class AuthService {
           .signInWithCredential(facebookAuthCredential);
 
       createUserDocument(signInCred);
-      
+
       return signInCred;
     } else {
       if (kDebugMode) print(result.status);
@@ -109,29 +110,31 @@ class AuthService {
   }
 
   // Add user to users collection in Firestore
-  Future<DocumentReference> createUserDocument(UserCredential credential) async {
+  Future<DocumentReference> createUserDocument(
+      UserCredential credential) async {
     final User? user = credential.user;
 
     // Check for duplicate user
-    final checkUserResponse = await _firestore.collection("/users")
-      .where("uid", isEqualTo: user?.uid)
-      .get()
-      .then((value) => value.docs.firstOrNull);
+    final checkUserResponse = await _firestore
+        .collection("/users")
+        .where("uid", isEqualTo: user?.uid)
+        .get()
+        .then((value) => value.docs.firstOrNull);
 
     if (checkUserResponse != null) {
       return checkUserResponse.reference;
     }
 
     // Get user data and create a new document
-    final userData = UserData(
-      uid: user?.uid,
-      email: user?.email,
-      oauthProvider: credential.credential?.signInMethod
-    ).toMap();
+    final userData = UserData.asMap(
+            uid: user?.uid,
+            email: user?.email,
+            name: user?.displayName,
+            profilePictureUrl: user?.photoURL,
+            profileUsername: user?.displayName,
+            oauthProvider: credential.credential?.signInMethod);
 
-    final response = await _firestore
-      .collection("/users")
-      .add(userData);
+    final response = await _firestore.collection("/users").add(userData);
 
     return response;
   }
