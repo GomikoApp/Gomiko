@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:recycle/utils/data_classes.dart';
 
 import 'profile_widget.dart';
 import 'package:recycle/constants.dart';
@@ -7,9 +8,11 @@ class BuildEditBioField extends StatelessWidget {
   const BuildEditBioField({
     super.key,
     required this.windowWidth,
+    required this.userData,
   });
 
   final double windowWidth;
+  final Map<String, dynamic> userData;
 
   @override
   Widget build(BuildContext context) {
@@ -75,8 +78,7 @@ class BuildEditBioField extends StatelessWidget {
                               width: 2,
                             ),
                           ),
-                          labelText:
-                              "lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                          labelText: userData[UserData.keyProfileBio],
                           floatingLabelStyle: const TextStyle(
                             color: primaryGreen,
                           ),
@@ -123,9 +125,9 @@ class BuildEditBioField extends StatelessWidget {
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
         ),
       ),
-      title: const Text(
-        "Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.",
-        style: TextStyle(fontSize: 18),
+      title: Text(
+        userData[UserData.keyProfileBio],
+        style: const TextStyle(fontSize: 18),
         overflow: TextOverflow.ellipsis,
       ),
     );

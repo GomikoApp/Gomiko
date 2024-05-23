@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:recycle/constants.dart';
+import 'package:recycle/utils/data_classes.dart';
 import 'package:recycle/views/profile/widgets/profile_widget.dart';
 
 class BuildEditLocationField extends StatelessWidget {
   const BuildEditLocationField({
     super.key,
     required this.windowWidth,
+    required this.userData,
   });
 
   final double windowWidth;
+  final Map<String, dynamic> userData;
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +75,7 @@ class BuildEditLocationField extends StatelessWidget {
                               width: 2,
                             ),
                           ),
-                          labelText: "Japan, Tokyo",
+                          labelText: userData[UserData.keyLocation],
                           floatingLabelStyle: const TextStyle(
                             color: primaryGreen,
                           ),
@@ -119,9 +122,9 @@ class BuildEditLocationField extends StatelessWidget {
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
         ),
       ),
-      title: const Text(
-        "Japan, Tokyo",
-        style: TextStyle(fontSize: 18),
+      title: Text(
+        userData[UserData.keyLocation],
+        style: const TextStyle(fontSize: 18),
       ),
     );
   }

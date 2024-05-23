@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:recycle/constants.dart';
+import 'package:recycle/utils/data_classes.dart';
 
 import 'profile_widget.dart';
 
@@ -7,9 +8,11 @@ class BuildEditNameField extends StatelessWidget {
   const BuildEditNameField({
     super.key,
     required this.windowWidth,
+    required this.userData,
   });
 
   final double windowWidth;
+  final Map<String, dynamic> userData;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +20,6 @@ class BuildEditNameField extends StatelessWidget {
       topRight: true,
       topLeft: true,
       onTap: () {
-        // TODO: Need to refactor these showModalBottomSheet into a separate widget
         showModalBottomSheet(
           isScrollControlled: true,
           context: context,
@@ -76,7 +78,7 @@ class BuildEditNameField extends StatelessWidget {
                               width: 2,
                             ),
                           ),
-                          labelText: "John Doe",
+                          labelText: userData[UserData.keyName],
                           floatingLabelStyle: const TextStyle(
                             color: primaryGreen,
                           ),
@@ -123,9 +125,9 @@ class BuildEditNameField extends StatelessWidget {
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
         ),
       ),
-      title: const Text(
-        "John Doe",
-        style: TextStyle(fontSize: 18),
+      title: Text(
+        userData[UserData.keyName],
+        style: const TextStyle(fontSize: 18),
       ),
     );
   }

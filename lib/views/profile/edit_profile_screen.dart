@@ -50,19 +50,31 @@ class _EditProfileState extends ConsumerState<EditProfile> {
           Column(
             children: <Widget>[
               // Name
-              BuildEditNameField(windowWidth: windowWidth),
+              BuildEditNameField(
+                windowWidth: windowWidth,
+                userData: userData,
+              ),
               // Divider
               Container(height: 1, color: Colors.grey[300]),
               // Username
-              BuildEditUsernameField(windowWidth: windowWidth),
+              BuildEditUsernameField(
+                windowWidth: windowWidth,
+                userData: userData,
+              ),
               // Divider
               Container(height: 1, color: Colors.grey[300]),
               // Location
-              BuildEditLocationField(windowWidth: windowWidth),
+              BuildEditLocationField(
+                windowWidth: windowWidth,
+                userData: userData,
+              ),
               // Divider
               Container(height: 1, color: Colors.grey[300]),
               // Bio
-              BuildEditBioField(windowWidth: windowWidth),
+              BuildEditBioField(
+                windowWidth: windowWidth,
+                userData: userData,
+              )
             ],
           ),
         ],

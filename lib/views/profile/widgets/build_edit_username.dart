@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:recycle/constants.dart';
+import 'package:recycle/utils/data_classes.dart';
 import 'profile_widget.dart';
 
 class BuildEditUsernameField extends StatelessWidget {
   const BuildEditUsernameField({
     super.key,
     required this.windowWidth,
+    required this.userData,
   });
 
   final double windowWidth;
+  final Map<String, dynamic> userData;
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +75,7 @@ class BuildEditUsernameField extends StatelessWidget {
                               width: 2,
                             ),
                           ),
-                          labelText: "jDoe1",
+                          labelText: userData[UserData.keyProfileUsername],
                           floatingLabelStyle: const TextStyle(
                             color: primaryGreen,
                           ),
@@ -119,9 +122,9 @@ class BuildEditUsernameField extends StatelessWidget {
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
         ),
       ),
-      title: const Text(
-        "jDoe1",
-        style: TextStyle(fontSize: 18),
+      title: Text(
+        userData[UserData.keyProfileUsername],
+        style: const TextStyle(fontSize: 18),
       ),
     );
   }
