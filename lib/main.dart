@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 // riverpod
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,9 +19,8 @@ import 'views/landing_screen.dart';
 import 'views/features/home/widgets/home_scaffold.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  await initialize(null);
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
   // Load environment variables
   await dotenv.load(fileName: '.env');
@@ -32,13 +32,8 @@ Future<void> main() async {
   );
 }
 
-Future<void> initialize(_) async {
-  // load resources
-  await Future.delayed(const Duration(seconds: 1));
-}
-
 class MyApp extends ConsumerStatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => MyAppState();
@@ -50,11 +45,31 @@ class MyAppState extends ConsumerState<MyApp> {
     super.initState();
   }
 
+  // This function determines the initial route of the app
+  // If the user is logged in, it will redirect to the home page
+  // If the user has logged in before and has signed out, it will redirect to the login page
+  // If the user is a first time user, it will redirect to the landing page
+  String determineInitialRoute() {
+    final appState = ref.watch(applicationStateProvider);
+    if (appState.loggedIn) {
+      return '/home';
+    } else if (appState.wasLoggedIn) {
+      return '/login';
+    } else {
+      return '/';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // ignore: unused_local_variable
     final appState = ref.watch(applicationStateProvider);
-    final initialLocation = appState.loggedIn ? '/home' : '/';
+    final initialLocation = determineInitialRoute();
+
+    // Remove the splash screen if the app is done loading
+    if (!appState.loading) {
+      FlutterNativeSplash.remove();
+    }
 
     final router = GoRouter(
       initialLocation: initialLocation,
@@ -101,37 +116,3 @@ class MyAppState extends ConsumerState<MyApp> {
     );
   }
 }
-
-// final _router = GoRouter(
-//   initialLocation: initialLocation,
-//   routes: [
-//     // This is where the default page goes
-//     GoRoute(
-//         path: '/',
-//         builder: (context, state) {
-//           return const LandingPage();
-//         }),
-//     GoRoute(
-//         path: '/home',
-//         builder: (context, state) {
-//           return const HomeScaffold();
-//         }),
-//     GoRoute(
-//         path: '/login',
-//         builder: (context, state) {
-//           return const LoginPage();
-//         }),
-//     GoRoute(
-//         path: '/signup',
-//         builder: (context, state) {
-//           return const SignUpPage();
-//         }),
-//     GoRoute(
-//       path: '/forgot-password',
-//       builder: (context, state) {
-//         return const ForgotPasswordPage();
-//       },
-//     ),
-//   ],
-// );
-// end of GoRouter configuration
