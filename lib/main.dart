@@ -20,6 +20,8 @@ import 'views/features/home/widgets/home_scaffold.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  await initialize(null);
+
   // Load environment variables
   await dotenv.load(fileName: '.env');
 
@@ -28,6 +30,11 @@ Future<void> main() async {
       child: MyApp(),
     ),
   );
+}
+
+Future<void> initialize(_) async {
+  // load resources
+  await Future.delayed(const Duration(seconds: 1));
 }
 
 class MyApp extends ConsumerStatefulWidget {

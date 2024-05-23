@@ -44,6 +44,11 @@ dependencies:
   iconsax: ^0.0.8
   flutter_riverpod: ^2.5.1
   shared_preferences: ^2.2.3
+  flutter_native_splash: ^2.4.0
+
+flutter_native_splash:
+  image: assets/backgrounds/flutter5786.png
+  color: "#ffffff"
 
 dev_dependencies:
   flutter_test:
