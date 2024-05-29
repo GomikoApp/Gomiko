@@ -4,10 +4,16 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 // riverpod
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:recycle/views/auth/forgot_password_screen.dart';
+import 'package:recycle/views/auth/login_screen.dart';
+import 'package:recycle/views/auth/signup_screen.dart';
+import 'package:recycle/views/features/home/widgets/home_scaffold.dart';
+import 'package:recycle/views/landing_screen.dart';
 
-// utils
-import 'router.dart';
 import 'utils/providers/login_state_provider.dart';
+
+import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -54,9 +60,37 @@ class MyAppState extends ConsumerState<MyApp> {
       //       seedColor: Colors.blue, secondary: Colors.red),
       // ),
       // darkTheme: ThemeData.dark(),
-      routerDelegate: AppRouter().router.routerDelegate,
-      routeInformationProvider: AppRouter().router.routeInformationProvider,
-      routeInformationParser: AppRouter().router.routeInformationParser,
+      routerConfig: GoRouter(
+        routes: [
+          // This is where the default page goes
+          GoRoute(
+              path: '/',
+              builder: (context, state) {
+                return const LandingPage();
+              }),
+          GoRoute(
+              path: '/home',
+              builder: (context, state) {
+                return const HomeScaffold();
+              }),
+          GoRoute(
+              path: '/login',
+              builder: (context, state) {
+                return const LoginPage();
+              }),
+          GoRoute(
+              path: '/signup',
+              builder: (context, state) {
+                return const SignUpPage();
+              }),
+          GoRoute(
+            path: '/forgot-password',
+            builder: (context, state) {
+              return const ForgotPasswordPage();
+            },
+          ),
+        ],
+      ),
     );
   }
 }

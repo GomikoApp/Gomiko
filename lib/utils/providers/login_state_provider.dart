@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 
 import 'package:recycle/utils/firebase_options.dart';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 /// This change notifier maintains a global state for the app.
 /// Reference: https://docs.flutter.dev/data-and-backend/state-mgmt/simple
 /// In this change notifier, put anything that you want to be accessible throughout the whole app.
@@ -30,6 +32,11 @@ class ApplicationState extends ChangeNotifier {
   bool _loading = true;
   bool get loading => _loading;
 
+  Future<void> saveLoginState(bool value) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('loggedIn', value);
+  }
+
   Future<void> init() async {
     // FIREBASE AUTH START
     await Firebase.initializeApp(
@@ -39,6 +46,7 @@ class ApplicationState extends ChangeNotifier {
       if (user != null) {
         _loggedIn = true;
         _wasLoggedIn = true;
+        saveLoginState(true);
       } else {
         _loggedIn = false;
       }
