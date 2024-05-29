@@ -1,0 +1,25 @@
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "gomiko-app",
+          "appId": "1:872903978882:android:f3de32c101827d7766a99b",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/utils/firebase_options.dart": {
+          "projectId": "gomiko-app",
+          "configurations": {
+            "android": "1:872903978882:android:f3de32c101827d7766a99b",
+            "ios": "1:872903978882:ios:c6c36e0429bd2f3166a99b",
+            "macos": "1:872903978882:ios:c6c36e0429bd2f3166a99b",
+            "web": "1:872903978882:web:456e624549768f3466a99b",
+            "windows": "1:872903978882:web:ffd1103b914db9ae66a99b"
+          }
+        }
+      }
+    }
+  }
+}
