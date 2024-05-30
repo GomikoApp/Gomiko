@@ -2,12 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:firebase_auth/firebase_auth.dart'
     hide EmailAuthProvider, PhoneAuthProvider;
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-
-import 'package:recycle/utils/firebase_options.dart';
-
-import 'package:shared_preferences/shared_preferences.dart';
 
 /// This change notifier maintains a global state for the app.
 /// Reference: https://docs.flutter.dev/data-and-backend/state-mgmt/simple
@@ -26,34 +21,17 @@ class ApplicationState extends ChangeNotifier {
   bool _loggedIn = false;
   bool get loggedIn => _loggedIn;
 
-  bool _wasLoggedIn = false;
-  bool get wasLoggedIn => _wasLoggedIn;
-
   bool _loading = true;
   bool get loading => _loading;
 
-  Future<void> saveLoginState(bool value) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('loggedIn', value);
-  }
-
   Future<void> init() async {
     // FIREBASE AUTH START
-    await Firebase.initializeApp(
-        options: DefaultFirebaseOptions.currentPlatform);
 
-    FirebaseAuth.instance.userChanges().listen((user) {
-      if (user != null) {
-        _loggedIn = true;
-        _wasLoggedIn = true;
-        saveLoginState(true);
-      } else {
-        _loggedIn = false;
-      }
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      _loggedIn = user != null;
       _loading = false;
       notifyListeners();
     });
-    // FIREBASE AUTH END
   }
 }
 

@@ -1,19 +1,15 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 // riverpod
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import 'package:recycle/views/auth/forgot_password_screen.dart';
-import 'package:recycle/views/auth/login_screen.dart';
-import 'package:recycle/views/auth/signup_screen.dart';
-import 'package:recycle/views/features/home/widgets/home_scaffold.dart';
-import 'package:recycle/views/landing_screen.dart';
+import 'package:recycle/utils/firebase_options.dart';
 
+import 'router/routes.dart';
 import 'utils/providers/login_state_provider.dart';
-
-import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -21,6 +17,8 @@ Future<void> main() async {
 
   // Load environment variables
   await dotenv.load(fileName: '.env');
+
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   runApp(
     const ProviderScope(
@@ -37,17 +35,26 @@ class MyApp extends ConsumerStatefulWidget {
 }
 
 class MyAppState extends ConsumerState<MyApp> {
+  final router = AppRouter();
+
   @override
   void initState() {
     super.initState();
+
+    // Check if the user is logged in
+    var auth = FirebaseAuth.instance; // Firebase Auth instance
+    auth.authStateChanges().listen((User? user) {
+      if (user != null) {
+        // navigate to home page
+        router.goRouter.go('/home');
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     // ignore: unused_local_variable
     final appState = ref.watch(applicationStateProvider);
-
-    // Remove the splash screen if the app is done loading
     if (!appState.loading) {
       FlutterNativeSplash.remove();
     }
@@ -60,37 +67,9 @@ class MyAppState extends ConsumerState<MyApp> {
       //       seedColor: Colors.blue, secondary: Colors.red),
       // ),
       // darkTheme: ThemeData.dark(),
-      routerConfig: GoRouter(
-        routes: [
-          // This is where the default page goes
-          GoRoute(
-              path: '/',
-              builder: (context, state) {
-                return const LandingPage();
-              }),
-          GoRoute(
-              path: '/home',
-              builder: (context, state) {
-                return const HomeScaffold();
-              }),
-          GoRoute(
-              path: '/login',
-              builder: (context, state) {
-                return const LoginPage();
-              }),
-          GoRoute(
-              path: '/signup',
-              builder: (context, state) {
-                return const SignUpPage();
-              }),
-          GoRoute(
-            path: '/forgot-password',
-            builder: (context, state) {
-              return const ForgotPasswordPage();
-            },
-          ),
-        ],
-      ),
+      routerDelegate: router.goRouter.routerDelegate,
+      routeInformationParser: router.goRouter.routeInformationParser,
+      routeInformationProvider: router.goRouter.routeInformationProvider,
     );
   }
 }
