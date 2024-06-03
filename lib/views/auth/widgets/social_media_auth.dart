@@ -11,11 +11,11 @@ class SocialMediaAuth extends StatelessWidget {
   final VoidCallback onFacebookSignIn;
 
   const SocialMediaAuth({
-    Key? key,
+    super.key,
     required this.onAnonymousSignIn,
     required this.onGoogleSignIn,
     required this.onFacebookSignIn,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

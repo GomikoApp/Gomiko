@@ -12,7 +12,7 @@ import 'widgets/logo.dart';
 import 'widgets/error_text.dart';
 
 class SignUpPage extends StatefulWidget {
-  const SignUpPage({Key? key}) : super(key: key);
+  const SignUpPage({super.key});
 
   @override
   State<StatefulWidget> createState() => _SignUpPageState();

@@ -14,7 +14,7 @@ import '../../../../constants.dart';
 import 'tab_bar_widget.dart';
 
 class HomeScaffold extends StatefulWidget {
-  const HomeScaffold({Key? key}) : super(key: key);
+  const HomeScaffold({super.key});
 
   @override
   State<StatefulWidget> createState() => _MyHomeScaffoldState();

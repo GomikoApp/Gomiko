@@ -5,7 +5,7 @@ import 'package:recycle/utils/providers/user_data_provider.dart';
 import 'package:recycle/utils/data_classes.dart';
 
 class HomeTab extends ConsumerStatefulWidget {
-  const HomeTab({Key? key}) : super(key: key);
+  const HomeTab({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _MyHomeState();

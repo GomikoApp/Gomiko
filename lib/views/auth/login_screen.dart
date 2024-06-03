@@ -14,7 +14,7 @@ import 'widgets/custom_rich_text.dart';
 import 'widgets/error_text.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  const LoginPage({super.key});
 
   @override
   State<StatefulWidget> createState() => _LoginPageState();
