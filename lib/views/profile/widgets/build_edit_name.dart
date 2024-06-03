@@ -28,9 +28,12 @@ class BuildEditNameField extends StatelessWidget {
             return FractionallySizedBox(
               heightFactor: 0.9,
               child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
+                decoration: const BoxDecoration(
+                  color: bgColor,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
+                  ),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -56,7 +59,7 @@ class BuildEditNameField extends StatelessWidget {
                       padding: EdgeInsets.only(
                           left: 20.0, right: 20.0, top: 10.0, bottom: 10.0),
                       child: Text(
-                        "Name",
+                        "Edit Name",
                         style: TextStyle(
                             fontSize: 28, fontWeight: FontWeight.bold),
                       ),
@@ -67,37 +70,42 @@ class BuildEditNameField extends StatelessWidget {
                         left: 20.0,
                         right: 20.0,
                       ),
-                      child: TextField(
-                        decoration: InputDecoration(
-                          labelText: "First Name",
-                          labelStyle: TextStyle(color: Colors.grey[600]),
-                          enabledBorder: const CustomOutlinedInputBorder(
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(10),
-                              topRight: Radius.circular(10),
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                        ),
+                        child: TextField(
+                          decoration: InputDecoration(
+                            labelText: "First Name",
+                            labelStyle: TextStyle(color: Colors.grey[600]),
+                            enabledBorder: const CustomOutlinedInputBorder(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                topRight: Radius.circular(10),
+                              ),
+                              borderSide: BorderSide(
+                                width: 1.0,
+                              ),
                             ),
-                            borderSide: BorderSide(
-                              width: 1.0,
+                            focusedBorder: const CustomOutlinedInputBorder(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                topRight: Radius.circular(10),
+                              ),
+                              borderSide: BorderSide(
+                                width: 1.0,
+                              ),
                             ),
-                          ),
-                          focusedBorder: const CustomOutlinedInputBorder(
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(10),
-                              topRight: Radius.circular(10),
+                            border: const CustomOutlinedInputBorder(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                topRight: Radius.circular(10),
+                              ),
                             ),
-                            borderSide: BorderSide(
-                              width: 1.0,
+                            contentPadding: const EdgeInsets.all(10.0),
+                            floatingLabelStyle: const TextStyle(
+                              color: Colors.black,
                             ),
-                          ),
-                          border: const CustomOutlinedInputBorder(
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(10),
-                              topRight: Radius.circular(10),
-                            ),
-                          ),
-                          contentPadding: const EdgeInsets.all(10.0),
-                          floatingLabelStyle: const TextStyle(
-                            color: Colors.black,
                           ),
                         ),
                       ),
@@ -110,6 +118,7 @@ class BuildEditNameField extends StatelessWidget {
                       ),
                       child: Container(
                         decoration: const BoxDecoration(
+                          color: Colors.white,
                           border: Border(
                             left: BorderSide(
                               width: 1.0,
@@ -138,37 +147,42 @@ class BuildEditNameField extends StatelessWidget {
                         left: 20.0,
                         right: 20.0,
                       ),
-                      child: TextField(
-                        decoration: InputDecoration(
-                          labelText: "Last Name",
-                          labelStyle: TextStyle(color: Colors.grey[600]),
-                          enabledBorder: const CustomOutlinedInputBorder(
-                            borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(10),
-                              bottomRight: Radius.circular(10),
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                        ),
+                        child: TextField(
+                          decoration: InputDecoration(
+                            labelText: "Last Name",
+                            labelStyle: TextStyle(color: Colors.grey[600]),
+                            enabledBorder: const CustomOutlinedInputBorder(
+                              borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(10),
+                                bottomRight: Radius.circular(10),
+                              ),
+                              borderSide: BorderSide(
+                                width: 1.0,
+                              ),
                             ),
-                            borderSide: BorderSide(
-                              width: 1.0,
+                            focusedBorder: const CustomOutlinedInputBorder(
+                              borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(10),
+                                bottomRight: Radius.circular(10),
+                              ),
+                              borderSide: BorderSide(
+                                width: 1.0,
+                              ),
                             ),
-                          ),
-                          focusedBorder: const CustomOutlinedInputBorder(
-                            borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(10),
-                              bottomRight: Radius.circular(10),
+                            border: const CustomOutlinedInputBorder(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                topRight: Radius.circular(10),
+                              ),
                             ),
-                            borderSide: BorderSide(
-                              width: 1.0,
+                            contentPadding: const EdgeInsets.all(10.0),
+                            floatingLabelStyle: const TextStyle(
+                              color: Colors.black,
                             ),
-                          ),
-                          border: const CustomOutlinedInputBorder(
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(10),
-                              topRight: Radius.circular(10),
-                            ),
-                          ),
-                          contentPadding: const EdgeInsets.all(10.0),
-                          floatingLabelStyle: const TextStyle(
-                            color: Colors.black,
                           ),
                         ),
                       ),

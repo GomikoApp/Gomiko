@@ -62,11 +62,12 @@ class MyAppState extends ConsumerState<MyApp> {
     return MaterialApp.router(
       title: 'Gomiko',
       debugShowCheckedModeBanner: false,
-      // theme: ThemeData(
-      //   colorScheme: ColorScheme.fromSeed(
-      //       seedColor: Colors.blue, secondary: Colors.red),
-      // ),
-      // darkTheme: ThemeData.dark(),
+      theme: ThemeData(
+        canvasColor: Colors.transparent,
+        colorScheme:
+            ColorScheme.fromSeed(seedColor: Colors.blue, secondary: Colors.red),
+      ),
+      darkTheme: ThemeData.dark(),
       routerDelegate: router.goRouter.routerDelegate,
       routeInformationParser: router.goRouter.routeInformationParser,
       routeInformationProvider: router.goRouter.routeInformationProvider,
