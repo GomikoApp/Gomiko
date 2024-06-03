@@ -12,7 +12,7 @@ import 'package:recycle/views/features/home/home_screen.dart';
 
 class TabBarWidget extends ConsumerStatefulWidget {
   // title parameter is not necessary here, its just for testing.
-  const TabBarWidget({Key? key, required this.title}) : super(key: key);
+  const TabBarWidget({super.key, required this.title});
 
   final String title;
 

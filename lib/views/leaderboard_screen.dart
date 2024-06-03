@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class LeaderboardPage extends StatefulWidget {
   // title parameter is not necessary here, its just for testing.
-  const LeaderboardPage({Key? key, required this.title}) : super(key: key);
+  const LeaderboardPage({super.key, required this.title});
 
   final String title;
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class SearchPage extends StatefulWidget {
-  const SearchPage({Key? key, required this.title}) : super(key: key);
+  const SearchPage({super.key, required this.title});
 
   final String title;
 

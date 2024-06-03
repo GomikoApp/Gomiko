@@ -64,7 +64,7 @@ class LSUtilities {
 class GomikoTextFormField extends StatelessWidget {
   /// Creates a [GomikoTextFormField].
   const GomikoTextFormField({
-    Key? key,
+    super.key,
     required this.hintText,
     this.hintColor = Colors.lightGreen,
     this.icon,
@@ -75,7 +75,7 @@ class GomikoTextFormField extends StatelessWidget {
     this.validator,
     this.inputFormatters,
     this.autovalidateMode = AutovalidateMode.onUserInteraction,
-  }) : super(key: key);
+  });
 
   /// [Text] that displays in the [TextField].
   final String hintText;
@@ -132,7 +132,7 @@ class GomikoTextFormField extends StatelessWidget {
 class GomikoEmailTextFormField extends StatelessWidget {
   /// Creates a [GomikoEmailTextFormField].
   GomikoEmailTextFormField({
-    Key? key,
+    super.key,
     required this.hintText,
     this.hintColor = Colors.lightGreen,
     this.iconColor,
@@ -142,7 +142,7 @@ class GomikoEmailTextFormField extends StatelessWidget {
     this.validator,
     List<TextInputFormatter>? inputFormatters,
     this.autovalidateMode = AutovalidateMode.onUserInteraction,
-  }) : super(key: key) {
+  }) {
     if (inputFormatters != null && inputFormatters.isNotEmpty) {
       for (var formatter in inputFormatters) {
         this.inputFormatters.add(formatter);
@@ -230,7 +230,7 @@ class GomikoPasswordTextFormField extends StatelessWidget {
   /// NOTE: When using these, your form must pre-initialize them to grab the password correctly or else it grabs
   /// all the asterisks for a authentication.
   GomikoPasswordTextFormField({
-    Key? key,
+    super.key,
     required this.hintText,
     this.hintColor = Colors.lightGreen,
     this.iconColor,
@@ -241,7 +241,7 @@ class GomikoPasswordTextFormField extends StatelessWidget {
     List<TextInputFormatter>? inputFormatters,
     this.autovalidateMode = AutovalidateMode.onUserInteraction,
     this.passwordMaximum = LSUtilities._passwordMaxLength,
-  }) : super(key: key) {
+  }) {
     if (inputFormatters != null && inputFormatters.isNotEmpty) {
       for (var formatter in inputFormatters) {
         this.inputFormatters.add(formatter);
@@ -350,11 +350,11 @@ class GomikoPasswordTextFormField extends StatelessWidget {
 class GomikoMainActionButton extends StatelessWidget {
   /// Creates a [GomikoMainActionButton]
   const GomikoMainActionButton({
-    Key? key,
+    super.key,
     required this.labelText,
     required this.onPressed,
     this.buttonSize,
-  }) : super(key: key);
+  });
 
   /// String that appears in the [Text] widget that is generated as a child of the button.
   final String labelText;
@@ -391,7 +391,7 @@ class GomikoMainActionButton extends StatelessWidget {
 class GomikoLink extends StatelessWidget {
   /// Creates a [GomikoLink]
   const GomikoLink({
-    Key? key,
+    super.key,
     required this.label,
     this.labelSize,
     this.labelColor,
@@ -399,7 +399,7 @@ class GomikoLink extends StatelessWidget {
     this.onTap,
     this.onDoubleTap,
     this.onLongPress,
-  }) : super(key: key);
+  });
 
   /// Text to be displayed in the [GomikoLink].
   final String label;
@@ -445,7 +445,7 @@ class GomikoLink extends StatelessWidget {
 /// Used for things such as the "Already have an account? Login" text on the starting page.
 class GomikoContextLinkRow extends StatelessWidget {
   const GomikoContextLinkRow({
-    Key? key,
+    super.key,
     required this.contextLabel,
     required this.linkLabel,
     this.contextSize,
@@ -458,7 +458,7 @@ class GomikoContextLinkRow extends StatelessWidget {
     this.onTap,
     this.onDoubleTap,
     this.onLongPress,
-  }) : super(key: key);
+  });
 
   /// String of text for the context [Text] on the left portion of the [Row].
   final String contextLabel;
@@ -528,7 +528,7 @@ class GomikoContextLinkRow extends StatelessWidget {
 /// A [Divider] with [Text] in the middle used as the context divider for items below it.
 class GomikoTextDivider extends StatelessWidget {
   const GomikoTextDivider({
-    Key? key,
+    super.key,
     required this.label,
     this.labelSize,
     this.height,
@@ -538,7 +538,7 @@ class GomikoTextDivider extends StatelessWidget {
     this.leftEndIndent,
     this.rightIndent,
     this.rightEndIndent,
-  }) : super(key: key);
+  });
 
   /// String of Text for the [GomikoTextDivider].
   final String label;
