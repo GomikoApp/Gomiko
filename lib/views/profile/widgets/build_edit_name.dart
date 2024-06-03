@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:recycle/constants.dart';
 import 'package:recycle/utils/data_classes.dart';
 
+import 'custom_outlined_input_border.dart';
 import 'profile_widget.dart';
 
 class BuildEditNameField extends StatelessWidget {
@@ -25,7 +26,7 @@ class BuildEditNameField extends StatelessWidget {
           context: context,
           builder: (BuildContext context) {
             return FractionallySizedBox(
-              heightFactor: 0.7,
+              heightFactor: 0.9,
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -39,15 +40,6 @@ class BuildEditNameField extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Padding(
-                            padding: EdgeInsets.only(
-                                left: 20.0, top: 10.0, bottom: 10.0),
-                            child: Text(
-                              "Edit Name",
-                              style: TextStyle(
-                                  fontSize: 24, fontWeight: FontWeight.bold),
-                            ),
-                          ),
                           Padding(
                             padding: const EdgeInsets.only(right: 8.0),
                             child: IconButton(
@@ -60,34 +52,130 @@ class BuildEditNameField extends StatelessWidget {
                         ],
                       ),
                     ),
+                    const Padding(
+                      padding: EdgeInsets.only(
+                          left: 20.0, right: 20.0, top: 10.0, bottom: 10.0),
+                      child: Text(
+                        "Name",
+                        style: TextStyle(
+                            fontSize: 28, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    // first name
                     Padding(
                       padding: const EdgeInsets.only(
-                          left: 20.0, right: 20.0, top: 10.0, bottom: 10.0),
+                        left: 20.0,
+                        right: 20.0,
+                      ),
                       child: TextField(
                         decoration: InputDecoration(
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              width: 2,
+                          labelText: "First Name",
+                          labelStyle: TextStyle(color: Colors.grey[600]),
+                          enabledBorder: const CustomOutlinedInputBorder(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(10),
+                              topRight: Radius.circular(10),
+                            ),
+                            borderSide: BorderSide(
+                              width: 1.0,
                             ),
                           ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              color: primaryGreen,
-                              width: 2,
+                          focusedBorder: const CustomOutlinedInputBorder(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(10),
+                              topRight: Radius.circular(10),
+                            ),
+                            borderSide: BorderSide(
+                              width: 1.0,
                             ),
                           ),
-                          labelText: userData[UserData.keyName],
+                          border: const CustomOutlinedInputBorder(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(10),
+                              topRight: Radius.circular(10),
+                            ),
+                          ),
+                          contentPadding: const EdgeInsets.all(10.0),
                           floatingLabelStyle: const TextStyle(
-                            color: primaryGreen,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    ),
+                    // middle name
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        left: 20.0,
+                        right: 20.0,
+                      ),
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          border: Border(
+                            left: BorderSide(
+                              width: 1.0,
+                            ),
+                            right: BorderSide(
+                              width: 1.0,
+                            ),
+                          ),
+                        ),
+                        child: TextField(
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            labelText: "Middle Name",
+                            labelStyle: TextStyle(color: Colors.grey[600]),
+                            contentPadding: const EdgeInsets.all(10.0),
+                            floatingLabelStyle: const TextStyle(
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    // last name
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        left: 20.0,
+                        right: 20.0,
+                      ),
+                      child: TextField(
+                        decoration: InputDecoration(
+                          labelText: "Last Name",
+                          labelStyle: TextStyle(color: Colors.grey[600]),
+                          enabledBorder: const CustomOutlinedInputBorder(
+                            borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(10),
+                              bottomRight: Radius.circular(10),
+                            ),
+                            borderSide: BorderSide(
+                              width: 1.0,
+                            ),
+                          ),
+                          focusedBorder: const CustomOutlinedInputBorder(
+                            borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(10),
+                              bottomRight: Radius.circular(10),
+                            ),
+                            borderSide: BorderSide(
+                              width: 1.0,
+                            ),
+                          ),
+                          border: const CustomOutlinedInputBorder(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(10),
+                              topRight: Radius.circular(10),
+                            ),
+                          ),
+                          contentPadding: const EdgeInsets.all(10.0),
+                          floatingLabelStyle: const TextStyle(
+                            color: Colors.black,
                           ),
                         ),
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(
-                          left: 20.0, right: 20.0, top: 10.0, bottom: 10.0),
+                          left: 20.0, right: 20.0, top: 20.0, bottom: 10.0),
                       child: SizedBox(
                         height: 50,
                         width: double.infinity,

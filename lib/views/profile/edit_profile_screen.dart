@@ -74,7 +74,7 @@ class _EditProfileState extends ConsumerState<EditProfile> {
               BuildEditBioField(
                 windowWidth: windowWidth,
                 userData: userData,
-              )
+              ),
             ],
           ),
         ],
