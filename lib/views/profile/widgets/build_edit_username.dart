@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:recycle/constants.dart';
 import 'package:recycle/utils/data_classes.dart';
+import 'custom_outlined_input_border.dart';
 import 'profile_widget.dart';
 
 class BuildEditUsernameField extends StatelessWidget {
@@ -22,7 +23,7 @@ class BuildEditUsernameField extends StatelessWidget {
           context: context,
           builder: (BuildContext context) {
             return FractionallySizedBox(
-              heightFactor: 0.7,
+              heightFactor: 0.9,
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -32,56 +33,71 @@ class BuildEditUsernameField extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Padding(
-                      padding: const EdgeInsets.only(top: 15.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Padding(
-                            padding: EdgeInsets.only(
-                                left: 20.0, top: 10.0, bottom: 10.0),
-                            child: Text(
-                              "Edit Username",
-                              style: TextStyle(
-                                  fontSize: 24, fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 8.0),
-                            child: IconButton(
-                              icon: const Icon(Icons.close),
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                            ),
-                          ),
-                        ],
+                      padding: const EdgeInsets.only(left: 3.0),
+                      child: IconButton(
+                        icon: const Icon(Icons.close),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
                       ),
                     ),
+                    const Padding(
+                      padding: EdgeInsets.only(
+                          left: 20.0, right: 20.0, bottom: 10.0),
+                      child: Text(
+                        "Edit Username",
+                        style: TextStyle(
+                            fontSize: 28, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    // Username Field
                     Padding(
                       padding: const EdgeInsets.only(
-                          left: 20.0, right: 20.0, top: 10.0, bottom: 10.0),
-                      child: TextField(
-                        decoration: InputDecoration(
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              width: 2,
+                        left: 20.0,
+                        right: 20.0,
+                      ),
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                        ),
+                        child: TextField(
+                          decoration: InputDecoration(
+                            labelText: "Username",
+                            labelStyle: TextStyle(color: Colors.grey[600]),
+                            enabledBorder: CustomOutlinedInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: const BorderSide(
+                                width: 1.0,
+                              ),
                             ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              color: primaryGreen,
-                              width: 2,
+                            focusedBorder: CustomOutlinedInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: const BorderSide(
+                                width: 1.0,
+                              ),
                             ),
-                          ),
-                          labelText: userData[UserData.keyProfileUsername],
-                          floatingLabelStyle: const TextStyle(
-                            color: primaryGreen,
+                            border: CustomOutlinedInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            contentPadding: const EdgeInsets.all(10.0),
+                            floatingLabelStyle: const TextStyle(
+                              color: Colors.black,
+                            ),
                           ),
                         ),
                       ),
                     ),
+                    // Username Validator
+                    const Padding(
+                      padding: EdgeInsets.only(
+                        left: 20.0,
+                        right: 20.0,
+                        top: 5.0,
+                      ),
+                      child:
+                          Text("Your current username Username is available"),
+                    ),
+
                     Padding(
                       padding: const EdgeInsets.only(
                           left: 20.0, right: 20.0, top: 10.0, bottom: 10.0),

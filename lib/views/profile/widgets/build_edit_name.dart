@@ -39,25 +39,17 @@ class BuildEditNameField extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Padding(
-                      padding: const EdgeInsets.only(top: 15.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(right: 8.0),
-                            child: IconButton(
-                              icon: const Icon(Icons.close),
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                            ),
-                          ),
-                        ],
+                      padding: const EdgeInsets.only(left: 3.0),
+                      child: IconButton(
+                        icon: const Icon(Icons.close),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
                       ),
                     ),
                     const Padding(
                       padding: EdgeInsets.only(
-                          left: 20.0, right: 20.0, top: 10.0, bottom: 10.0),
+                          left: 20.0, right: 20.0, bottom: 10.0),
                       child: Text(
                         "Edit Name",
                         style: TextStyle(

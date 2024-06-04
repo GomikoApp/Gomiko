@@ -22,7 +22,7 @@ class BuildEditLocationField extends StatelessWidget {
           context: context,
           builder: (BuildContext context) {
             return FractionallySizedBox(
-              heightFactor: 0.7,
+              heightFactor: 0.9,
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -32,29 +32,21 @@ class BuildEditLocationField extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Padding(
-                      padding: const EdgeInsets.only(top: 15.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Padding(
-                            padding: EdgeInsets.only(
-                                left: 20.0, top: 10.0, bottom: 10.0),
-                            child: Text(
-                              "Edit Location",
-                              style: TextStyle(
-                                  fontSize: 24, fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 8.0),
-                            child: IconButton(
-                              icon: const Icon(Icons.close),
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                            ),
-                          ),
-                        ],
+                      padding: const EdgeInsets.only(left: 3.0),
+                      child: IconButton(
+                        icon: const Icon(Icons.close),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(
+                          left: 20.0, right: 20.0, bottom: 10.0),
+                      child: Text(
+                        "Edit Location",
+                        style: TextStyle(
+                            fontSize: 28, fontWeight: FontWeight.bold),
                       ),
                     ),
                     Padding(
