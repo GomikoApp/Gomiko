@@ -63,7 +63,6 @@ class MyAppState extends ConsumerState<MyApp> {
       title: 'Gomiko',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        canvasColor: Colors.transparent,
         colorScheme:
             ColorScheme.fromSeed(seedColor: Colors.blue, secondary: Colors.red),
       ),
