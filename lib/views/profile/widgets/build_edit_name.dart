@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:recycle/constants.dart';
-import 'package:recycle/utils/data_classes.dart';
 
+// widgets
 import 'custom_outlined_input_border.dart';
 import 'profile_widget.dart';
+
+// Utils
+import 'package:recycle/utils/data_classes.dart';
 
 class BuildEditNameField extends StatelessWidget {
   const BuildEditNameField({
@@ -17,6 +20,17 @@ class BuildEditNameField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String fullName = userData[UserData.keyName];
+    int lastSpace = fullName.lastIndexOf(' ');
+
+    String firstName =
+        (lastSpace != -1) ? fullName.substring(0, lastSpace) : fullName;
+    String lastName =
+        (lastSpace != -1) ? fullName.substring(lastSpace + 1) : '';
+
+    final firstNameController = TextEditingController(text: firstName);
+    final lastNameController = TextEditingController(text: lastName);
+
     return CustomInkWell(
       topRight: true,
       topLeft: true,
@@ -67,6 +81,7 @@ class BuildEditNameField extends StatelessWidget {
                           color: Colors.white,
                         ),
                         child: TextField(
+                          controller: firstNameController,
                           decoration: InputDecoration(
                             labelText: "First Name",
                             labelStyle: TextStyle(color: Colors.grey[600]),
@@ -102,37 +117,6 @@ class BuildEditNameField extends StatelessWidget {
                         ),
                       ),
                     ),
-                    // middle name
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        left: 20.0,
-                        right: 20.0,
-                      ),
-                      child: Container(
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                          border: Border(
-                            left: BorderSide(
-                              width: 1.0,
-                            ),
-                            right: BorderSide(
-                              width: 1.0,
-                            ),
-                          ),
-                        ),
-                        child: TextField(
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            labelText: "Middle Name",
-                            labelStyle: TextStyle(color: Colors.grey[600]),
-                            contentPadding: const EdgeInsets.all(10.0),
-                            floatingLabelStyle: const TextStyle(
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
                     // last name
                     Padding(
                       padding: const EdgeInsets.only(
@@ -144,6 +128,7 @@ class BuildEditNameField extends StatelessWidget {
                           color: Colors.white,
                         ),
                         child: TextField(
+                          controller: lastNameController,
                           decoration: InputDecoration(
                             labelText: "Last Name",
                             labelStyle: TextStyle(color: Colors.grey[600]),

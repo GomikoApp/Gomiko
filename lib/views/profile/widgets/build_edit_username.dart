@@ -16,6 +16,10 @@ class BuildEditUsernameField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String username = userData[UserData.keyProfileUsername];
+
+    final usernameController = TextEditingController(text: username);
+
     return CustomInkWell(
       onTap: () {
         showModalBottomSheet(
@@ -61,6 +65,7 @@ class BuildEditUsernameField extends StatelessWidget {
                           color: Colors.white,
                         ),
                         child: TextField(
+                          controller: usernameController,
                           decoration: InputDecoration(
                             labelText: "Username",
                             labelStyle: TextStyle(color: Colors.grey[600]),
@@ -88,14 +93,14 @@ class BuildEditUsernameField extends StatelessWidget {
                       ),
                     ),
                     // Username Validator
-                    const Padding(
-                      padding: EdgeInsets.only(
+                    Padding(
+                      padding: const EdgeInsets.only(
                         left: 20.0,
                         right: 20.0,
                         top: 5.0,
                       ),
                       child:
-                          Text("Your current username Username is available"),
+                          Text("Your current username $username is available"),
                     ),
 
                     Padding(
