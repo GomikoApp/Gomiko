@@ -51,7 +51,6 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
     }
 
     return Scaffold(
-      backgroundColor: bgColor,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,11 +70,11 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
             // User Profile Row
             Padding(
               padding: const EdgeInsets.only(
-                  top: 10.0, bottom: 10.0, left: 20.0, right: 20.0),
+                top: 10.0, bottom: 10.0, left: 20.0, right: 20.0),
               child: Container(
                 height: windowHeight * 0.1,
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: graySecondary,
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Center(
@@ -91,7 +90,7 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
                     subtitle: Text(
                         userData[UserData.keyEmail] ?? "johnDoe@gmail.com"),
                     trailing: IconButton(
-                      color: primaryGreen,
+                      color: brandGreenPrimary,
                       icon: const Icon(Iconsax.edit),
                       onPressed: () {
                         Navigator.push(
@@ -132,7 +131,7 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
                             const Icon(
                               Iconsax.star,
                               size: 30,
-                              color: primaryGreen,
+                              color: brandGreenPrimary,
                             ),
                             SizedBox(width: windowWidth * 0.02),
                             Text(userData[UserData.keyPoints].toString()),
@@ -150,7 +149,7 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
                             const Icon(
                               Iconsax.ranking_1,
                               size: 30,
-                              color: primaryGreen,
+                              color: brandGreenPrimary,
                             ),
                             SizedBox(width: windowWidth * 0.02),
                             const Text("43"),
@@ -168,7 +167,7 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
                             const Icon(
                               Iconsax.layer,
                               size: 30,
-                              color: primaryGreen,
+                              color: brandGreenPrimary,
                             ),
                             SizedBox(width: windowWidth * 0.02),
                             const Text("83"),
@@ -308,7 +307,7 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
                     leading: const Icon(Iconsax.logout),
                     title: const Text(
                       "Log Out",
-                      style: TextStyle(color: primaryRed),
+                      style: TextStyle(color: redPrimary),
                     ),
                     trailing: const Icon(Iconsax.arrow_right_3),
                   ),

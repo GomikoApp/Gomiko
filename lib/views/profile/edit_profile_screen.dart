@@ -29,7 +29,7 @@ class _EditProfileState extends ConsumerState<EditProfile> {
     final userData = ref.watch(userDataProvider);
 
     return Scaffold(
-      backgroundColor: bgColor,
+      backgroundColor: backgroundPrimary,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         centerTitle: true,

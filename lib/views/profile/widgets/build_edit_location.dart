@@ -63,13 +63,13 @@ class BuildEditLocationField extends StatelessWidget {
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                             borderSide: const BorderSide(
-                              color: primaryGreen,
+                              color: brandGreenPrimary,
                               width: 2,
                             ),
                           ),
                           labelText: userData[UserData.keyLocation],
                           floatingLabelStyle: const TextStyle(
-                            color: primaryGreen,
+                            color: brandGreenPrimary,
                           ),
                         ),
                       ),
@@ -82,7 +82,7 @@ class BuildEditLocationField extends StatelessWidget {
                         width: double.infinity,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: primaryGreen,
+                            backgroundColor: brandGreenPrimary,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),

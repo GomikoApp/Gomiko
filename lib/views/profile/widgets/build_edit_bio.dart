@@ -66,13 +66,13 @@ class BuildEditBioField extends StatelessWidget {
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                             borderSide: const BorderSide(
-                              color: primaryGreen,
+                              color: brandGreenPrimary,
                               width: 2,
                             ),
                           ),
                           labelText: userData[UserData.keyProfileBio],
                           floatingLabelStyle: const TextStyle(
-                            color: primaryGreen,
+                            color: brandGreenPrimary,
                           ),
                         ),
                       ),
@@ -85,7 +85,7 @@ class BuildEditBioField extends StatelessWidget {
                         width: double.infinity,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: primaryGreen,
+                            backgroundColor: brandGreenPrimary,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),

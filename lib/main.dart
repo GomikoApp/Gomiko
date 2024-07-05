@@ -66,7 +66,7 @@ class MyAppState extends ConsumerState<MyApp> {
         colorScheme:
             ColorScheme.fromSeed(seedColor: Colors.blue, secondary: Colors.red),
       ),
-      darkTheme: ThemeData.dark(),
+      darkTheme: ThemeData.light(),
       routerDelegate: router.goRouter.routerDelegate,
       routeInformationParser: router.goRouter.routeInformationParser,
       routeInformationProvider: router.goRouter.routeInformationProvider,

@@ -53,8 +53,8 @@ class _MyHomeScaffoldState extends State<HomeScaffold> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        selectedItemColor: primaryGreen,
-        unselectedItemColor: secondaryGray,
+        selectedItemColor: brandGreenPrimary,
+        unselectedItemColor: graySecondary,
         currentIndex: _selectedIndex,
         onTap: _onDestinationSelected,
         showUnselectedLabels: true,

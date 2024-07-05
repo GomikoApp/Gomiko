@@ -43,7 +43,7 @@ class BuildEditNameField extends StatelessWidget {
               heightFactor: 0.9,
               child: Container(
                 decoration: const BoxDecoration(
-                  color: bgColor,
+                  color: backgroundPrimary,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(20),
                     topRight: Radius.circular(20),
@@ -172,7 +172,7 @@ class BuildEditNameField extends StatelessWidget {
                         width: double.infinity,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: primaryGreen,
+                            backgroundColor: brandGreenPrimary,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
