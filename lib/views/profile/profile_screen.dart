@@ -41,6 +41,8 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
     double windowWidth = MediaQuery.of(context).size.width;
     double windowHeight = MediaQuery.of(context).size.height;
 
+    const double boxRadius = 20.0;
+
     Future<void> signOut() async {
       await FirebaseAuth.instance.signOut();
       await GoogleSignIn().signOut();
@@ -75,7 +77,7 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
                 height: windowHeight * 0.1,
                 decoration: BoxDecoration(
                   color: graySecondary,
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(boxRadius),
                 ),
                 child: Center(
                   child: ListTile(
@@ -116,8 +118,8 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
             Container(
               margin: const EdgeInsets.only(left: 20, right: 20, bottom: 10.0),
               decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
+                color: graySecondary,
+                borderRadius: BorderRadius.circular(boxRadius),
               ),
               child: Padding(
                 padding: const EdgeInsets.all(30.0),
@@ -206,6 +208,7 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
                     onTap: () {
                       if (kDebugMode) print("Liked Posts");
                     },
+                    decoration: const BoxDecoration(color: graySecondary),
                     leading: const Icon(Iconsax.camera),
                     title: const Text("Liked Posts"),
                     trailing: const Icon(Iconsax.arrow_right_3),
@@ -224,6 +227,7 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
                     onTap: () {
                       if (kDebugMode) print("Saved Posts");
                     },
+                    decoration: const BoxDecoration(color: graySecondary),
                     leading: const Icon(Iconsax.archive_1),
                     title: const Text("Saved Posts"),
                     trailing: const Icon(Iconsax.arrow_right_3),
@@ -254,6 +258,7 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
                     onTap: () {
                       if (kDebugMode) print("Appearance");
                     },
+                    decoration: const BoxDecoration(color: graySecondary),
                     leading: const Icon(Iconsax.moon),
                     title: const Text("Appearance"),
                     trailing: const Icon(Iconsax.arrow_right_3),
@@ -270,6 +275,7 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
                     onTap: () {
                       if (kDebugMode) print("Login and Security");
                     },
+                    decoration: const BoxDecoration(color: graySecondary),
                     leading: const Icon(Iconsax.lock),
                     title: const Text("Login and Security"),
                     trailing: const Icon(Iconsax.arrow_right_3),
@@ -286,6 +292,7 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
                     onTap: () {
                       if (kDebugMode) print("Privacy");
                     },
+                    decoration: const BoxDecoration(color: graySecondary),
                     leading: const Icon(Iconsax.information),
                     title: const Text("Privacy"),
                     trailing: const Icon(Iconsax.arrow_right_3),
@@ -304,6 +311,7 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
                       if (kDebugMode) print("Sign Out");
                       signOut();
                     },
+                    decoration: const BoxDecoration(color: graySecondary),
                     leading: const Icon(Iconsax.logout),
                     title: const Text(
                       "Log Out",

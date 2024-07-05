@@ -109,6 +109,7 @@ class BuildEditBioField extends StatelessWidget {
           },
         );
       },
+      decoration: const BoxDecoration(color: grayPrimary),
       leading: Padding(
         padding: const EdgeInsets.only(left: 12.0),
         child: SizedBox(
