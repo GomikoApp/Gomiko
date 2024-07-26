@@ -47,35 +47,38 @@ class _EditProfileState extends ConsumerState<EditProfile> {
           BuildEditProfilePicture(userData: userData),
 
           // Name Field
-          Column(
-            children: <Widget>[
-              // Name
-              BuildEditNameField(
-                windowWidth: windowWidth,
-                userData: userData,
-              ),
-              // Divider
-              Container(height: 1, color: Colors.grey[300]),
-              // Username
-              BuildEditUsernameField(
-                windowWidth: windowWidth,
-                userData: userData,
-              ),
-              // Divider
-              Container(height: 1, color: Colors.grey[300]),
-              // Location
-              BuildEditLocationField(
-                windowWidth: windowWidth,
-                userData: userData,
-              ),
-              // Divider
-              Container(height: 1, color: Colors.grey[300]),
-              // Bio
-              BuildEditBioField(
-                windowWidth: windowWidth,
-                userData: userData,
-              ),
-            ],
+          Padding(
+            padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+            child: Column(
+              children: <Widget>[
+                // Name
+                BuildEditNameField(
+                  windowWidth: windowWidth,
+                  userData: userData,
+                ),
+                // Divider
+                Container(height: 1, color: Colors.grey[300]),
+                // Username
+                BuildEditUsernameField(
+                  windowWidth: windowWidth,
+                  userData: userData,
+                ),
+                // Divider
+                Container(height: 1, color: Colors.grey[300]),
+                // Location
+                BuildEditLocationField(
+                  windowWidth: windowWidth,
+                  userData: userData,
+                ),
+                // Divider
+                Container(height: 1, color: Colors.grey[300]),
+                // Bio
+                BuildEditBioField(
+                  windowWidth: windowWidth,
+                  userData: userData,
+                ),
+              ],
+            ),
           ),
         ],
       ),

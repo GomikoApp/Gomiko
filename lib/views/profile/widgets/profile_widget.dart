@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:recycle/constants.dart';
+
 class CustomInkWell extends StatelessWidget {
   final Decoration? decoration;
   final Function()? onTap;
@@ -29,7 +31,7 @@ class CustomInkWell extends StatelessWidget {
     return Ink(
       decoration: decoration ??
           BoxDecoration(
-            color: Colors.white,
+            color: primaryGrey,
             borderRadius: BorderRadius.only(
               topLeft: topLeft
                   ? const Radius.circular(20)

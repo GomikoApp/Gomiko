@@ -75,7 +75,7 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
               child: Container(
                 height: windowHeight * 0.1,
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: primaryGrey,
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Center(
@@ -117,7 +117,7 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
             Container(
               margin: const EdgeInsets.only(left: 20, right: 20, bottom: 10.0),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: primaryGrey,
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Padding(
