@@ -109,12 +109,22 @@ class _MyHomeState extends ConsumerState<HomeTab> {
 
           // Waste Categories List
           Flexible(
-            child: ListView.builder(
+            // use grid view to display the categories in a column of 2
+            child: GridView.builder(
               shrinkWrap: true,
               itemCount: categories.length,
+              // grid delegate to set number of columns to display
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: MediaQuery.of(context).size.width /
+                      (MediaQuery.of(context).size.height / 3)),
               itemBuilder: (BuildContext context, int index) {
                 return Container(
-                  margin: const EdgeInsets.only(top: 10, left: 20, right: 20),
+                  // add margin to the container depending on the index
+                  margin: EdgeInsets.only(
+                      top: 10,
+                      left: index % 2 == 0 ? 20 : 5,
+                      right: index % 2 == 0 ? 5 : 20),
                   height: 100,
                   decoration: BoxDecoration(
                     color: Colors.grey[200],
