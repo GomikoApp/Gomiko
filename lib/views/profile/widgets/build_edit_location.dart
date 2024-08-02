@@ -74,7 +74,6 @@ class _BuildEditLocationFieldState
                     ),
 
                     // Location Dropdown
-                    // TODO: Refactor to use Riverpod (UI will not update without StatefulBuilder)
                     Padding(
                       padding: const EdgeInsets.only(
                           left: 20.0, right: 20.0, bottom: 10.0),
