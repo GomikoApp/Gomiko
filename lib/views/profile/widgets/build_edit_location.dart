@@ -9,9 +9,11 @@ class BuildEditLocationField extends ConsumerStatefulWidget {
     super.key,
     required this.windowWidth,
     required this.userData,
+    required this.windowHeight,
   });
 
   final double windowWidth;
+  final double windowHeight;
   final Map<String, dynamic> userData;
 
   @override
@@ -32,111 +34,109 @@ class _BuildEditLocationFieldState
           context: context,
           builder: (BuildContext context) {
             return StatefulBuilder(builder: (context, setState) {
-              return FractionallySizedBox(
-                heightFactor: 0.9,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(left: 3.0),
-                        child: IconButton(
-                          icon: const Icon(Icons.close),
+              return Container(
+                height: widget.windowHeight * 0.85,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(left: 3.0),
+                      child: IconButton(
+                        icon: const Icon(Icons.close),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ),
+
+                    // Edit Location Text
+                    const Padding(
+                      padding: EdgeInsets.only(
+                          left: 20.0, right: 20.0, bottom: 10.0),
+                      child: Text(
+                        "Edit Location",
+                        style: TextStyle(
+                            fontSize: 28, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+
+                    // Location Dropdown By Japanese Region
+                    const Padding(
+                      padding: EdgeInsets.only(
+                          left: 20.0, right: 20.0, bottom: 10.0),
+                      child: Text("Region",
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.w500)),
+                    ),
+
+                    // Location Dropdown
+                    // TODO: Refactor to use Riverpod (UI will not update without StatefulBuilder)
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: 20.0, right: 20.0, bottom: 10.0),
+                      child: SizedBox(
+                        height: 50,
+                        width: double.infinity,
+                        child: DropdownButton<String>(
+                          value: dropDownValue,
+                          icon: const Icon(Icons.keyboard_arrow_down),
+                          iconSize: 24,
+                          style: const TextStyle(color: Colors.black),
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              dropDownValue = newValue!;
+                            });
+                          },
+                          items: <String>[
+                            'Hokkaido',
+                            'Tohoku',
+                            'Kanto',
+                            'Chubu',
+                            'Kansai',
+                            'Chugoku',
+                            'Shikoku',
+                            'Kyushu',
+                          ].map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                    ),
+
+                    // Save Button
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: 20.0, right: 20.0, top: 10.0, bottom: 10.0),
+                      child: SizedBox(
+                        height: 50,
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: primaryGreen,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
                           onPressed: () {
                             Navigator.pop(context);
                           },
-                        ),
-                      ),
-
-                      // Edit Location Text
-                      const Padding(
-                        padding: EdgeInsets.only(
-                            left: 20.0, right: 20.0, bottom: 10.0),
-                        child: Text(
-                          "Edit Location",
-                          style: TextStyle(
-                              fontSize: 28, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-
-                      // Location Dropdown By Japanese Region
-                      const Padding(
-                        padding: EdgeInsets.only(
-                            left: 20.0, right: 20.0, bottom: 10.0),
-                        child: Text("Region",
+                          child: const Text(
+                            "Save",
                             style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.w500)),
-                      ),
-
-                      // Location Dropdown
-                      // TODO: Refactor to use Riverpod (UI will not update without StatefulBuilder)
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            left: 20.0, right: 20.0, bottom: 10.0),
-                        child: SizedBox(
-                          height: 50,
-                          width: double.infinity,
-                          child: DropdownButton<String>(
-                            value: dropDownValue,
-                            icon: const Icon(Icons.keyboard_arrow_down),
-                            iconSize: 24,
-                            style: const TextStyle(color: Colors.black),
-                            onChanged: (String? newValue) {
-                              setState(() {
-                                dropDownValue = newValue!;
-                              });
-                            },
-                            items: <String>[
-                              'Hokkaido',
-                              'Tohoku',
-                              'Kanto',
-                              'Chubu',
-                              'Kansai',
-                              'Chugoku',
-                              'Shikoku',
-                              'Kyushu',
-                            ].map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
-                          ),
-                        ),
-                      ),
-
-                      // Save Button
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            left: 20.0, right: 20.0, top: 10.0, bottom: 10.0),
-                        child: SizedBox(
-                          height: 50,
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: primaryGreen,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: const Text(
-                              "Save",
-                              style: TextStyle(
-                                color: Colors.black,
-                              ),
+                              color: Colors.black,
                             ),
                           ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               );
             });

@@ -25,6 +25,7 @@ class _EditProfileState extends ConsumerState<EditProfile> {
   @override
   Widget build(BuildContext context) {
     double windowWidth = MediaQuery.of(context).size.width;
+    double windowHeight = MediaQuery.of(context).size.height;
 
     final userData = ref.watch(userDataProvider);
 
@@ -54,6 +55,7 @@ class _EditProfileState extends ConsumerState<EditProfile> {
                 // Name
                 BuildEditNameField(
                   windowWidth: windowWidth,
+                  windowHeight: windowHeight,
                   userData: userData,
                 ),
                 // Divider
@@ -61,6 +63,7 @@ class _EditProfileState extends ConsumerState<EditProfile> {
                 // Username
                 BuildEditUsernameField(
                   windowWidth: windowWidth,
+                  windowHeight: windowHeight,
                   userData: userData,
                 ),
                 // Divider
@@ -68,6 +71,7 @@ class _EditProfileState extends ConsumerState<EditProfile> {
                 // Location
                 BuildEditLocationField(
                   windowWidth: windowWidth,
+                  windowHeight: windowHeight,
                   userData: userData,
                 ),
                 // Divider
@@ -75,6 +79,7 @@ class _EditProfileState extends ConsumerState<EditProfile> {
                 // Bio
                 BuildEditBioField(
                   windowWidth: windowWidth,
+                  windowHeight: windowHeight,
                   userData: userData,
                 ),
               ],
