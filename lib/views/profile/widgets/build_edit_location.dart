@@ -25,7 +25,76 @@ class _BuildEditLocationFieldState
     extends ConsumerState<BuildEditLocationField> {
   @override
   Widget build(BuildContext context) {
-    String dropDownValue = 'Hokkaido';
+    // User Location
+    String userLocation = widget.userData[UserData.keyLocation];
+    String userRegion = userLocation.split(',').first.trim();
+    String? userPrefecture = userLocation.split(',').last.trim();
+
+    Map<String, List<String>> regionPrefectures = {
+      'Hokkaido': [
+        'Hokkaido',
+      ],
+      'Tohoku': [
+        'Aomori',
+        'Iwate',
+        'Miyagi',
+        'Akita',
+        'Yamagata',
+        'Fukushima',
+      ],
+      'Kanto': [
+        'Tokyo',
+        'Ibaraki',
+        'Tochigi',
+        'Gunma',
+        'Saitama',
+        'Chiba',
+        'Kanagawa',
+      ],
+      'Chubu': [
+        'Niigata',
+        'Toyama',
+        'Ishikawa',
+        'Fukui',
+        'Yamanashi',
+        'Nagano',
+        'Gifu',
+        'Shizuoka',
+        'Aichi',
+      ],
+      'Kansai': [
+        'Mie',
+        'Shiga',
+        'Kyoto',
+        'Osaka',
+        'Hyogo',
+        'Nara',
+        'Wakayama',
+      ],
+      'Chugoku': [
+        'Tottori',
+        'Shimane',
+        'Okayama',
+        'Hiroshima',
+        'Yamaguchi',
+      ],
+      'Shikoku': [
+        'Tokushima',
+        'Kagawa',
+        'Ehime',
+        'Kochi',
+      ],
+      'Kyushu': [
+        'Fukuoka',
+        'Saga',
+        'Nagasaki',
+        'Kumamoto',
+        'Oita',
+        'Miyazaki',
+        'Kagoshima',
+        'Okinawa',
+      ],
+    };
 
     return CustomInkWell(
       onTap: () {
@@ -81,13 +150,15 @@ class _BuildEditLocationFieldState
                         height: 50,
                         width: double.infinity,
                         child: DropdownButton<String>(
-                          value: dropDownValue,
+                          value: userRegion,
                           icon: const Icon(Icons.keyboard_arrow_down),
                           iconSize: 24,
                           style: const TextStyle(color: Colors.black),
                           onChanged: (String? newValue) {
+                            // TODO: Update userRegion o nFirebase
                             setState(() {
-                              dropDownValue = newValue!;
+                              userPrefecture = null;
+                              userRegion = newValue!;
                             });
                           },
                           items: <String>[
@@ -106,6 +177,42 @@ class _BuildEditLocationFieldState
                             );
                           }).toList(),
                         ),
+                      ),
+                    ),
+
+                    // Dynamically render prefecture dropdown depending on regionDropDownValue
+                    const Padding(
+                      padding: EdgeInsets.only(
+                          left: 20.0, right: 20.0, bottom: 10.0),
+                      child: Text("Prefecture",
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.w500)),
+                    ),
+
+                    // Prefecture Dropdown
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: 20.0, right: 20.0, bottom: 10.0),
+                      child: SizedBox(
+                        height: 50,
+                        width: double.infinity,
+                        child: DropdownButton<String>(
+                            value: userPrefecture,
+                            icon: const Icon(Icons.keyboard_arrow_down),
+                            iconSize: 24,
+                            style: const TextStyle(color: Colors.black),
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                userPrefecture = newValue!;
+                              });
+                            },
+                            items: regionPrefectures[userRegion]!
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList()),
                       ),
                     ),
 
