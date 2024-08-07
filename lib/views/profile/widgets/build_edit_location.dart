@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recycle/constants.dart';
 import 'package:recycle/utils/data_classes.dart';
 import 'package:recycle/views/profile/widgets/profile_widget.dart';
+import 'package:animated_custom_dropdown/custom_dropdown.dart';
 
 class BuildEditLocationField extends ConsumerStatefulWidget {
   const BuildEditLocationField({
@@ -147,44 +148,23 @@ class _BuildEditLocationFieldState
                       padding: const EdgeInsets.only(
                           left: 20.0, right: 20.0, bottom: 10.0),
                       child: SizedBox(
-                        height: 50,
                         width: double.infinity,
-                        child: DropdownButton<String>(
-                          value: userRegion,
-                          icon: const Icon(Icons.keyboard_arrow_down),
-                          // isExpanded moves the icon to the right of screen
-                          isExpanded: true,
-                          iconSize: 24,
-                          style: const TextStyle(
-                            color: Colors.black,
-                          ),
-                          underline: Container(
-                            height: 2,
-                            color: primaryGreen,
+                        child: CustomDropdown<String>(
+                          initialItem: userRegion,
+                          items: regionPrefectures.keys.toList(),
+                          decoration: CustomDropdownDecoration(
+                            closedBorderRadius: BorderRadius.circular(10),
+                            closedBorder: Border.all(color: Colors.black),
+                            expandedBorderRadius: BorderRadius.circular(10),
+                            expandedBorder: Border.all(color: Colors.black),
                           ),
                           onChanged: (String? newValue) {
-                            // TODO: Update userRegion o nFirebase
                             setState(() {
                               userRegion = newValue!;
                               userPrefecture = regionPrefectures[userRegion]!
                                   .first; // Reset Prefecture to first in list
                             });
                           },
-                          items: <String>[
-                            'Hokkaido',
-                            'Tohoku',
-                            'Kanto',
-                            'Chubu',
-                            'Kansai',
-                            'Chugoku',
-                            'Shikoku',
-                            'Kyushu',
-                          ].map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
                         ),
                       ),
                     ),
@@ -203,30 +183,22 @@ class _BuildEditLocationFieldState
                       padding: const EdgeInsets.only(
                           left: 20.0, right: 20.0, bottom: 10.0),
                       child: SizedBox(
-                        height: 50,
                         width: double.infinity,
-                        child: DropdownButton<String>(
-                            value: userPrefecture,
-                            isExpanded: true,
-                            icon: const Icon(Icons.keyboard_arrow_down),
-                            iconSize: 24,
-                            style: const TextStyle(color: Colors.black),
-                            underline: Container(
-                              height: 2,
-                              color: primaryGreen,
-                            ),
-                            onChanged: (String? newValue) {
-                              setState(() {
-                                userPrefecture = newValue!;
-                              });
-                            },
-                            items: regionPrefectures[userRegion]!
-                                .map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList()),
+                        child: CustomDropdown<String>(
+                          initialItem: userPrefecture,
+                          items: regionPrefectures[userRegion]!,
+                          decoration: CustomDropdownDecoration(
+                            closedBorderRadius: BorderRadius.circular(10),
+                            closedBorder: Border.all(color: Colors.black),
+                            expandedBorderRadius: BorderRadius.circular(10),
+                            expandedBorder: Border.all(color: Colors.black),
+                          ),
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              userPrefecture = newValue!;
+                            });
+                          },
+                        ),
                       ),
                     ),
 
