@@ -152,13 +152,22 @@ class _BuildEditLocationFieldState
                         child: DropdownButton<String>(
                           value: userRegion,
                           icon: const Icon(Icons.keyboard_arrow_down),
+                          // isExpanded moves the icon to the right of screen
+                          isExpanded: true,
                           iconSize: 24,
-                          style: const TextStyle(color: Colors.black),
+                          style: const TextStyle(
+                            color: Colors.black,
+                          ),
+                          underline: Container(
+                            height: 2,
+                            color: primaryGreen,
+                          ),
                           onChanged: (String? newValue) {
                             // TODO: Update userRegion o nFirebase
                             setState(() {
-                              userPrefecture = null;
                               userRegion = newValue!;
+                              userPrefecture = regionPrefectures[userRegion]!
+                                  .first; // Reset Prefecture to first in list
                             });
                           },
                           items: <String>[
@@ -198,9 +207,14 @@ class _BuildEditLocationFieldState
                         width: double.infinity,
                         child: DropdownButton<String>(
                             value: userPrefecture,
+                            isExpanded: true,
                             icon: const Icon(Icons.keyboard_arrow_down),
                             iconSize: 24,
                             style: const TextStyle(color: Colors.black),
+                            underline: Container(
+                              height: 2,
+                              color: primaryGreen,
+                            ),
                             onChanged: (String? newValue) {
                               setState(() {
                                 userPrefecture = newValue!;

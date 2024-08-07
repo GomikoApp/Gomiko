@@ -63,9 +63,9 @@ class MyAppState extends ConsumerState<MyApp> {
       title: 'Gomiko',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme:
-            ColorScheme.fromSeed(seedColor: Colors.blue, secondary: Colors.red),
-      ),
+          //colorScheme:
+          //    ColorScheme.fromSeed(seedColor: Colors.blue, secondary: Colors.red),
+          ),
       darkTheme: ThemeData.dark(),
       routerDelegate: router.goRouter.routerDelegate,
       routeInformationParser: router.goRouter.routeInformationParser,
