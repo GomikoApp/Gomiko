@@ -1,9 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recycle/constants.dart';
 import 'package:recycle/utils/data_classes.dart';
 import 'package:recycle/views/profile/widgets/profile_widget.dart';
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class BuildEditLocationField extends ConsumerStatefulWidget {
   const BuildEditLocationField({
@@ -96,6 +99,23 @@ class _BuildEditLocationFieldState
         'Okinawa',
       ],
     };
+
+    Future<void> updateUserData() async {
+      // Get the current user
+      final User? user = FirebaseAuth.instance.currentUser;
+
+      // Update the user's location in Firestore
+      await FirebaseFirestore.instance
+          .collection("/users")
+          .doc(user!.uid)
+          .update({
+        UserData.keyLocation: "$userRegion, $userPrefecture"
+      }).catchError((error) {
+        if (kDebugMode) {
+          print("Failed to update user's location: $error");
+        }
+      });
+    }
 
     return CustomInkWell(
       onTap: () {
@@ -231,6 +251,8 @@ class _BuildEditLocationFieldState
                             ),
                           ),
                           onPressed: () {
+                            // TODO: Update user's location in Firestore
+                            updateUserData();
                             Navigator.pop(context);
                           },
                           child: const Text(
