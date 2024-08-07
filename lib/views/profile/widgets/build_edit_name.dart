@@ -67,8 +67,22 @@ class BuildEditNameField extends StatelessWidget {
                         EdgeInsets.only(left: 20.0, right: 20.0, bottom: 10.0),
                     child: Text(
                       "Edit Name",
-                      style:
-                          TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        // https://github.com/flutter/flutter/issues/30541
+                        // add space between text and underline
+                        shadows: [
+                          Shadow(
+                            color: Colors.black,
+                            offset: Offset(0, -5),
+                          )
+                        ],
+                        color: Colors.transparent,
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                        decoration: TextDecoration.underline,
+                        decorationColor: primaryGreen,
+                        decorationThickness: 3,
+                      ),
                     ),
                   ),
                   // first name

@@ -130,7 +130,21 @@ class _BuildEditLocationFieldState
                       child: Text(
                         "Edit Location",
                         style: TextStyle(
-                            fontSize: 28, fontWeight: FontWeight.bold),
+                          // https://github.com/flutter/flutter/issues/30541
+                          // add space between text and underline
+                          shadows: [
+                            Shadow(
+                              color: Colors.black,
+                              offset: Offset(0, -5),
+                            )
+                          ],
+                          color: Colors.transparent,
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
+                          decoration: TextDecoration.underline,
+                          decorationColor: primaryGreen,
+                          decorationThickness: 3,
+                        ),
                       ),
                     ),
 
