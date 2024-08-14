@@ -1,16 +1,19 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:recycle/constants.dart';
-import 'package:recycle/views/auth/widgets/error_text.dart';
 
-// widgets
+// firebase
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+// widget
 import 'custom_outlined_input_border.dart';
-import 'profile_widget.dart';
+import 'package:recycle/views/profile/widgets/profile_widget.dart';
 
-// Utils
+// utils
 import 'package:recycle/utils/data_classes.dart';
+
+// constants
+import 'package:recycle/constants.dart';
 
 class BuildEditNameField extends StatefulWidget {
   const BuildEditNameField({
@@ -30,28 +33,34 @@ class BuildEditNameField extends StatefulWidget {
 
 class _BuildEditNameFieldState extends State<BuildEditNameField> {
   final _formKey = GlobalKey<FormState>();
+  late final TextEditingController firstNameController;
+  late final TextEditingController lastNameController;
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
+    _initializeNameControllers();
+  }
+
+  // Initialize the controllers with the user's first and last name
+  void _initializeNameControllers() {
     String fullName = widget.userData[UserData.keyName];
     int lastSpace = fullName.lastIndexOf(' ');
-
     String firstName =
         (lastSpace != -1) ? fullName.substring(0, lastSpace) : fullName;
     String lastName =
         (lastSpace != -1) ? fullName.substring(lastSpace + 1) : '';
+    firstNameController = TextEditingController(text: firstName);
+    lastNameController = TextEditingController(text: lastName);
+  }
 
-    final firstNameController = TextEditingController(text: firstName);
-    final lastNameController = TextEditingController(text: lastName);
-
-    Future<void> updateName() async {
-      // get the current user
-      final User? user = FirebaseAuth.instance.currentUser;
-
-      // update the user's name
+  // Update the user's name in the database
+  Future<void> _updateName() async {
+    final User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
       await FirebaseFirestore.instance
           .collection("/users")
-          .doc(user!.uid)
+          .doc(user.uid)
           .update({
         UserData.keyName:
             "${firstNameController.text} ${lastNameController.text}",
@@ -61,195 +70,194 @@ class _BuildEditNameFieldState extends State<BuildEditNameField> {
         }
       });
     }
+  }
 
+  // Show the modal to edit the user's name
+  void _showEditNameModal(BuildContext context) {
+    showModalBottomSheet(
+      isScrollControlled: true,
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          height: widget.windowHeight * 0.85,
+          decoration: const BoxDecoration(
+            color: bgColor,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+            ),
+          ),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                _buildCloseButton(context),
+                _buildTitle(),
+                _buildFirstNameField(),
+                const SizedBox(height: 10),
+                _buildLastNameField(),
+                _buildSaveButton(context),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  // Close button to close the modal
+  Widget _buildCloseButton(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 3.0),
+      child: IconButton(
+        icon: const Icon(Icons.close),
+        onPressed: () {
+          Navigator.pop(context);
+        },
+      ),
+    );
+  }
+
+  // Title of the modal
+  Widget _buildTitle() {
+    return const Padding(
+      padding: EdgeInsets.only(left: 20.0, right: 20.0, bottom: 10.0),
+      child: Text(
+        "Edit Name",
+        style: TextStyle(
+          shadows: [
+            Shadow(
+              color: Colors.black,
+              offset: Offset(0, -5),
+            )
+          ],
+          color: Colors.transparent,
+          fontSize: 28,
+          fontWeight: FontWeight.bold,
+          decoration: TextDecoration.underline,
+          decorationColor: primaryGreen,
+          decorationThickness: 3,
+        ),
+      ),
+    );
+  }
+
+  // First name field
+  Widget _buildFirstNameField() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: Container(
+        decoration: const BoxDecoration(color: Colors.white),
+        child: TextFormField(
+          controller: firstNameController,
+          decoration: InputDecoration(
+            labelText: "First Name",
+            labelStyle: TextStyle(color: Colors.grey[600]),
+            enabledBorder: const CustomOutlinedInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+              borderSide: BorderSide(width: 1.0),
+            ),
+            focusedBorder: const CustomOutlinedInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+              borderSide: BorderSide(width: 1.0),
+            ),
+            border: const CustomOutlinedInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+            ),
+            contentPadding: const EdgeInsets.all(10.0),
+            floatingLabelStyle: const TextStyle(color: Colors.black),
+          ),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Please enter your first name';
+            }
+            return null;
+          },
+        ),
+      ),
+    );
+  }
+
+  // Last name field
+  Widget _buildLastNameField() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: Container(
+        decoration: const BoxDecoration(color: Colors.white),
+        child: TextFormField(
+          controller: lastNameController,
+          decoration: InputDecoration(
+            labelText: "Last Name",
+            labelStyle: TextStyle(color: Colors.grey[600]),
+            enabledBorder: const CustomOutlinedInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+              borderSide: BorderSide(width: 1.0),
+            ),
+            focusedBorder: const CustomOutlinedInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+              borderSide: BorderSide(width: 1.0),
+            ),
+            border: const CustomOutlinedInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+            ),
+            contentPadding: const EdgeInsets.all(10.0),
+            floatingLabelStyle: const TextStyle(color: Colors.black),
+          ),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Please enter your last name';
+            }
+            return null;
+          },
+        ),
+      ),
+    );
+  }
+
+  // Save button to save the user's name
+  Widget _buildSaveButton(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+      child: SizedBox(
+        height: 50,
+        width: double.infinity,
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: primaryGreen,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+          onPressed: () {
+            if (_formKey.currentState!.validate()) {
+              _updateName();
+              Navigator.pop(context);
+            }
+          },
+          child: const Text(
+            "Save",
+            style: TextStyle(color: Colors.black),
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return CustomInkWell(
       topRight: true,
       topLeft: true,
-      onTap: () {
-        showModalBottomSheet(
-          isScrollControlled: true,
-          context: context,
-          builder: (BuildContext context) {
-            return Container(
-              height: widget.windowHeight * 0.85,
-              decoration: const BoxDecoration(
-                color: bgColor,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
-                ),
-              ),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.only(left: 3.0),
-                      child: IconButton(
-                        icon: const Icon(Icons.close),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.only(
-                          left: 20.0, right: 20.0, bottom: 10.0),
-                      child: Text(
-                        "Edit Name",
-                        style: TextStyle(
-                          // https://github.com/flutter/flutter/issues/30541
-                          // add space between text and underline
-                          shadows: [
-                            Shadow(
-                              color: Colors.black,
-                              offset: Offset(0, -5),
-                            )
-                          ],
-                          color: Colors.transparent,
-                          fontSize: 28,
-                          fontWeight: FontWeight.bold,
-                          decoration: TextDecoration.underline,
-                          decorationColor: primaryGreen,
-                          decorationThickness: 3,
-                        ),
-                      ),
-                    ),
-
-                    // first name
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        left: 20.0,
-                        right: 20.0,
-                      ),
-                      child: Container(
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                        ),
-                        child: TextFormField(
-                          controller: firstNameController,
-                          decoration: InputDecoration(
-                            labelText: "First Name",
-                            labelStyle: TextStyle(color: Colors.grey[600]),
-                            enabledBorder: const CustomOutlinedInputBorder(
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(10),
-                                topRight: Radius.circular(10),
-                              ),
-                              borderSide: BorderSide(
-                                width: 1.0,
-                              ),
-                            ),
-                            focusedBorder: const CustomOutlinedInputBorder(
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(10),
-                                topRight: Radius.circular(10),
-                              ),
-                              borderSide: BorderSide(
-                                width: 1.0,
-                              ),
-                            ),
-                            border: const CustomOutlinedInputBorder(
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(10),
-                                topRight: Radius.circular(10),
-                              ),
-                            ),
-                            contentPadding: const EdgeInsets.all(10.0),
-                            floatingLabelStyle: const TextStyle(
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    // last name
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        left: 20.0,
-                        right: 20.0,
-                      ),
-                      child: Container(
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                        ),
-                        child: TextFormField(
-                          controller: lastNameController,
-                          decoration: InputDecoration(
-                            labelText: "Last Name",
-                            labelStyle: TextStyle(color: Colors.grey[600]),
-                            enabledBorder: const CustomOutlinedInputBorder(
-                              borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(10),
-                                bottomRight: Radius.circular(10),
-                              ),
-                              borderSide: BorderSide(
-                                width: 1.0,
-                              ),
-                            ),
-                            focusedBorder: const CustomOutlinedInputBorder(
-                              borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(10),
-                                bottomRight: Radius.circular(10),
-                              ),
-                              borderSide: BorderSide(
-                                width: 1.0,
-                              ),
-                            ),
-                            border: const CustomOutlinedInputBorder(
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(10),
-                                topRight: Radius.circular(10),
-                              ),
-                            ),
-                            contentPadding: const EdgeInsets.all(10.0),
-                            floatingLabelStyle: const TextStyle(
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          left: 20.0, right: 20.0, top: 20.0, bottom: 10.0),
-                      child: SizedBox(
-                        height: 50,
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: primaryGreen,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          onPressed: () {
-                            updateName();
-                            Navigator.pop(context);
-                          },
-                          child: const Text(
-                            "Save",
-                            style: TextStyle(
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
-        );
-      },
+      onTap: () => _showEditNameModal(context),
       leading: Padding(
         padding: const EdgeInsets.only(left: 12.0),
         child: SizedBox(
           width: widget.windowWidth * 0.25,
-          child: const Text("Name",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+          child: const Text(
+            "Name",
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+          ),
         ),
       ),
       title: Text(
