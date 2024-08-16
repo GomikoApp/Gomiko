@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 // firebase
@@ -35,6 +34,8 @@ class _BuildEditUsernameFieldState extends State<BuildEditUsernameField> {
   final _formKey = GlobalKey<FormState>();
   late final TextEditingController usernameController;
 
+  String? validationMessage;
+
   @override
   void initState() {
     super.initState();
@@ -46,8 +47,28 @@ class _BuildEditUsernameFieldState extends State<BuildEditUsernameField> {
     usernameController = TextEditingController(text: username);
   }
 
+  Future<bool> isUniqueUsername(String username) async {
+    final QuerySnapshot result = await FirebaseFirestore.instance
+        .collection('users')
+        .where(UserData.keyProfileUsername, isEqualTo: username)
+        .get();
+
+    if (result.docs.isEmpty) {
+      setState(() {
+        validationMessage = null;
+      });
+    } else {
+      setState(() {
+        validationMessage = "This username is already taken";
+      });
+    }
+
+    return result.docs.isEmpty;
+  }
+
   Future<void> _updateUsername() async {
     final User? user = FirebaseAuth.instance.currentUser;
+
     if (user != null) {
       await FirebaseFirestore.instance
           .collection('users')
@@ -166,7 +187,7 @@ class _BuildEditUsernameFieldState extends State<BuildEditUsernameField> {
             if (value == null || value.isEmpty) {
               return 'Please enter your username';
             }
-            return null;
+            return validationMessage;
           },
         ),
       ),
@@ -187,8 +208,9 @@ class _BuildEditUsernameFieldState extends State<BuildEditUsernameField> {
               borderRadius: BorderRadius.circular(10),
             ),
           ),
-          onPressed: () {
-            if (_formKey.currentState!.validate()) {
+          onPressed: () async {
+            await isUniqueUsername(usernameController.text);
+            if (_formKey.currentState!.validate() && context.mounted) {
               _updateUsername();
               Navigator.pop(context);
             }
