@@ -32,19 +32,13 @@ class BuildEditUsernameField extends StatefulWidget {
 
 class _BuildEditUsernameFieldState extends State<BuildEditUsernameField> {
   final _formKey = GlobalKey<FormState>();
-  late final TextEditingController usernameController;
+  late TextEditingController usernameController;
 
   String? validationMessage;
 
   @override
   void initState() {
     super.initState();
-    _initializeUsernameController();
-  }
-
-  void _initializeUsernameController() {
-    String username = widget.userData[UserData.keyProfileUsername];
-    usernameController = TextEditingController(text: username);
   }
 
   Future<bool> isUniqueUsername(String username) async {
@@ -59,7 +53,8 @@ class _BuildEditUsernameFieldState extends State<BuildEditUsernameField> {
       });
     } else {
       setState(() {
-        validationMessage = "This username is already taken";
+        validationMessage =
+            "This username ${usernameController.text} is already taken";
       });
     }
 
@@ -88,6 +83,7 @@ class _BuildEditUsernameFieldState extends State<BuildEditUsernameField> {
       builder: (BuildContext context) {
         // reset the username when the modal is closed
         usernameController.text = widget.userData[UserData.keyProfileUsername];
+
         return Container(
           height: widget.windowHeight * 0.85,
           decoration: BoxDecoration(

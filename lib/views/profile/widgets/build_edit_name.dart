@@ -33,25 +33,12 @@ class BuildEditNameField extends StatefulWidget {
 
 class _BuildEditNameFieldState extends State<BuildEditNameField> {
   final _formKey = GlobalKey<FormState>();
-  late final TextEditingController firstNameController;
-  late final TextEditingController lastNameController;
+  late TextEditingController firstNameController;
+  late TextEditingController lastNameController;
 
   @override
   void initState() {
     super.initState();
-    _initializeNameControllers();
-  }
-
-  // Initialize the controllers with the user's first and last name
-  void _initializeNameControllers() {
-    String fullName = widget.userData[UserData.keyName];
-    int lastSpace = fullName.lastIndexOf(' ');
-    String firstName =
-        (lastSpace != -1) ? fullName.substring(0, lastSpace) : fullName;
-    String lastName =
-        (lastSpace != -1) ? fullName.substring(lastSpace + 1) : '';
-    firstNameController = TextEditingController(text: firstName);
-    lastNameController = TextEditingController(text: lastName);
   }
 
   // Update the user's name in the database
@@ -78,6 +65,16 @@ class _BuildEditNameFieldState extends State<BuildEditNameField> {
       isScrollControlled: true,
       context: context,
       builder: (BuildContext context) {
+        // reset the name when the modal is closed
+        String fullName = widget.userData[UserData.keyName];
+        int lastSpace = fullName.lastIndexOf(' ');
+        String firstName =
+            (lastSpace != -1) ? fullName.substring(0, lastSpace) : fullName;
+        String lastName =
+            (lastSpace != -1) ? fullName.substring(lastSpace + 1) : '';
+        firstNameController.text = firstName;
+        lastNameController.text = lastName;
+
         return Container(
           height: widget.windowHeight * 0.85,
           decoration: const BoxDecoration(
