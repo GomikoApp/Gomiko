@@ -81,11 +81,13 @@ class _BuildEditUsernameFieldState extends State<BuildEditUsernameField> {
     }
   }
 
-  void _showEditUsernameModal(BuildContext context) {
+  void _showEditUsernameModal(BuildContext context) async {
     showModalBottomSheet(
       isScrollControlled: true,
       context: context,
       builder: (BuildContext context) {
+        // reset the username when the modal is closed
+        usernameController.text = widget.userData[UserData.keyProfileUsername];
         return Container(
           height: widget.windowHeight * 0.85,
           decoration: BoxDecoration(
@@ -182,7 +184,6 @@ class _BuildEditUsernameFieldState extends State<BuildEditUsernameField> {
               color: Colors.black,
             ),
           ),
-          // TODO:: also validate if username is already taken
           validator: (value) {
             if (value == null || value.isEmpty) {
               return 'Please enter your username';
