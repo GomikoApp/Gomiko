@@ -46,6 +46,20 @@ class _BuildEditUsernameFieldState extends State<BuildEditUsernameField> {
     usernameController = TextEditingController(text: username);
   }
 
+  Future<void> _updateUsername() async {
+    final User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .update({
+            UserData.keyProfileUsername: usernameController.text,
+          })
+          .then((value) => print("Username Updated"))
+          .catchError((error) => print("Failed to update username: $error"));
+    }
+  }
+
   void _showEditUsernameModal(BuildContext context) {
     showModalBottomSheet(
       isScrollControlled: true,
@@ -175,7 +189,7 @@ class _BuildEditUsernameFieldState extends State<BuildEditUsernameField> {
           ),
           onPressed: () {
             if (_formKey.currentState!.validate()) {
-              //_updateUsername();
+              _updateUsername();
               Navigator.pop(context);
             }
           },
