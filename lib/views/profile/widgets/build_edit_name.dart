@@ -6,7 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 // widget
-import 'custom_outlined_input_border.dart';
+import 'package:recycle/views/profile/widgets/custom_outlined_input_border.dart';
 import 'package:recycle/views/profile/widgets/profile_widget.dart';
 
 // utils
