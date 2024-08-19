@@ -133,34 +133,32 @@ class _BuildEditNameFieldState extends State<BuildEditNameField> {
   Widget _buildFirstNameField() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
-      child: Container(
-        decoration: const BoxDecoration(color: Colors.white),
-        child: TextFormField(
-          controller: firstNameController,
-          decoration: InputDecoration(
-            labelText: "First Name",
-            labelStyle: TextStyle(color: Colors.grey[600]),
-            enabledBorder: const CustomOutlinedInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(10)),
-              borderSide: BorderSide(width: 1.0),
-            ),
-            focusedBorder: const CustomOutlinedInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(10)),
-              borderSide: BorderSide(width: 1.0),
-            ),
-            border: const CustomOutlinedInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(10)),
-            ),
-            contentPadding: const EdgeInsets.all(10.0),
-            floatingLabelStyle: const TextStyle(color: Colors.black),
+      child: TextFormField(
+        controller: firstNameController,
+        decoration: const InputDecoration(
+          enabledBorder: CustomOutlinedInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+            borderSide: BorderSide(width: 1.0),
           ),
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Please enter your first name';
-            }
-            return null;
-          },
+          focusedBorder: CustomOutlinedInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+            borderSide: BorderSide(color: primaryGreen, width: 2.0),
+          ),
+          border: CustomOutlinedInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+          ),
+          contentPadding: EdgeInsets.all(10.0),
+          labelText: "First Name",
+          floatingLabelStyle: TextStyle(
+            color: primaryGreen,
+          ),
         ),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Please enter your first name';
+          }
+          return null;
+        },
       ),
     );
   }
@@ -169,34 +167,32 @@ class _BuildEditNameFieldState extends State<BuildEditNameField> {
   Widget _buildLastNameField() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
-      child: Container(
-        decoration: const BoxDecoration(color: Colors.white),
-        child: TextFormField(
-          controller: lastNameController,
-          decoration: InputDecoration(
-            labelText: "Last Name",
-            labelStyle: TextStyle(color: Colors.grey[600]),
-            enabledBorder: const CustomOutlinedInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(10)),
-              borderSide: BorderSide(width: 1.0),
-            ),
-            focusedBorder: const CustomOutlinedInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(10)),
-              borderSide: BorderSide(width: 1.0),
-            ),
-            border: const CustomOutlinedInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(10)),
-            ),
-            contentPadding: const EdgeInsets.all(10.0),
-            floatingLabelStyle: const TextStyle(color: Colors.black),
+      child: TextFormField(
+        controller: lastNameController,
+        decoration: const InputDecoration(
+          enabledBorder: CustomOutlinedInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+            borderSide: BorderSide(width: 1.0),
           ),
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Please enter your last name';
-            }
-            return null;
-          },
+          focusedBorder: CustomOutlinedInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+            borderSide: BorderSide(color: primaryGreen, width: 2.0),
+          ),
+          border: CustomOutlinedInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+          ),
+          contentPadding: EdgeInsets.all(10.0),
+          labelText: "Last Name",
+          floatingLabelStyle: TextStyle(
+            color: primaryGreen,
+          ),
         ),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Please enter your last name';
+          }
+          return null;
+        },
       ),
     );
   }

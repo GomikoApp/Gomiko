@@ -166,7 +166,8 @@ class _BuildEditUsernameFieldState extends State<BuildEditUsernameField> {
             focusedBorder: CustomOutlinedInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide: const BorderSide(
-                width: 1.0,
+                color: primaryGreen,
+                width: 2.0,
               ),
             ),
             border: CustomOutlinedInputBorder(
