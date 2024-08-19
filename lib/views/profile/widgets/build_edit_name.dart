@@ -39,6 +39,8 @@ class _BuildEditNameFieldState extends State<BuildEditNameField> {
   @override
   void initState() {
     super.initState();
+    firstNameController = TextEditingController();
+    lastNameController = TextEditingController();
   }
 
   // Update the user's name in the database

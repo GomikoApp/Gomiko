@@ -39,6 +39,7 @@ class _BuildEditUsernameFieldState extends State<BuildEditUsernameField> {
   @override
   void initState() {
     super.initState();
+    usernameController = TextEditingController();
   }
 
   Future<bool> isUniqueUsername(String username) async {
