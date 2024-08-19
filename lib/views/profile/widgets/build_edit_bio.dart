@@ -1,11 +1,18 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:recycle/utils/data_classes.dart';
-import 'package:recycle/views/profile/widgets/custom_outlined_input_border.dart';
 
+// firebase
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+// utils
+import 'package:recycle/utils/data_classes.dart';
+
+// widget
+import 'package:recycle/views/profile/widgets/custom_outlined_input_border.dart';
 import 'profile_widget.dart';
+
+// constants
 import 'package:recycle/constants.dart';
 
 class BuildEditBioField extends StatefulWidget {

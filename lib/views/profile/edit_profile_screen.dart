@@ -8,6 +8,7 @@ import 'widgets/build_edit_profile_picture.dart';
 import 'widgets/build_edit_username.dart';
 import 'widgets/build_edit_bio.dart';
 import 'widgets/build_edit_location.dart';
+import 'widgets/build_delete_account.dart';
 
 // constants
 import '../../constants.dart';
@@ -84,6 +85,10 @@ class _EditProfileState extends ConsumerState<EditProfile> {
                 ),
 
                 // TODO: Build delete account button
+                BuildDeleteAccount(
+                  windowWidth: windowWidth,
+                  windowHeight: windowHeight,
+                ),
               ],
             ),
           ),
