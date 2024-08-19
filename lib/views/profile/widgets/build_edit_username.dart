@@ -104,7 +104,7 @@ class _BuildEditUsernameFieldState extends State<BuildEditUsernameField> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                _buildCloseButton(context),
+                const SizedBox(height: 20),
                 _buildTitle(),
                 _buildUsernameField(),
                 _buildSaveButton(),
@@ -113,18 +113,6 @@ class _BuildEditUsernameFieldState extends State<BuildEditUsernameField> {
           ),
         );
       },
-    );
-  }
-
-  Widget _buildCloseButton(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 3.0),
-      child: IconButton(
-        icon: const Icon(Icons.close),
-        onPressed: () {
-          Navigator.pop(context);
-        },
-      ),
     );
   }
 

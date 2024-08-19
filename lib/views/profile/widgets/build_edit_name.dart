@@ -91,7 +91,7 @@ class _BuildEditNameFieldState extends State<BuildEditNameField> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                //_buildCloseButton(context),
+                const SizedBox(height: 20),
                 _buildTitle(),
                 _buildFirstNameField(),
                 const SizedBox(height: 10),
@@ -104,19 +104,6 @@ class _BuildEditNameFieldState extends State<BuildEditNameField> {
       },
     );
   }
-
-  // Close button to close the modal
-  //Widget _buildCloseButton(BuildContext context) {
-  //  return Padding(
-  //    padding: const EdgeInsets.only(left: 3.0),
-  //    child: IconButton(
-  //      icon: const Icon(Icons.close),
-  //      onPressed: () {
-  //        Navigator.pop(context);
-  //      },
-  //    ),
-  //  );
-  //}
 
   // Title of the modal
   Widget _buildTitle() {

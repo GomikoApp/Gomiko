@@ -35,15 +35,7 @@ class BuildEditBioField extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(left: 3.0),
-                    child: IconButton(
-                      icon: const Icon(Icons.close),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ),
+                  const SizedBox(height: 20),
                   const Padding(
                     padding:
                         EdgeInsets.only(left: 20.0, right: 20.0, bottom: 10.0),
