@@ -43,6 +43,14 @@ class _BuildEditUsernameFieldState extends State<BuildEditUsernameField> {
   }
 
   Future<bool> isUniqueUsername(String username) async {
+    // if current username is the same as the new username
+    if (username == widget.userData[UserData.keyProfileUsername]) {
+      setState(() {
+        validationMessage = null;
+      });
+      return true;
+    }
+
     final QuerySnapshot result = await FirebaseFirestore.instance
         .collection('users')
         .where(UserData.keyProfileUsername, isEqualTo: username)
