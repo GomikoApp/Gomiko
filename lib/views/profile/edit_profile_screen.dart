@@ -82,6 +82,8 @@ class _EditProfileState extends ConsumerState<EditProfile> {
                   windowHeight: windowHeight,
                   userData: userData,
                 ),
+
+                // TODO: Build delete account button
               ],
             ),
           ),
