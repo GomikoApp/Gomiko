@@ -1,18 +1,14 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-// Widgets
-import 'login_signup_widgets.dart';
 import 'social_media_button.dart';
 
 class SocialMediaAuth extends StatelessWidget {
-  final VoidCallback onAnonymousSignIn;
   final VoidCallback onGoogleSignIn;
   final VoidCallback onFacebookSignIn;
 
   const SocialMediaAuth({
     super.key,
-    required this.onAnonymousSignIn,
     required this.onGoogleSignIn,
     required this.onFacebookSignIn,
   });
@@ -47,11 +43,6 @@ class SocialMediaAuth extends StatelessWidget {
             },
           ),
         ],
-      ),
-      const SizedBox(height: 20),
-      GomikoLink(
-        label: "Continue without an account",
-        onTap: onAnonymousSignIn,
       ),
     ]);
   }
