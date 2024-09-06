@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 
 // views
-import '../../../profile/profile_screen.dart';
-import '../../../search_screen.dart';
-import '../../../leaderboard_screen.dart';
+import '../../profile/profile_screen.dart';
+import '../../search_screen.dart';
+import '../../leaderboard_screen.dart';
 
 // constants
 import '../../../../constants.dart';
