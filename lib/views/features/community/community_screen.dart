@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+
+// constants
 import 'package:recycle/constants.dart';
+
+// widget
+import 'package:recycle/views/features/community/widgets/add_post.dart';
 
 class CommunityTab extends StatefulWidget {
   const CommunityTab({super.key});
@@ -38,7 +43,12 @@ class _CommunityTabState extends State<CommunityTab> {
                 borderRadius: BorderRadius.circular(30),
               ),
               onPressed: () {
-                // TODO: Navigate to a new screen to create a post
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const AddPost(),
+                  ),
+                );
               },
               child: const Icon(
                 Iconsax.add,
