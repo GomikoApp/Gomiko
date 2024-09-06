@@ -93,8 +93,7 @@ class UserData {
       String? name = "Anonymous",
       int? points = 0,
       String? oauthProvider,
-      String? profileBio =
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      String? profileBio = "Hello!",
       String? profilePictureUrl =
           "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
       String? profileUsername = "Anonymous",
@@ -166,4 +165,3 @@ class UserData {
   // List<DocumentReference>? savedItems;
   // List<DocumentReference>? savedPosts;
 }
-
