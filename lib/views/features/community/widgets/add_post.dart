@@ -35,6 +35,17 @@ class _AddPostState extends State<AddPost> {
     });
   }
 
+  Future<void> _pickImageFromCamera() async {
+    final returnedImage =
+        await ImagePicker().pickImage(source: ImageSource.camera);
+
+    setState(() {
+      if (returnedImage != null) {
+        _selectedImage = File(returnedImage.path);
+      }
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -192,7 +203,10 @@ class _AddPostState extends State<AddPost> {
                                         child: Text(
                                       'Take Photo',
                                     )),
-                                    onTap: () async {},
+                                    onTap: () async {
+                                      Navigator.pop(context);
+                                      await _pickImageFromCamera();
+                                    },
                                   ),
                                 ],
                               ),
