@@ -40,7 +40,7 @@ class AuthService {
       final AccessToken accessToken = result.accessToken!;
 
       final facebookAuthCredential =
-          FacebookAuthProvider.credential(accessToken.token);
+          FacebookAuthProvider.credential(accessToken.tokenString);
 
       final signInCred = await FirebaseAuth.instance
           .signInWithCredential(facebookAuthCredential);
@@ -115,27 +115,24 @@ class AuthService {
     final User? user = credential.user;
 
     // Check for duplicate user
-    final checkUserResponse = await _firestore
-        .collection("/users")
-        .where("uid", isEqualTo: user?.uid)
-        .get()
-        .then((value) => value.docs.firstOrNull);
+    final checkUserResponse =
+        await _firestore.collection("/users").doc(user?.uid).get();
 
-    if (checkUserResponse != null) {
+    if (checkUserResponse.exists) {
       return checkUserResponse.reference;
     }
 
     // Get user data and create a new document
     final userData = UserData.asMap(
-            uid: user?.uid,
-            email: user?.email,
-            name: user?.displayName,
-            profilePictureUrl: user?.photoURL,
-            profileUsername: user?.displayName,
-            oauthProvider: credential.credential?.signInMethod);
+        uid: user?.uid,
+        email: user?.email,
+        name: user?.displayName,
+        profilePictureUrl: user?.photoURL,
+        profileUsername: user?.displayName,
+        oauthProvider: credential.credential?.signInMethod);
 
-    final response = await _firestore.collection("/users").add(userData);
+    await _firestore.collection("/users").doc(user?.uid).set(userData);
 
-    return response;
+    return _firestore.collection("/users").doc(user?.uid);
   }
 }

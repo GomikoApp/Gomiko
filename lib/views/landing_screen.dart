@@ -1,12 +1,23 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 // widgets
 import 'auth/widgets/login_signup_widgets.dart';
 
-class LandingPage extends StatelessWidget {
+class LandingPage extends ConsumerStatefulWidget {
   const LandingPage({super.key});
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() => _LandingPageState();
+}
+
+class _LandingPageState extends ConsumerState<ConsumerStatefulWidget> {
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

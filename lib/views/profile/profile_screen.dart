@@ -23,7 +23,7 @@ import 'widgets/profile_widget.dart';
 import 'package:recycle/constants.dart';
 
 class ProfilePage extends ConsumerStatefulWidget {
-  const ProfilePage({Key? key, required this.title}) : super(key: key);
+  const ProfilePage({super.key, required this.title});
 
   final String title;
 
@@ -36,7 +36,7 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     // retrieve user data from the provider
-    final profileData = ref.watch(userDataProvider);
+    final userData = ref.watch(userDataProvider);
 
     double windowWidth = MediaQuery.of(context).size.width;
     double windowHeight = MediaQuery.of(context).size.height;
@@ -75,21 +75,21 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
               child: Container(
                 height: windowHeight * 0.1,
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: primaryGrey,
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Center(
                   child: ListTile(
                     leading: CircleAvatar(
                       radius: 30,
-                      backgroundImage: NetworkImage(profileData[
+                      backgroundImage: NetworkImage(userData[
                               UserData.keyProfilePictureUrl] ??
                           "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"),
                     ),
-                    title: Text(
-                        profileData[UserData.keyProfileUsername] ?? "J. Doe"),
-                    subtitle:
-                        Text(profileData[UserData.keyEmail] ?? "No email"),
+                    title:
+                        Text(userData[UserData.keyProfileUsername] ?? "J. Doe"),
+                    subtitle: Text(
+                        userData[UserData.keyEmail] ?? "johnDoe@gmail.com"),
                     trailing: IconButton(
                       color: primaryGreen,
                       icon: const Icon(Iconsax.edit),
@@ -117,7 +117,7 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
             Container(
               margin: const EdgeInsets.only(left: 20, right: 20, bottom: 10.0),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: primaryGrey,
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Padding(
@@ -135,7 +135,7 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
                               color: primaryGreen,
                             ),
                             SizedBox(width: windowWidth * 0.02),
-                            Text(profileData[UserData.keyPoints].toString()),
+                            Text(userData[UserData.keyPoints].toString()),
                           ],
                         ),
                         SizedBox(height: windowHeight * 0.01),

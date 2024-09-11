@@ -17,10 +17,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 /// ```
 
 class DefaultFirebaseOptions {
-  // String appleKey = dotenv.env['GOOGLE_API_KEY_APPLE'] == null ? '' : "$dotenv.env['GOOGLE_API_KEY_APPLE']";
-  // final String androidKey = dotenv.env['GOOGLE_API_KEY_ANDROID'] == null ? '' : "$dotenv.env['GOOGLE_API_KEY_ANDROID']";
-  // final String webKey = dotenv.env['GOOGLE_API_KEY_WEB'] == null ? '' : "$dotenv.env['GOOGLE_API_KEY_WEB']";
-
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
       return web;

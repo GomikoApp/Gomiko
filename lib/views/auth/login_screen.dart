@@ -14,7 +14,7 @@ import 'widgets/custom_rich_text.dart';
 import 'widgets/error_text.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  const LoginPage({super.key});
 
   @override
   State<StatefulWidget> createState() => _LoginPageState();
@@ -81,26 +81,10 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  void signInAsAnonymousUser() async {
-    try {
-      await AuthService().signInAsAnonymousUser();
-      if (context.mounted) context.pushReplacement('/home');
-    } on FirebaseAuthException catch (e) {
-      setState(() {
-        errorMessage = e.message;
-      });
-    }
-  }
-
   Widget _buildSocialMediaButtons() {
     return Column(
       children: <Widget>[
-        SizedBox(height: formSizedBoxHeight),
         SocialMediaAuth(
-          onAnonymousSignIn: () {
-            signInAsAnonymousUser();
-            if (kDebugMode) print("Anonymous Sign In");
-          },
           onGoogleSignIn: () {
             signInWithGoogle();
             if (kDebugMode) print("Google Sign In");

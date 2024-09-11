@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "872903978882",
+    "firebase_url": "https://gomiko-app-default-rtdb.firebaseio.com",
     "project_id": "gomiko-app",
     "storage_bucket": "gomiko-app.appspot.com"
   },
@@ -22,13 +23,29 @@
           }
         },
         {
+          "client_id": "872903978882-rcgt85ut4o1pistrf342a5o6s94jhhud.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.recycle",
+            "certificate_hash": "1383190127db5a9515395f97a8ec75ff8b50b412"
+          }
+        },
+        {
+          "client_id": "872903978882-uta1v3muqk6rgtrb685e1eemgb01haao.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.recycle",
+            "certificate_hash": "184637a10873acd5a1c06f1ec239b667dda89e99"
+          }
+        },
+        {
           "client_id": "872903978882-t004j0vu6e4g34ngdjk5ts8bach2oarv.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "process.env['GOOGLE_API_KEY_ANDROID']"
+          "current_key": "AIzaSyAjvw7XVL3wb8fsxgea6p7XwILfe3O5qmA"
         }
       ],
       "services": {

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:recycle/views/features/home/community_screen.dart';
-import 'package:recycle/views/features/home/learn_screen.dart';
+import 'package:recycle/views/features/community/community_screen.dart';
+import 'package:recycle/views/features/learn/learn_screen.dart';
 
 // utils
 import 'package:recycle/utils/providers/login_state_provider.dart';
@@ -12,7 +12,7 @@ import 'package:recycle/views/features/home/home_screen.dart';
 
 class TabBarWidget extends ConsumerStatefulWidget {
   // title parameter is not necessary here, its just for testing.
-  const TabBarWidget({Key? key, required this.title}) : super(key: key);
+  const TabBarWidget({super.key, required this.title});
 
   final String title;
 

@@ -12,13 +12,13 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-
 // Hook that automatically turns each key in the map from snake case to camel case.
 // AS OF NOW THIS IS UNUSED, although the function to turn keys from snake case to camel case might prove useful at some point.
 class CamelCaseHook {
   // const CamelCaseHook();
 
-  static Map<String, dynamic> convertMapKeysToCamelCase(Map<String, dynamic> map) {
+  static Map<String, dynamic> convertMapKeysToCamelCase(
+      Map<String, dynamic> map) {
     final Map<String, dynamic> result = {};
 
     map.forEach((key, value) {
@@ -29,7 +29,11 @@ class CamelCaseHook {
 
         List<String> parts = text.split('_');
         String firstPart = parts.first.toLowerCase();
-        List<String> otherParts = parts.skip(1).map((part) => part[0].toUpperCase() + part.substring(1).toLowerCase()).toList();
+        List<String> otherParts = parts
+            .skip(1)
+            .map((part) =>
+                part[0].toUpperCase() + part.substring(1).toLowerCase())
+            .toList();
 
         return firstPart + otherParts.join('');
       }
@@ -46,11 +50,10 @@ class CamelCaseHook {
     return result;
   }
 
-
   // @override
   // Object? beforeDecode(Object? value) {
   //   final result = convertMapKeysToCamelCase(value as Map<String, dynamic>);
-  
+
   //   print("BEFORE DECODE RESULT: $result");
 
   //   return result;
@@ -61,10 +64,10 @@ class CamelCaseHook {
 /// It holds static keys for the properties in the users documents.
 /// This is currently not null-safe (as in the case of the key not existing is possible and would probably
 /// throw an error), however, we'll fix this when we can.
-/// 
+///
 /// There is also a method UserData.asMap() that works as the old constructor.toMap did, allowing
 /// you to pass arguments to automatically parse it as a map that can be sent to Firestore.
-/// 
+///
 /// OLD: from this documentation: https://pub.dev/packages/dart_mappable
 class UserData {
   static String keyUid = "uid";
@@ -76,41 +79,42 @@ class UserData {
   static String keyProfileBio = "profile_bio";
   static String keyProfilePictureUrl = "profile_picture_url";
   static String keyProfileUsername = "profile_username";
+
   /// Type is List\<DocumentReference>
   static String keySavedItems = "saved_items";
-  /// Type is List\<DocumentReference>
-  static String keySavedPosts = "saved_posts";  
 
-  static Map<String, dynamic> asMap({
-      String? uid,
+  /// Type is List\<DocumentReference>
+  static String keySavedPosts = "saved_posts";
+
+  static Map<String, dynamic> asMap(
+      {String? uid,
       String? email,
-      String? location = "Earth",
-      String? name = "Anonymous", 
+      String? location = "Kanto, Tokyo",
+      String? name = "Anonymous",
       int? points = 0,
       String? oauthProvider,
-      String? profileBio = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      String? profilePictureUrl = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
+      String? profileBio = "Hello!",
+      String? profilePictureUrl =
+          "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
       String? profileUsername = "Anonymous",
       List<DocumentReference>? savedItems,
       List<DocumentReference>? savedPosts}) {
-        savedItems = <DocumentReference>[];
-        savedPosts = <DocumentReference>[];
+    savedItems = <DocumentReference>[];
+    savedPosts = <DocumentReference>[];
     return <String, dynamic>{
-      "uid" : uid,
-      "email" : email,
-      "location" : location,
-      "name" : name,
-      "oauth_provider" : oauthProvider,
-      "points" : points,
-      "profile_bio" : profileBio,
-      "profile_picture_url" : profilePictureUrl,
-      "profile_username" : profileUsername,
-      "saved_items" : savedItems,
-      "saved_posts" : savedPosts,
+      "uid": uid,
+      "email": email,
+      "location": location,
+      "name": name,
+      "oauth_provider": oauthProvider,
+      "points": points,
+      "profile_bio": profileBio,
+      "profile_picture_url": profilePictureUrl,
+      "profile_username": profileUsername,
+      "saved_items": savedItems,
+      "saved_posts": savedPosts,
     };
   }
-
-
 
   /// OLD IMPLEMENTATION: MIGHT FIX LATER
   // UserData(
@@ -118,7 +122,7 @@ class UserData {
   //     this.uid,
   //     this.email,
   //     this.location = "Earth",
-  //     this.name = "Anonymous", 
+  //     this.name = "Anonymous",
   //     this.points = 0,
   //     this.oauthProvider,
   //     this.profileBio = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
