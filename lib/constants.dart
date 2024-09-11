@@ -9,4 +9,12 @@ const Color bgColor = Color(0xFFF7F7F8);
 
 class Constants {
   static String keyLoggedIn = "loggedIn";
+
+  static double windowHeight(BuildContext context) {
+    return MediaQuery.of(context).size.height;
+  }
+
+  static double windowWidth(BuildContext context) {
+    return MediaQuery.of(context).size.width;
+  }
 }
