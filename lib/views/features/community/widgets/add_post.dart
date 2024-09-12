@@ -1,5 +1,9 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:recycle/constants.dart';
@@ -15,8 +19,11 @@ class AddPost extends StatefulWidget {
 }
 
 class _AddPostState extends State<AddPost> {
-  final int _maxLength = 10;
+  final int _maxLength = 280;
   final TextEditingController _controller = TextEditingController();
+
+  final FirebaseStorage _storage = FirebaseStorage.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   // keep track of current length of text
   int _currentLength = 0;
@@ -42,6 +49,50 @@ class _AddPostState extends State<AddPost> {
     setState(() {
       if (returnedImage != null) {
         _selectedImage = File(returnedImage.path);
+      }
+    });
+  }
+
+  // upload post to firebase with image being optional
+  Future<void> _uploadPost() async {
+    CollectionReference posts = FirebaseFirestore.instance.collection('posts');
+    String? downloadUrl;
+    User? user = _auth.currentUser;
+
+    if (_selectedImage != null) {
+      // create reference to the file location in firebase storage
+      Reference storageRef =
+          _storage.ref().child('posts/${_selectedImage!.path}');
+
+      // start file upload
+      UploadTask uploadTask = storageRef.putFile(_selectedImage!);
+
+      // wait for upload to complete and get downloadUrl
+      TaskSnapshot snapshot = await uploadTask.whenComplete(() {});
+      downloadUrl = await snapshot.ref.getDownloadURL();
+    }
+
+    String? uid = user?.uid;
+    String? username = user?.displayName;
+
+    // add post to firebase
+    Map<String, dynamic> postData = {
+      'uid': uid,
+      'username': username,
+      'content': _controller.text,
+      'image': downloadUrl,
+      'likes': 0,
+      'comments': [],
+      'timestamp': FieldValue.serverTimestamp(),
+    };
+
+    await posts.add(postData).then((value) {
+      if (kDebugMode) {
+        print('Post added with ID: ${value.id}');
+      }
+    }).catchError((error) {
+      if (kDebugMode) {
+        print('Error adding post: $error');
       }
     });
   }
@@ -239,7 +290,7 @@ class _AddPostState extends State<AddPost> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                onPressed: () {
+                onPressed: () async {
                   if (_currentLength > _maxLength) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
@@ -253,8 +304,10 @@ class _AddPostState extends State<AddPost> {
                         content: Text('Post cannot be empty'),
                       ),
                     );
+                  } else {
+                    _uploadPost();
+                    Navigator.pop(context);
                   }
-                  print('Post submitted');
                 },
                 child: const Text(
                   "Post",
