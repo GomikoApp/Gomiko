@@ -1,11 +1,16 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
+// iconsax
+import 'package:iconsax/iconsax.dart';
+
+// firebase
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
+
+// constants
 import 'package:recycle/constants.dart';
 
 // image packages
@@ -114,6 +119,182 @@ class _AddPostState extends State<AddPost> {
     super.dispose();
   }
 
+  // button to submit Post
+  Widget _buildSubmitButton() {
+    return Padding(
+      padding: const EdgeInsets.only(
+          left: 20.0, right: 20.0, top: 10.0, bottom: 20.0),
+      child: SizedBox(
+        width: double.infinity,
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: primaryGreen,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+          onPressed: () async {
+            if (_currentLength > _maxLength) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Post is too long'),
+                ),
+              );
+              return;
+            } else if (_currentLength == 0) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Post cannot be empty'),
+                ),
+              );
+            } else {
+              _uploadPost();
+              Navigator.pop(context);
+            }
+          },
+          child: const Text(
+            "Post",
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+      ),
+    );
+  }
+
+  // show selected image
+  Widget _buildShowSelectedImage() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 20.0, top: 10.0),
+      child: SizedBox(
+        height: 80,
+        width: 80,
+        child: Stack(
+          clipBehavior: Clip
+              .none, // Allows the icon to be positioned outside the container
+          children: [
+            Container(
+              height: 80,
+              width: 80,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                image: DecorationImage(
+                  image: FileImage(_selectedImage!),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            Positioned(
+              top: -5,
+              right: -5,
+              child: CircleAvatar(
+                backgroundColor: Colors.white,
+                radius: 10,
+                child: IconButton(
+                  padding: EdgeInsets.zero,
+                  icon: const Icon(Iconsax.close_circle,
+                      size: 15, color: Colors.red),
+                  onPressed: () {
+                    setState(() {
+                      _selectedImage = null;
+                    });
+                  },
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // show modal bottom sheet to select image from camera or gallery
+  void _buildShowModalBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      isScrollControlled: true,
+      context: context,
+      builder: (context) {
+        return SizedBox(
+          height: Constants.windowHeight(context) * 0.2,
+          child: Column(
+            children: [
+              // add a small oval container to show it is scrollable
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Container(
+                  height: 5,
+                  width: 50,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[400],
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+              ),
+
+              ListTile(
+                title: const Center(
+                    child: Text(
+                  'Choose Photo',
+                )),
+                onTap: () async {
+                  Navigator.pop(context);
+                  await _pickImageFromGallery();
+                },
+              ),
+
+              ListTile(
+                title: const Center(
+                    child: Text(
+                  'Take Photo',
+                )),
+                onTap: () async {
+                  Navigator.pop(context);
+                  await _pickImageFromCamera();
+                },
+              ),
+
+              ListTile(
+                title: const Center(
+                    child: Text(
+                  'Cancel',
+                )),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              )
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildSelectImageButton(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 20.0, top: 10.0),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: SizedBox(
+          height: 80,
+          width: 80,
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              elevation: 0,
+              backgroundColor: Colors.grey[200],
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            onPressed: () {
+              // show bottom modal sheet for options to select camera/gallery
+              _buildShowModalBottomSheet(context);
+            },
+            child: const Icon(Iconsax.camera5),
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -156,120 +337,8 @@ class _AddPostState extends State<AddPost> {
           Row(
             children: [
               // add selected images here make the size the same as the camera elevation button
-              if (_selectedImage != null)
-                Padding(
-                  padding: const EdgeInsets.only(left: 20.0, top: 10.0),
-                  child: SizedBox(
-                    height: 80,
-                    width: 80,
-                    child: Stack(
-                      clipBehavior: Clip
-                          .none, // Allows the icon to be positioned outside the container
-                      children: [
-                        Container(
-                          height: 80,
-                          width: 80,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            image: DecorationImage(
-                              image: FileImage(_selectedImage!),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          top: -5,
-                          right: -5,
-                          child: CircleAvatar(
-                            backgroundColor: Colors.white,
-                            radius: 10,
-                            child: IconButton(
-                              padding: EdgeInsets.zero,
-                              icon: const Icon(Iconsax.close_circle,
-                                  size: 15, color: Colors.red),
-                              onPressed: () {
-                                setState(() {
-                                  _selectedImage = null;
-                                });
-                              },
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-
-              Padding(
-                padding: const EdgeInsets.only(left: 20.0, top: 10.0),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: SizedBox(
-                    height: 80,
-                    width: 80,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        elevation: 0,
-                        backgroundColor: Colors.grey[200],
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                      onPressed: () {
-                        // show bottom modal sheet for options to select camera/gallery
-                        showModalBottomSheet(
-                          isScrollControlled: true,
-                          context: context,
-                          builder: (context) {
-                            return SizedBox(
-                              height: Constants.windowHeight(context) * 0.2,
-                              child: Column(
-                                children: [
-                                  // add a small oval container to show it is scrollable
-                                  Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Container(
-                                      height: 5,
-                                      width: 50,
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey[400],
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                    ),
-                                  ),
-
-                                  ListTile(
-                                    title: const Center(
-                                        child: Text(
-                                      'Choose Photo',
-                                    )),
-                                    onTap: () async {
-                                      Navigator.pop(context);
-                                      await _pickImageFromGallery();
-                                    },
-                                  ),
-
-                                  ListTile(
-                                    title: const Center(
-                                        child: Text(
-                                      'Take Photo',
-                                    )),
-                                    onTap: () async {
-                                      Navigator.pop(context);
-                                      await _pickImageFromCamera();
-                                    },
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                        );
-                      },
-                      child: const Icon(Iconsax.camera5),
-                    ),
-                  ),
-                ),
-              ),
+              if (_selectedImage != null) _buildShowSelectedImage(),
+              _buildSelectImageButton(context),
             ],
           ),
 
@@ -277,45 +346,7 @@ class _AddPostState extends State<AddPost> {
 
           const Spacer(),
 
-          // button to submit Post
-          Padding(
-            padding: const EdgeInsets.only(
-                left: 20.0, right: 20.0, top: 10.0, bottom: 20.0),
-            child: SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: primaryGreen,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                onPressed: () async {
-                  if (_currentLength > _maxLength) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Post is too long'),
-                      ),
-                    );
-                    return;
-                  } else if (_currentLength == 0) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Post cannot be empty'),
-                      ),
-                    );
-                  } else {
-                    _uploadPost();
-                    Navigator.pop(context);
-                  }
-                },
-                child: const Text(
-                  "Post",
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-            ),
-          ),
+          _buildSubmitButton(),
         ],
       ),
     );
