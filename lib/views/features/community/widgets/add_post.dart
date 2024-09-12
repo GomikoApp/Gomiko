@@ -7,7 +7,6 @@ import 'package:iconsax/iconsax.dart';
 
 // firebase
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 // constants
@@ -15,9 +14,15 @@ import 'package:recycle/constants.dart';
 
 // image packages
 import 'package:image_picker/image_picker.dart';
+import 'package:recycle/utils/data_classes.dart';
 
 class AddPost extends StatefulWidget {
-  const AddPost({super.key});
+  const AddPost({
+    super.key,
+    required this.userData,
+  });
+
+  final Map<String, dynamic> userData;
 
   @override
   State<AddPost> createState() => _AddPostState();
@@ -28,7 +33,6 @@ class _AddPostState extends State<AddPost> {
   final TextEditingController _controller = TextEditingController();
 
   final FirebaseStorage _storage = FirebaseStorage.instance;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   // keep track of current length of text
   int _currentLength = 0;
@@ -62,7 +66,6 @@ class _AddPostState extends State<AddPost> {
   Future<void> _uploadPost() async {
     CollectionReference posts = FirebaseFirestore.instance.collection('posts');
     String? downloadUrl;
-    User? user = _auth.currentUser;
 
     if (_selectedImage != null) {
       // create reference to the file location in firebase storage
@@ -77,8 +80,8 @@ class _AddPostState extends State<AddPost> {
       downloadUrl = await snapshot.ref.getDownloadURL();
     }
 
-    String? uid = user?.uid;
-    String? username = user?.displayName;
+    String uid = widget.userData[UserData.keyUid];
+    String username = widget.userData[UserData.keyProfileUsername];
 
     // add post to firebase
     Map<String, dynamic> postData = {

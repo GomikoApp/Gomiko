@@ -1,22 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
 
 // constants
 import 'package:recycle/constants.dart';
+import 'package:recycle/utils/providers/user_data_provider.dart';
 
 // widget
 import 'package:recycle/views/features/community/widgets/add_post.dart';
 
-class CommunityTab extends StatefulWidget {
+class CommunityTab extends ConsumerStatefulWidget {
   const CommunityTab({super.key});
 
   @override
-  State<CommunityTab> createState() => _CommunityTabState();
+  ConsumerState<CommunityTab> createState() => _CommunityTabState();
 }
 
-class _CommunityTabState extends State<CommunityTab> {
+class _CommunityTabState extends ConsumerState<CommunityTab> {
   @override
   Widget build(BuildContext context) {
+    final userData = ref.watch(userDataProvider);
+
     return Scaffold(
       body: const Column(
         children: [
@@ -46,7 +50,7 @@ class _CommunityTabState extends State<CommunityTab> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const AddPost(),
+                    builder: (context) => AddPost(userData: userData),
                   ),
                 );
               },
