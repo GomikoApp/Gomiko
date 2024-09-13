@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 // utilities
 import '../../services/auth_services.dart';
@@ -41,15 +40,9 @@ class _SignUpPageState extends State<SignUpPage> {
   // // Create User With Email and Password
   void createUserWithEmailAndPassword() async {
     try {
-      final UserCredential? createUserResult =
-          await AuthService().createUserWithEmailAndPassword(
-        _emailController.text,
-        passwordField.currentPassword,
-      );
-
-      if (context.mounted && createUserResult != null) {
-        context.pushReplacement('/home');
-      }
+      await AuthService().createUserWithEmailAndPassword(
+          _emailController.text, passwordField.currentPassword);
+      if (context.mounted) context.pushReplacement('/home');
     } catch (e) {
       setState(() {
         errorMessage = e.toString();

@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
@@ -123,16 +124,145 @@ class AuthService {
     }
 
     // Get user data and create a new document
+    // Made name and profileUsername have default value as it can't be null
     final userData = UserData.asMap(
         uid: user?.uid,
         email: user?.email,
-        name: user?.displayName,
+        name: user?.displayName ?? "User",
         profilePictureUrl: user?.photoURL,
-        profileUsername: user?.displayName,
+        profileUsername: user?.displayName ?? "User",
         oauthProvider: credential.credential?.signInMethod);
 
     await _firestore.collection("/users").doc(user?.uid).set(userData);
 
     return _firestore.collection("/users").doc(user?.uid);
   }
+
+  Future<void> deleteAccount() async {
+    try {
+      // Get current user
+      User? user = FirebaseAuth.instance.currentUser;
+      String uid = user!.uid;
+
+      // Fetch and delete user's posts
+      QuerySnapshot postsSnapshot = await FirebaseFirestore.instance
+          .collection('posts')
+          .where('uid', isEqualTo: uid)
+          .get();
+
+      for (QueryDocumentSnapshot post in postsSnapshot.docs) {
+        String? imageUrl = post['image'];
+        if (imageUrl != null && imageUrl.isNotEmpty) {
+          try {
+            Reference imageRef = FirebaseStorage.instance.refFromURL(imageUrl);
+            await imageRef.delete();
+          } catch (e) {
+            if (kDebugMode) {
+              print('Failed to delete image: $e');
+            }
+          }
+        }
+        await post.reference.delete();
+      }
+
+      // Delete user data from Firestore 'users' collection
+      await FirebaseFirestore.instance.collection('users').doc(uid).delete();
+
+      // Attempt to delete user from Firebase Authentication
+      await user.delete();
+
+      if (kDebugMode) {
+        print("Account deleted successfully");
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'requires-recent-login') {
+        if (kDebugMode) {
+          print("Re-authentication required: $e");
+        }
+
+        // Re-authenticate the user based on their auth provider
+        String providerId =
+            FirebaseAuth.instance.currentUser!.providerData[0].providerId;
+
+        if (providerId == 'google.com') {
+          await _reauthenticateWithGoogle();
+        } else if (providerId == 'facebook.com') {
+          await _reauthenticateWithFacebook();
+        } else if (providerId == 'password') {
+          //await _reauthenticateWithPassword();
+        }
+
+        // After successful re-authentication, retry account deletion
+        await deleteAccount();
+      } else {
+        if (kDebugMode) {
+          print("Failed to delete account: $e");
+        }
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print("Error deleting account: $e");
+      }
+    }
+  }
+
+  Future<void> _reauthenticateWithGoogle() async {
+    try {
+      User? user = FirebaseAuth.instance.currentUser;
+
+      // sign in user with google again
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser!.authentication;
+
+      // create googl eauth credential
+      final googleCredential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      // reauthenticate user
+      await user!.reauthenticateWithCredential(googleCredential);
+
+      if (kDebugMode) {
+        print("User reauthenticated successfully");
+      }
+    } catch (e) {
+      // show error message
+      if (kDebugMode) {
+        print("Failed to reauthenticate");
+      }
+    }
+  }
+
+  Future<void> _reauthenticateWithFacebook() async {
+    try {
+      User? user = FirebaseAuth.instance.currentUser;
+
+      // sign in user with facebook again
+      final LoginResult result = await FacebookAuth.instance.login();
+      if (result.status == LoginStatus.success) {
+        final AccessToken accessToken = result.accessToken!;
+        final facebookAuthCredential =
+            FacebookAuthProvider.credential(accessToken.tokenString);
+        // reauthenticate user
+        await user!.reauthenticateWithCredential(facebookAuthCredential);
+        if (kDebugMode) {
+          print("User reauthenticated successfully");
+        }
+      } else {
+        if (kDebugMode) {
+          print("Failed to reauthenticate");
+        }
+      }
+    } catch (e) {
+      // show error message
+      if (kDebugMode) {
+        print("Failed to reauthenticate");
+      }
+    }
+  }
+
+  // TODO:: implement reauthenticate with password (need a way to securly fetch user's password)
+  // Future<void> _reauthenticateWithPassword() {}
 }
