@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 // firebase
@@ -80,10 +81,12 @@ class _BuildEditUsernameFieldState extends State<BuildEditUsernameField> {
           .collection('users')
           .doc(user.uid)
           .update({
-            UserData.keyProfileUsername: usernameController.text,
-          })
-          .then((value) => print("Username Updated"))
-          .catchError((error) => print("Failed to update username: $error"));
+        UserData.keyProfileUsername: usernameController.text,
+      }).then((value) {
+        if (kDebugMode) print("Username Updated");
+      }).catchError((error) {
+        if (kDebugMode) print("Failed to update username: $error");
+      });
     }
   }
 
@@ -211,7 +214,9 @@ class _BuildEditUsernameFieldState extends State<BuildEditUsernameField> {
             await isUniqueUsername(usernameController.text);
             if (_formKey.currentState!.validate() && context.mounted) {
               _updateUsername();
-              Navigator.pop(context);
+              if (mounted) {
+                Navigator.pop(context);
+              }
             }
           },
           child: const Text(

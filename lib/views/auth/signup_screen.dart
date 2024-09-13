@@ -42,7 +42,7 @@ class _SignUpPageState extends State<SignUpPage> {
     try {
       await AuthService().createUserWithEmailAndPassword(
           _emailController.text, passwordField.currentPassword);
-      if (context.mounted) context.pushReplacement('/home');
+      if (mounted) context.pushReplacement('/home');
     } catch (e) {
       setState(() {
         errorMessage = e.toString();

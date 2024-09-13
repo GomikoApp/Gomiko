@@ -50,7 +50,7 @@ class _LoginPageState extends State<LoginPage> {
     try {
       await AuthService().signInWithEmailAndPassword(
           _emailFormField.currentEmail, _passwordFormField.currentPassword);
-      if (context.mounted) context.pushReplacement('/home');
+      if (mounted) context.pushReplacement('/home');
     } on FirebaseAuthException catch (e) {
       // The only error code that you can get is Invalid-Credentials because we have email enumeration protection turned on in firebase settings. To enable other error codes like user-not-found, you need to turn off email enumeration protection in firebase settings.
       setState(() {
@@ -62,7 +62,7 @@ class _LoginPageState extends State<LoginPage> {
   void signInWithGoogle() async {
     try {
       await AuthService().signInWithGoogle();
-      if (context.mounted) context.pushReplacement('/home');
+      if (mounted) context.pushReplacement('/home');
     } on FirebaseAuthException catch (e) {
       setState(() {
         errorMessage = e.message;
@@ -73,7 +73,7 @@ class _LoginPageState extends State<LoginPage> {
   void signInWithFacebook() async {
     try {
       await AuthService().signInWithFacebook();
-      if (context.mounted) context.pushReplacement('/home');
+      if (mounted) context.pushReplacement('/home');
     } on FirebaseAuthException catch (e) {
       setState(() {
         errorMessage = e.message;
