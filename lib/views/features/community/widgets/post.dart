@@ -48,10 +48,11 @@ class Post extends StatelessWidget {
               children: [
                 // TODO:: make this a button that navigates to the user's profile
                 // retrieve the user's profile image from firestore
-                const CircleAvatar(
+                CircleAvatar(
                   radius: 20,
                   backgroundImage: NetworkImage(
-                    'https://www.pngfind.com/pngs/m/610-6104451_image-placeholder-png-user-profile-placeholder-image-png.png',
+                    profileImageUrl ??
+                        'https://www.pngfind.com/pngs/m/610-6104451_image-placeholder-png-user-profile-placeholder-image-png.png',
                   ),
                 ),
                 const SizedBox(width: 10),

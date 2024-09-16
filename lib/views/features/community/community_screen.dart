@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
 
+// Riverpod
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+// FirebaseFirestore
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 // constants
-import 'package:recycle/constants.dart';
+import 'package:recycle/utils/data_classes.dart';
 
 // Data Classes
 import 'package:recycle/utils/providers/post_data_provider.dart';
@@ -21,80 +26,76 @@ class CommunityTab extends ConsumerStatefulWidget {
 }
 
 class _CommunityTabState extends ConsumerState<CommunityTab> {
+  // fetch user data based on the user's uid
+  Future<Map<String, dynamic>> _getUserData(String uid) async {
+    final userSnapshot =
+        await FirebaseFirestore.instance.collection('users').doc(uid).get();
+    return userSnapshot.data() ?? {};
+  }
+
   @override
   Widget build(BuildContext context) {
-    final userData = ref.watch(userDataProvider);
     final postData = ref.watch(postDataProvider);
 
-    final sortedPostData = postData.map((item) {
-      return {
-        'username': item['username'] ?? 'Username',
-        'location': item['location'] ?? 'Location',
-        'content': item['content'] ?? 'Post',
-        'image': item['image'],
-        'profileImageUrl': item['profileImageUrl'],
-        'like': item['like'] ?? 0,
-        'comments': item['comments'] ?? [],
-        'timestamp': item['timestamp'].toDate(),
-      };
-    }).toList();
-
-    sortedPostData.sort((a, b) => b['timestamp'].compareTo(a['timestamp']));
+    final userData = ref.watch(userDataProvider);
 
     return Scaffold(
-      body: Column(
-        children: [
-          const SizedBox(
-            height: 20,
-          ),
-          // TODO:: Create a search bar that filters the posts in firstore
+      body: Padding(
+        padding: const EdgeInsets.only(top: 15.0),
+        child: FutureBuilder<List<Map<String, dynamic>>>(
+          future: Future.wait(postData.map((post) async {
+            final userId = post['uid'];
+            final userData = await _getUserData(userId);
 
-          Expanded(
-            child: ListView(
-                children: sortedPostData.map<Widget>((data) {
-              return Post(
-                username: data['username'] ?? 'Username',
-                location: data['location'] ?? 'Location',
-                post: data['content'] ?? 'Post',
-                imageUrl: data['image'],
-                profileImageUrl: data['profileImageUrl'],
-                like: data['like'] ?? 0,
-                comment: data['comments'] ?? [],
-                time: data['timestamp'],
-              );
-            }).toList()),
-          ),
-        ],
-      ),
-      // Button to add a new post
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: SizedBox(
-          height: 70,
-          width: 70,
-          child: FittedBox(
-            child: FloatingActionButton(
-              backgroundColor: primaryGreen,
-              elevation: 0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AddPost(userData: userData),
-                  ),
+            return {
+              'username': userData[UserData.keyProfileUsername],
+              'location': userData[UserData.keyLocation],
+              'content': post['content'],
+              'image': post['image'],
+              'profileImageUrl': userData[UserData.keyProfilePictureUrl],
+              'like': post['likes'],
+              'comments': post['comments'],
+              'timestamp': post['timestamp'].toDate(),
+            };
+          }).toList()),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            if (!snapshot.hasData) {
+              return const Center(child: Text('No posts available'));
+            }
+
+            final sortedPostData = snapshot.data!;
+            sortedPostData
+                .sort((a, b) => b['timestamp'].compareTo(a['timestamp']));
+
+            return ListView(
+              children: sortedPostData.map<Widget>((data) {
+                return Post(
+                  username: data['username'],
+                  location: data['location'],
+                  post: data['content'],
+                  imageUrl: data['image'],
+                  profileImageUrl: data['profileImageUrl'],
+                  like: data['like'],
+                  comment: data['comments'],
+                  time: data['timestamp'],
                 );
-              },
-              child: const Icon(
-                Iconsax.add,
-                size: 30,
-                color: Colors.white,
-              ),
-            ),
-          ),
+              }).toList(),
+            );
+          },
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => AddPost(userData: userData)),
+          );
+        },
+        child: const Icon(Iconsax.add),
       ),
     );
   }
