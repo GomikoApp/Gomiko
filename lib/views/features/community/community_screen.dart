@@ -37,7 +37,7 @@ class _CommunityTabState extends ConsumerState<CommunityTab> {
   Widget build(BuildContext context) {
     final postData = ref.watch(postDataProvider);
 
-    final userData = ref.watch(userDataProvider);
+    final userData = ref.read(userDataProvider);
 
     return Scaffold(
       body: Padding(

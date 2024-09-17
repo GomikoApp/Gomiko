@@ -28,7 +28,7 @@ class _EditProfileState extends ConsumerState<EditProfile> {
     double windowWidth = MediaQuery.of(context).size.width;
     double windowHeight = MediaQuery.of(context).size.height;
 
-    final userData = ref.watch(userDataProvider);
+    final userData = ref.read(userDataProvider);
 
     return Scaffold(
       backgroundColor: bgColor,

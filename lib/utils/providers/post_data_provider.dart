@@ -9,7 +9,6 @@ import 'package:recycle/utils/providers/login_state_provider.dart';
 final postDataStreamProvider =
     StreamProvider<List<Map<String, dynamic>>>((ref) {
   final bool loggedIn = ref.watch(applicationStateProvider).loggedIn;
-
   if (loggedIn) {
     return FirebaseFirestore.instance
         .collection("/posts")
