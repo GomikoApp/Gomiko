@@ -2,6 +2,8 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import 'package:uuid/uuid.dart';
+
 // iconsax
 import 'package:iconsax/iconsax.dart';
 
@@ -31,8 +33,9 @@ class AddPost extends StatefulWidget {
 class _AddPostState extends State<AddPost> {
   final int _maxLength = 280;
   final TextEditingController _controller = TextEditingController();
-
   final FirebaseStorage _storage = FirebaseStorage.instance;
+  var uuid = const Uuid(); // create a Uuid instance
+  var postId = const Uuid().v4(); // create a v4 Uuid
 
   // keep track of current length of text
   int _currentLength = 0;
@@ -86,6 +89,7 @@ class _AddPostState extends State<AddPost> {
     // add post to firebase
     Map<String, dynamic> postData = {
       'uid': uid,
+      'postId': postId,
       'username': username,
       'content': _controller.text,
       'image': downloadUrl,
@@ -94,10 +98,15 @@ class _AddPostState extends State<AddPost> {
       'timestamp': FieldValue.serverTimestamp(),
     };
 
-    await posts.add(postData).then((value) {
+    await posts.add(postData).then((value) async {
       if (kDebugMode) {
         print('Post added with ID: ${value.id}');
       }
+
+      // add a subcollection of likes for the post containing all user's uid that liked that post
+      await value.collection('likes').doc(uid).set({
+        'liked': [],
+      });
     }).catchError((error) {
       if (kDebugMode) {
         print('Error adding post: $error');

@@ -48,6 +48,7 @@ class _CommunityTabState extends ConsumerState<CommunityTab> {
             final userData = await _getUserData(userId);
 
             return {
+              'postId': post['postId'],
               'username': userData[UserData.keyProfileUsername],
               'location': userData[UserData.keyLocation],
               'content': post['content'],
@@ -73,6 +74,7 @@ class _CommunityTabState extends ConsumerState<CommunityTab> {
             return ListView(
               children: sortedPostData.map<Widget>((data) {
                 return Post(
+                  postId: data['postId'],
                   username: data['username'],
                   location: data['location'],
                   post: data['content'],

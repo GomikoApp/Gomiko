@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:like_button/like_button.dart';
 
 class Post extends StatelessWidget {
   final String username;
@@ -10,17 +12,20 @@ class Post extends StatelessWidget {
   final int like;
   final List<dynamic> comment;
   final DateTime time;
+  final String postId;
 
-  const Post(
-      {super.key,
-      required this.username,
-      required this.location,
-      required this.post,
-      required this.imageUrl,
-      required this.profileImageUrl,
-      required this.like,
-      required this.comment,
-      required this.time});
+  const Post({
+    super.key,
+    required this.username,
+    required this.location,
+    required this.post,
+    required this.imageUrl,
+    required this.profileImageUrl,
+    required this.like,
+    required this.comment,
+    required this.time,
+    required this.postId,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -82,11 +87,32 @@ class Post extends StatelessWidget {
             Row(
               children: [
                 // TODO:: make this a button and increment its like in firestore
-                const Row(
+                Row(
                   children: [
-                    Icon(Icons.favorite),
-                    SizedBox(width: 5),
-                    Text('0'),
+                    LikeButton(
+                      circleColor:
+                          const CircleColor(start: Colors.red, end: Colors.red),
+                      bubblesColor: const BubblesColor(
+                        dotPrimaryColor: Colors.red,
+                        dotSecondaryColor: Colors.red,
+                      ),
+                      likeCount: 100,
+                      likeBuilder: (bool isLiked) {
+                        return Icon(
+                          isLiked ? Icons.favorite : Iconsax.heart,
+                          color: isLiked ? Colors.red : Colors.black,
+                        );
+                      },
+                      countBuilder: (int? count, bool isLiked, String text) {
+                        var color = isLiked ? Colors.red : Colors.black;
+                        Widget result;
+                        result = Text(
+                          text,
+                          style: TextStyle(color: color),
+                        );
+                        return result;
+                      },
+                    ),
                   ],
                 ),
                 const SizedBox(width: 10),
