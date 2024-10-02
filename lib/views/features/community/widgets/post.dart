@@ -1,15 +1,17 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:like_button/like_button.dart';
 
-class Post extends StatelessWidget {
+class Post extends StatefulWidget {
   final String username;
   final String location;
   final String post;
   final String? imageUrl;
   final String? profileImageUrl;
-  final int like;
+  final List<dynamic> like;
   final List<dynamic> comment;
   final DateTime time;
   final String postId;
@@ -26,6 +28,44 @@ class Post extends StatelessWidget {
     required this.time,
     required this.postId,
   });
+
+  @override
+  State<Post> createState() => _PostState();
+}
+
+class _PostState extends State<Post> {
+  bool isLiked = false;
+
+  @override
+  void initState() {
+    super.initState();
+    final user = FirebaseAuth.instance.currentUser;
+    isLiked = widget.like.contains(user!.uid);
+  }
+
+  Future<bool> onLikeButtonTapped(bool liked) async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (isLiked) {
+      await FirebaseFirestore.instance
+          .collection('posts')
+          .doc(widget.postId)
+          .update({
+        'likes': FieldValue.arrayRemove([user!.uid]),
+      });
+    } else {
+      await FirebaseFirestore.instance
+          .collection('posts')
+          .doc(widget.postId)
+          .update({
+        'likes': FieldValue.arrayUnion([user!.uid]),
+      });
+    }
+
+    setState(() {
+      isLiked = !liked;
+    });
+    return !liked;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +96,7 @@ class Post extends StatelessWidget {
                 CircleAvatar(
                   radius: 20,
                   backgroundImage: NetworkImage(
-                    profileImageUrl ??
+                    widget.profileImageUrl ??
                         'https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png',
                   ),
                 ),
@@ -65,20 +105,20 @@ class Post extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      username,
+                      widget.username,
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     // retrieve the user's location from their profile in firestore
-                    Text(location),
+                    Text(widget.location),
                   ],
                 ),
               ],
             ),
             const SizedBox(height: 20),
             Text(
-              post,
+              widget.post,
               style: const TextStyle(
                 fontSize: 16,
               ),
@@ -86,7 +126,6 @@ class Post extends StatelessWidget {
             const SizedBox(height: 20),
             Row(
               children: [
-                // TODO:: make this a button and increment its like in firestore
                 Row(
                   children: [
                     LikeButton(
@@ -96,7 +135,8 @@ class Post extends StatelessWidget {
                         dotPrimaryColor: Colors.red,
                         dotSecondaryColor: Colors.red,
                       ),
-                      likeCount: 100,
+                      likeCount: widget.like.length,
+                      isLiked: isLiked,
                       likeBuilder: (bool isLiked) {
                         return Icon(
                           isLiked ? Icons.favorite : Iconsax.heart,
@@ -112,6 +152,7 @@ class Post extends StatelessWidget {
                         );
                         return result;
                       },
+                      onTap: onLikeButtonTapped,
                     ),
                   ],
                 ),
@@ -131,7 +172,7 @@ class Post extends StatelessWidget {
                 Row(
                   children: [
                     const SizedBox(width: 5),
-                    Text(timeago.format(time)),
+                    Text(timeago.format(widget.time)),
                   ],
                 ),
               ],

@@ -2,8 +2,6 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import 'package:uuid/uuid.dart';
-
 // iconsax
 import 'package:iconsax/iconsax.dart';
 
@@ -34,8 +32,6 @@ class _AddPostState extends State<AddPost> {
   final int _maxLength = 280;
   final TextEditingController _controller = TextEditingController();
   final FirebaseStorage _storage = FirebaseStorage.instance;
-  var uuid = const Uuid(); // create a Uuid instance
-  var postId = const Uuid().v4(); // create a v4 Uuid
 
   // keep track of current length of text
   int _currentLength = 0;
@@ -86,6 +82,8 @@ class _AddPostState extends State<AddPost> {
     String uid = widget.userData[UserData.keyUid];
     String username = widget.userData[UserData.keyProfileUsername];
 
+    String postId = posts.doc().id;
+
     // add post to firebase
     Map<String, dynamic> postData = {
       'uid': uid,
@@ -93,20 +91,15 @@ class _AddPostState extends State<AddPost> {
       'username': username,
       'content': _controller.text,
       'image': downloadUrl,
-      'likes': 0,
+      'likes': [],
       'comments': [],
       'timestamp': FieldValue.serverTimestamp(),
     };
 
-    await posts.add(postData).then((value) async {
+    await posts.doc(postId).set(postData).then((value) async {
       if (kDebugMode) {
-        print('Post added with ID: ${value.id}');
+        print('Post added with postID: $postId');
       }
-
-      // add a subcollection of likes for the post containing all user's uid that liked that post
-      await value.collection('likes').doc(uid).set({
-        'liked': [],
-      });
     }).catchError((error) {
       if (kDebugMode) {
         print('Error adding post: $error');
