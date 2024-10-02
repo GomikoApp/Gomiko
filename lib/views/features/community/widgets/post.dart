@@ -2,10 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:recycle/constants.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:like_button/like_button.dart';
 
 class Post extends StatefulWidget {
+  final String uid;
   final String username;
   final String location;
   final String post;
@@ -18,6 +20,7 @@ class Post extends StatefulWidget {
 
   const Post({
     super.key,
+    required this.uid,
     required this.username,
     required this.location,
     required this.post,
@@ -35,11 +38,11 @@ class Post extends StatefulWidget {
 
 class _PostState extends State<Post> {
   bool isLiked = false;
+  final user = FirebaseAuth.instance.currentUser;
 
   @override
   void initState() {
     super.initState();
-    final user = FirebaseAuth.instance.currentUser;
     isLiked = widget.like.contains(user!.uid);
   }
 
@@ -113,6 +116,84 @@ class _PostState extends State<Post> {
                     // retrieve the user's location from their profile in firestore
                     Text(widget.location),
                   ],
+                ),
+                // Make a hamburger menu that allows user to edit their posts or delete their posts
+                const Spacer(),
+                IconButton(
+                  onPressed: () {
+                    showModalBottomSheet(
+                      isScrollControlled: true,
+                      context: context,
+                      builder: (context) {
+                        return SizedBox(
+                          height: Constants.windowHeight(context) * 0.2,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              // add a small oval container to show it is scrollable
+                              Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Container(
+                                  height: 5,
+                                  width: 50,
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[400],
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                              ),
+
+                              (user!.uid == widget.uid)
+                                  ? Column(
+                                      children: [
+                                        ListTile(
+                                          title:
+                                              const Center(child: Text('Edit')),
+                                          onTap: () {
+                                            Navigator.pop(context);
+                                          },
+                                        ),
+                                        ListTile(
+                                          title: const Center(
+                                              child: Text('Delete')),
+                                          onTap: () {
+                                            Navigator.pop(context);
+                                          },
+                                        ),
+                                        ListTile(
+                                          title: const Center(
+                                              child: Text('Cancel')),
+                                          onTap: () {
+                                            Navigator.pop(context);
+                                          },
+                                        ),
+                                      ],
+                                    )
+                                  : Column(
+                                      children: [
+                                        ListTile(
+                                          title: const Center(
+                                              child: Text('Report')),
+                                          onTap: () {
+                                            Navigator.pop(context);
+                                          },
+                                        ),
+                                        ListTile(
+                                          title: const Center(
+                                              child: Text('Cancel')),
+                                          onTap: () {
+                                            Navigator.pop(context);
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                            ],
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  icon: const Icon(Icons.more_horiz),
                 ),
               ],
             ),
