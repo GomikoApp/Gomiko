@@ -112,7 +112,7 @@ class _AddPostState extends State<AddPost> {
     });
 
     // add a delay
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(const Duration(milliseconds: 500));
 
     setState(() {
       _isLoading = false;
@@ -365,8 +365,6 @@ class _AddPostState extends State<AddPost> {
                   _buildSelectImageButton(context),
                 ],
               ),
-
-              // TODO: Add Tags? (Optional feature)
 
               const Spacer(),
 
