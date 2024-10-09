@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // FirebaseFirestore
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:recycle/constants.dart';
 
 // Data Classes
 import 'package:recycle/utils/providers/user_data_provider.dart';
@@ -67,45 +68,43 @@ class _CommunityTabState extends ConsumerState<CommunityTab> {
     final userData = ref.read(userDataProvider);
 
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.only(top: 15.0),
-        child: StreamBuilder<List<Map<String, dynamic>>>(
-          stream: _getPostStream(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            }
+      backgroundColor: primaryGrey,
+      body: StreamBuilder<List<Map<String, dynamic>>>(
+        stream: _getPostStream(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
 
-            // Check if the snapshot has an error
-            if (snapshot.hasError) {
-              return Center(child: Text('Error: ${snapshot.error}'));
-            }
+          // Check if the snapshot has an error
+          if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          }
 
-            // If there's no data and the connection is not waiting
-            if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return const Center(child: Text('No posts available'));
-            }
+          // If there's no data and the connection is not waiting
+          if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return const Center(child: Text('No posts available'));
+          }
 
-            final sortedPostData = snapshot.data!;
+          final sortedPostData = snapshot.data!;
 
-            return ListView(
-              children: sortedPostData.map<Widget>((data) {
-                return Post(
-                  uid: data['uid'],
-                  postId: data['postId'],
-                  username: data['username'],
-                  location: data['location'],
-                  post: data['content'],
-                  imageUrl: data['image'],
-                  profileImageUrl: data['profileImageUrl'],
-                  like: data['likes'],
-                  comment: data['comments'],
-                  time: data['timestamp'],
-                );
-              }).toList(),
-            );
-          },
-        ),
+          return ListView(
+            children: sortedPostData.map<Widget>((data) {
+              return Post(
+                uid: data['uid'],
+                postId: data['postId'],
+                username: data['username'],
+                location: data['location'],
+                post: data['content'],
+                imageUrl: data['image'],
+                profileImageUrl: data['profileImageUrl'],
+                like: data['likes'],
+                comment: data['comments'],
+                time: data['timestamp'],
+              );
+            }).toList(),
+          );
+        },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

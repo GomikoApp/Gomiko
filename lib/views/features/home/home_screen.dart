@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:recycle/constants.dart';
 
 import 'package:recycle/utils/providers/user_data_provider.dart';
 import 'package:recycle/utils/data_classes.dart';
@@ -28,6 +29,7 @@ class _MyHomeState extends ConsumerState<HomeTab> {
     final userData = ref.watch(userDataProvider);
 
     return Scaffold(
+      backgroundColor: primaryGrey,
       body: Column(
         children: <Widget>[
           const SizedBox(
@@ -55,7 +57,7 @@ class _MyHomeState extends ConsumerState<HomeTab> {
           Container(
             margin: const EdgeInsets.only(top: 10, left: 20, right: 20),
             decoration: BoxDecoration(
-              color: Colors.grey[200],
+              color: Colors.white,
               borderRadius: BorderRadius.circular(20),
             ),
             child: Padding(
@@ -97,7 +99,11 @@ class _MyHomeState extends ConsumerState<HomeTab> {
 
           // Waste Categories
           const Padding(
-            padding: EdgeInsets.only(left: 20.0, top: 20.0),
+            padding: EdgeInsets.only(
+              left: 20.0,
+              top: 20.0,
+              bottom: 5.0,
+            ),
             child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
@@ -127,7 +133,7 @@ class _MyHomeState extends ConsumerState<HomeTab> {
                       right: index % 2 == 0 ? 5 : 20),
                   height: 100,
                   decoration: BoxDecoration(
-                    color: Colors.grey[200],
+                    color: Colors.white,
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Padding(
