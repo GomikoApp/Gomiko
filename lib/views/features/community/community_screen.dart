@@ -7,11 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 // FirebaseFirestore
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-// constants
-import 'package:recycle/utils/data_classes.dart';
-
 // Data Classes
-import 'package:recycle/utils/providers/post_data_provider.dart';
 import 'package:recycle/utils/providers/user_data_provider.dart';
 
 // widget
@@ -33,33 +29,46 @@ class _CommunityTabState extends ConsumerState<CommunityTab> {
     return userSnapshot.data() ?? {};
   }
 
+  Future<List<Map<String, dynamic>>> _getPostData() async {
+    final postSnapshot =
+        await FirebaseFirestore.instance.collection('posts').get();
+    final posts = postSnapshot.docs;
+
+    List<Map<String, dynamic>> postData = [];
+
+    for (var post in posts) {
+      final postMap = post.data();
+      final userId = postMap['uid'];
+
+      // Fetch user data for the current post
+      final userData = await _getUserData(userId);
+
+      postData.add({
+        'uid': postMap['uid'],
+        'postId': postMap['postId'],
+        'username': userData['profile_username'], // from user data
+        'location': userData['location'], // from user data
+        'content': postMap['content'],
+        'image': postMap['image'],
+        'profileImageUrl': userData['profile_picture_url'], // from user data
+        'likes': postMap['likes'],
+        'comments': postMap['comments'],
+        'timestamp': postMap['timestamp'].toDate(),
+      });
+    }
+
+    return postData;
+  }
+
   @override
   Widget build(BuildContext context) {
-    final postData = ref.watch(postDataProvider);
-
     final userData = ref.read(userDataProvider);
 
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.only(top: 15.0),
         child: FutureBuilder<List<Map<String, dynamic>>>(
-          future: Future.wait(postData.map((post) async {
-            final userId = post['uid'];
-            final userData = await _getUserData(userId);
-
-            return {
-              'uid': post['uid'],
-              'postId': post['postId'],
-              'username': userData[UserData.keyProfileUsername],
-              'location': userData[UserData.keyLocation],
-              'content': post['content'],
-              'image': post['image'],
-              'profileImageUrl': userData[UserData.keyProfilePictureUrl],
-              'like': post['likes'],
-              'comments': post['comments'],
-              'timestamp': post['timestamp'].toDate(),
-            };
-          }).toList()),
+          future: _getPostData(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
@@ -82,7 +91,7 @@ class _CommunityTabState extends ConsumerState<CommunityTab> {
                   post: data['content'],
                   imageUrl: data['image'],
                   profileImageUrl: data['profileImageUrl'],
-                  like: data['like'],
+                  like: data['likes'],
                   comment: data['comments'],
                   time: data['timestamp'],
                 );

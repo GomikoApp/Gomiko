@@ -37,37 +37,26 @@ class Post extends StatefulWidget {
 }
 
 class _PostState extends State<Post> {
-  bool isLiked = false;
   final user = FirebaseAuth.instance.currentUser;
 
   @override
   void initState() {
     super.initState();
-    isLiked = widget.like.contains(user!.uid);
   }
 
-  Future<bool> onLikeButtonTapped(bool liked) async {
-    final user = FirebaseAuth.instance.currentUser;
+  Future<bool> onLikeButtonTapped(bool isLiked) async {
+    final postRef =
+        FirebaseFirestore.instance.collection('posts').doc(widget.postId);
     if (isLiked) {
-      await FirebaseFirestore.instance
-          .collection('posts')
-          .doc(widget.postId)
-          .update({
+      postRef.update({
         'likes': FieldValue.arrayRemove([user!.uid]),
       });
     } else {
-      await FirebaseFirestore.instance
-          .collection('posts')
-          .doc(widget.postId)
-          .update({
+      postRef.update({
         'likes': FieldValue.arrayUnion([user!.uid]),
       });
     }
-
-    setState(() {
-      isLiked = !liked;
-    });
-    return !liked;
+    return !isLiked;
   }
 
   @override
@@ -217,7 +206,7 @@ class _PostState extends State<Post> {
                         dotSecondaryColor: Colors.red,
                       ),
                       likeCount: widget.like.length,
-                      isLiked: isLiked,
+                      isLiked: widget.like.contains(user!.uid),
                       likeBuilder: (bool isLiked) {
                         return Icon(
                           isLiked ? Icons.favorite : Iconsax.heart,
