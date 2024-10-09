@@ -29,35 +29,37 @@ class _CommunityTabState extends ConsumerState<CommunityTab> {
     return userSnapshot.data() ?? {};
   }
 
-  Future<List<Map<String, dynamic>>> _getPostData() async {
-    final postSnapshot =
-        await FirebaseFirestore.instance.collection('posts').get();
-    final posts = postSnapshot.docs;
+  Stream<List<Map<String, dynamic>>> _getPostStream() {
+    return FirebaseFirestore.instance
+        .collection('posts')
+        .orderBy('timestamp', descending: true)
+        .snapshots()
+        .asyncMap((postSnapshot) async {
+      List<Map<String, dynamic>> postData = [];
 
-    List<Map<String, dynamic>> postData = [];
+      for (var post in postSnapshot.docs) {
+        final postMap = post.data();
+        final userId = postMap['uid'];
 
-    for (var post in posts) {
-      final postMap = post.data();
-      final userId = postMap['uid'];
+        // Fetch user data for the current post
+        final userData = await _getUserData(userId);
 
-      // Fetch user data for the current post
-      final userData = await _getUserData(userId);
+        postData.add({
+          'uid': postMap['uid'],
+          'postId': postMap['postId'],
+          'username': userData['profile_username'], // from user data
+          'location': userData['location'], // from user data
+          'content': postMap['content'],
+          'image': postMap['image'],
+          'profileImageUrl': userData['profile_picture_url'], // from user data
+          'likes': postMap['likes'],
+          'comments': postMap['comments'],
+          'timestamp': postMap['timestamp'].toDate(),
+        });
+      }
 
-      postData.add({
-        'uid': postMap['uid'],
-        'postId': postMap['postId'],
-        'username': userData['profile_username'], // from user data
-        'location': userData['location'], // from user data
-        'content': postMap['content'],
-        'image': postMap['image'],
-        'profileImageUrl': userData['profile_picture_url'], // from user data
-        'likes': postMap['likes'],
-        'comments': postMap['comments'],
-        'timestamp': postMap['timestamp'].toDate(),
-      });
-    }
-
-    return postData;
+      return postData;
+    });
   }
 
   @override
@@ -67,19 +69,24 @@ class _CommunityTabState extends ConsumerState<CommunityTab> {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.only(top: 15.0),
-        child: FutureBuilder<List<Map<String, dynamic>>>(
-          future: _getPostData(),
+        child: StreamBuilder<List<Map<String, dynamic>>>(
+          stream: _getPostStream(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
             }
-            if (!snapshot.hasData) {
+
+            // Check if the snapshot has an error
+            if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            }
+
+            // If there's no data and the connection is not waiting
+            if (!snapshot.hasData || snapshot.data!.isEmpty) {
               return const Center(child: Text('No posts available'));
             }
 
             final sortedPostData = snapshot.data!;
-            sortedPostData
-                .sort((a, b) => b['timestamp'].compareTo(a['timestamp']));
 
             return ListView(
               children: sortedPostData.map<Widget>((data) {

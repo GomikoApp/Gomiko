@@ -32,6 +32,7 @@ class _AddPostState extends State<AddPost> {
   final int _maxLength = 280;
   final TextEditingController _controller = TextEditingController();
   final FirebaseStorage _storage = FirebaseStorage.instance;
+  bool _isLoading = false;
 
   // keep track of current length of text
   int _currentLength = 0;
@@ -63,6 +64,10 @@ class _AddPostState extends State<AddPost> {
 
   // upload post to firebase with image being optional
   Future<void> _uploadPost() async {
+    setState(() {
+      _isLoading = true;
+    });
+
     CollectionReference posts = FirebaseFirestore.instance.collection('posts');
     String? downloadUrl;
 
@@ -105,6 +110,17 @@ class _AddPostState extends State<AddPost> {
         print('Error adding post: $error');
       }
     });
+
+    // add a delay
+    await Future.delayed(const Duration(seconds: 1));
+
+    setState(() {
+      _isLoading = false;
+    });
+
+    if (mounted) {
+      Navigator.pop(context);
+    }
   }
 
   @override
@@ -154,7 +170,6 @@ class _AddPostState extends State<AddPost> {
               );
             } else {
               _uploadPost();
-              Navigator.pop(context);
             }
           },
           child: const Text(
@@ -307,51 +322,58 @@ class _AddPostState extends State<AddPost> {
         centerTitle: true,
         title: const Text('Post'),
       ),
-      body: Column(
+      body: Stack(
         children: [
-          Padding(
-            padding: const EdgeInsets.only(
-                left: 20.0, right: 20.0, top: 10.0, bottom: 10.0),
-            child: TextField(
-              controller: _controller,
-              maxLines: 10,
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                filled: true,
-                fillColor: Colors.grey[200],
-                hintText: 'What\'s on your mind?',
-                contentPadding: const EdgeInsets.all(10.0),
-              ),
-            ),
-          ),
-          // text length counter
-          Padding(
-            padding: const EdgeInsets.only(right: 20.0),
-            child: Align(
-              alignment: Alignment.centerRight,
-              child: Text(
-                '$_currentLength/$_maxLength',
-                style: TextStyle(
-                  color: _currentLength > _maxLength ? Colors.red : Colors.grey,
+          Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                    left: 20.0, right: 20.0, top: 10.0, bottom: 10.0),
+                child: TextField(
+                  controller: _controller,
+                  maxLines: 10,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    filled: true,
+                    fillColor: Colors.grey[200],
+                    hintText: 'What\'s on your mind?',
+                    contentPadding: const EdgeInsets.all(10.0),
+                  ),
                 ),
               ),
-            ),
-          ),
+              // text length counter
+              Padding(
+                padding: const EdgeInsets.only(right: 20.0),
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    '$_currentLength/$_maxLength',
+                    style: TextStyle(
+                      color: _currentLength > _maxLength
+                          ? Colors.red
+                          : Colors.grey,
+                    ),
+                  ),
+                ),
+              ),
 
-          // Add image button
-          Row(
-            children: [
-              // add selected images here make the size the same as the camera elevation button
-              if (_selectedImage != null) _buildShowSelectedImage(),
-              _buildSelectImageButton(context),
+              // Add image button
+              Row(
+                children: [
+                  // add selected images here make the size the same as the camera elevation button
+                  if (_selectedImage != null) _buildShowSelectedImage(),
+                  _buildSelectImageButton(context),
+                ],
+              ),
+
+              // TODO: Add Tags? (Optional feature)
+
+              const Spacer(),
+
+              _buildSubmitButton(),
             ],
           ),
-
-          // TODO: Add Tags? (Optional feature)
-
-          const Spacer(),
-
-          _buildSubmitButton(),
+          if (_isLoading) const Center(child: CircularProgressIndicator()),
         ],
       ),
     );
