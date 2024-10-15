@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:recycle/constants.dart';
 import 'package:recycle/views/features/community/community_screen.dart';
 import 'package:recycle/views/features/learn/learn_screen.dart';
 
@@ -38,6 +39,7 @@ class TabBarWidgetState extends ConsumerState<TabBarWidget> {
         length: 3,
         child: Scaffold(
           appBar: AppBar(
+            backgroundColor: Colors.white,
             bottom: const PreferredSize(
               preferredSize: Size.fromHeight(20),
               child: Align(
