@@ -89,16 +89,35 @@ class _PostState extends State<Post> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    widget.username,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
+                  Row(
+                    children: [
+                      Text(
+                        "@${widget.username}",
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+
+                      // add a small dot
+                      const Padding(
+                        padding: EdgeInsets.only(left: 4.0, right: 4.0),
+                        child: Icon(Icons.circle, size: 5),
+                      ),
+
+                      Row(
+                        children: [
+                          Text(timeago.format(widget.time),
+                              style: const TextStyle(fontSize: 14)),
+                        ],
+                      ),
+                    ],
                   ),
                   // retrieve the user's location from their profile in firestore
                   Text(widget.location),
                 ],
               ),
+
               // Make a hamburger menu that allows user to edit their posts or delete their posts
               const Spacer(),
               IconButton(
@@ -187,6 +206,23 @@ class _PostState extends State<Post> {
             ),
           ),
           const SizedBox(height: 20),
+
+          // show the image if there is one
+
+          if (widget.imageUrl != null)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 10.0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: SizedBox(
+                  child: Image.network(
+                    widget.imageUrl!,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+            ),
+
           Row(
             children: [
               Row(
@@ -224,7 +260,7 @@ class _PostState extends State<Post> {
               // TODO:: make this button to pull up a bottom sheet modal showing all comments
               const Row(
                 children: [
-                  Icon(Icons.comment),
+                  Icon(Iconsax.message),
                   SizedBox(width: 5),
                   Text('0'),
                 ],
@@ -232,12 +268,8 @@ class _PostState extends State<Post> {
 
               const Spacer(),
 
-              Row(
-                children: [
-                  const SizedBox(width: 5),
-                  Text(timeago.format(widget.time)),
-                ],
-              ),
+              // TODO:: icon to save post
+              const Icon(Iconsax.archive_add),
             ],
           ),
         ],
