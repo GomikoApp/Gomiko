@@ -301,7 +301,7 @@ class _AddPostState extends State<AddPost> {
               elevation: 0,
               backgroundColor: Colors.grey[200],
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(20),
               ),
             ),
             onPressed: () {
@@ -333,11 +333,14 @@ class _AddPostState extends State<AddPost> {
                   controller: _controller,
                   maxLines: 10,
                   decoration: InputDecoration(
-                    border: InputBorder.none,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      borderSide: BorderSide.none,
+                    ),
                     filled: true,
                     fillColor: Colors.grey[200],
                     hintText: 'What\'s on your mind?',
-                    contentPadding: const EdgeInsets.all(10.0),
+                    contentPadding: const EdgeInsets.all(20.0),
                   ),
                 ),
               ),
