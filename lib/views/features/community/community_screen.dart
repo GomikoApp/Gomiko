@@ -88,21 +88,28 @@ class _CommunityTabState extends ConsumerState<CommunityTab> {
 
           final sortedPostData = snapshot.data!;
 
-          return ListView(
-            children: sortedPostData.map<Widget>((data) {
-              return Post(
-                uid: data['uid'],
-                postId: data['postId'],
-                username: data['username'],
-                location: data['location'],
-                post: data['content'],
-                imageUrl: data['image'],
-                profileImageUrl: data['profileImageUrl'],
-                like: data['likes'],
-                comment: data['comments'],
-                time: data['timestamp'],
+          return ListView.builder(
+            itemCount: sortedPostData.length,
+            itemBuilder: (context, index) {
+              final data = sortedPostData[index];
+              return Container(
+                margin: index == 0
+                    ? const EdgeInsets.only(top: 10)
+                    : EdgeInsets.zero,
+                child: Post(
+                  uid: data['uid'],
+                  postId: data['postId'],
+                  username: data['username'],
+                  location: data['location'],
+                  post: data['content'],
+                  imageUrl: data['image'],
+                  profileImageUrl: data['profileImageUrl'],
+                  like: data['likes'],
+                  comment: data['comments'],
+                  time: data['timestamp'],
+                ),
               );
-            }).toList(),
+            },
           );
         },
       ),
