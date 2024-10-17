@@ -140,6 +140,71 @@ class _AddPostState extends State<AddPost> {
     super.dispose();
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: const Text('Post'),
+      ),
+      body: Stack(
+        children: [
+          Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                    left: 20.0, right: 20.0, top: 10.0, bottom: 10.0),
+                child: TextField(
+                  controller: _controller,
+                  maxLines: 10,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      borderSide: BorderSide.none,
+                    ),
+                    filled: true,
+                    fillColor: Colors.grey[200],
+                    hintText: 'What\'s on your mind?',
+                    contentPadding: const EdgeInsets.all(20.0),
+                  ),
+                ),
+              ),
+              // text length counter
+              Padding(
+                padding: const EdgeInsets.only(right: 20.0),
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    '$_currentLength/$_maxLength',
+                    style: TextStyle(
+                      color: _currentLength > _maxLength
+                          ? Colors.red
+                          : Colors.grey,
+                    ),
+                  ),
+                ),
+              ),
+
+              // Add image button
+              Row(
+                children: [
+                  // add selected images here make the size the same as the camera elevation button
+                  if (_selectedImage != null) _buildShowSelectedImage(),
+                  _buildSelectImageButton(context),
+                ],
+              ),
+
+              const Spacer(),
+
+              _buildSubmitButton(),
+            ],
+          ),
+          if (_isLoading) const Center(child: CircularProgressIndicator()),
+        ],
+      ),
+    );
+  }
+
   // button to submit Post
   Widget _buildSubmitButton() {
     return Padding(
@@ -311,71 +376,6 @@ class _AddPostState extends State<AddPost> {
             child: const Icon(Iconsax.camera5),
           ),
         ),
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text('Post'),
-      ),
-      body: Stack(
-        children: [
-          Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                    left: 20.0, right: 20.0, top: 10.0, bottom: 10.0),
-                child: TextField(
-                  controller: _controller,
-                  maxLines: 10,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                      borderSide: BorderSide.none,
-                    ),
-                    filled: true,
-                    fillColor: Colors.grey[200],
-                    hintText: 'What\'s on your mind?',
-                    contentPadding: const EdgeInsets.all(20.0),
-                  ),
-                ),
-              ),
-              // text length counter
-              Padding(
-                padding: const EdgeInsets.only(right: 20.0),
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: Text(
-                    '$_currentLength/$_maxLength',
-                    style: TextStyle(
-                      color: _currentLength > _maxLength
-                          ? Colors.red
-                          : Colors.grey,
-                    ),
-                  ),
-                ),
-              ),
-
-              // Add image button
-              Row(
-                children: [
-                  // add selected images here make the size the same as the camera elevation button
-                  if (_selectedImage != null) _buildShowSelectedImage(),
-                  _buildSelectImageButton(context),
-                ],
-              ),
-
-              const Spacer(),
-
-              _buildSubmitButton(),
-            ],
-          ),
-          if (_isLoading) const Center(child: CircularProgressIndicator()),
-        ],
       ),
     );
   }

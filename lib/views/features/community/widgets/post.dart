@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:recycle/constants.dart';
+import 'package:recycle/views/profile/widgets/profile_widget.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:like_button/like_button.dart';
 
@@ -92,9 +93,7 @@ class _PostState extends State<Post> {
         CircleAvatar(
           radius: 20,
           backgroundImage: NetworkImage(
-            widget.profileImageUrl ??
-                'https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png',
-          ),
+              widget.profileImageUrl ?? 'http://www.gravatar.com/avatar/?d=mp'),
         ),
         const SizedBox(width: 10),
         Column(
@@ -135,10 +134,11 @@ class _PostState extends State<Post> {
           onPressed: () {
             showModalBottomSheet(
               isScrollControlled: true,
+              backgroundColor: Colors.white,
               context: context,
               builder: (context) {
                 return SizedBox(
-                  height: Constants.windowHeight(context) * 0.2,
+                  height: Constants.windowHeight(context) * 0.3,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -158,39 +158,145 @@ class _PostState extends State<Post> {
                       (user!.uid == widget.uid)
                           ? Column(
                               children: [
-                                ListTile(
-                                  title: const Center(child: Text('Edit')),
-                                  onTap: () {
-                                    Navigator.pop(context);
-                                  },
+                                const SizedBox(height: 10),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 15.0, right: 15.0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Expanded(
+                                        child: ElevatedButton(
+                                          onPressed: () {},
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: primaryGrey,
+                                            padding: const EdgeInsets.only(
+                                                top: 10, bottom: 10),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(20.0),
+                                            ),
+                                          ),
+                                          child: const Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Icon(
+                                                Iconsax.edit,
+                                                color: Colors.black,
+                                              ),
+                                              SizedBox(
+                                                  height:
+                                                      8), // Add some space between the icon and the text
+                                              Text(
+                                                "Edit",
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 12,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 10),
+                                      Expanded(
+                                        child: ElevatedButton(
+                                          onPressed: () {},
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: primaryGrey,
+                                            padding: const EdgeInsets.only(
+                                                top: 10, bottom: 10),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(20.0),
+                                            ),
+                                          ),
+                                          child: const Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Icon(
+                                                Iconsax.trash,
+                                                color: Colors.black,
+                                              ),
+                                              SizedBox(
+                                                  height:
+                                                      8), // Add some space between the icon and the text
+                                              Text(
+                                                "Delete",
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 12,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                                ListTile(
-                                  title: const Center(child: Text('Delete')),
-                                  onTap: () {
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                                ListTile(
-                                  title: const Center(child: Text('Cancel')),
-                                  onTap: () {
-                                    Navigator.pop(context);
-                                  },
+                                const SizedBox(height: 10),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 15.0, right: 15.0),
+                                  child: Column(
+                                    children: [
+                                      // Saved Posts
+                                      CustomInkWell(
+                                        bottomRight: true,
+                                        bottomLeft: true,
+                                        topLeft: true,
+                                        topRight: true,
+                                        onTap: () {},
+                                        leading: const Icon(
+                                            Icons.keyboard_arrow_left),
+                                        title: const Text("Cancel"),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ],
                             )
                           : Column(
                               children: [
-                                ListTile(
-                                  title: const Center(child: Text('Report')),
-                                  onTap: () {
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                                ListTile(
-                                  title: const Center(child: Text('Cancel')),
-                                  onTap: () {
-                                    Navigator.pop(context);
-                                  },
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 15.0, right: 15.0),
+                                  child: Column(
+                                    children: [
+                                      CustomInkWell(
+                                        topLeft: true,
+                                        topRight: true,
+                                        bottomRight: true,
+                                        bottomLeft: true,
+                                        onTap: () {},
+                                        leading:
+                                            const Icon(Iconsax.archive_add),
+                                        title: const Text("Save"),
+                                      ),
+
+                                      const SizedBox(height: 10),
+
+                                      CustomInkWell(
+                                        topLeft: true,
+                                        topRight: true,
+                                        onTap: () {},
+                                        leading:
+                                            const Icon(Iconsax.shield_cross),
+                                        title: const Text("Report"),
+                                      ),
+                                      // Saved Posts
+                                      CustomInkWell(
+                                        bottomRight: true,
+                                        bottomLeft: true,
+                                        onTap: () {},
+                                        leading: const Icon(
+                                            Icons.keyboard_arrow_left),
+                                        title: const Text("Cancel"),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),
