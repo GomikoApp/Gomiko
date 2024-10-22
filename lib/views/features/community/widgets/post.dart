@@ -40,10 +40,12 @@ class Post extends StatefulWidget {
 
 class _PostState extends State<Post> {
   final user = FirebaseAuth.instance.currentUser;
+  bool isSaved = false;
 
   @override
   void initState() {
     super.initState();
+    _checkIfSaved();
   }
 
   Future<bool> onLikeButtonTapped(bool isLiked) async {
@@ -59,6 +61,33 @@ class _PostState extends State<Post> {
       });
     }
     return !isLiked;
+  }
+
+  Future<void> _checkIfSaved() async {
+    final userRef =
+        FirebaseFirestore.instance.collection('users').doc(user!.uid);
+    final userSnapshot = await userRef.get();
+    final savedPosts = userSnapshot.data()?['saved_posts'] ?? [];
+    setState(() {
+      isSaved = savedPosts.contains(widget.postId);
+    });
+  }
+
+  // save the post id to the user's saved posts collection when the user clicks the save button
+  // if user clicks the save button again, remove the post id from the user's saved posts collection
+  Future<bool> onSavePostTapped(bool isSaved) async {
+    final userRef =
+        FirebaseFirestore.instance.collection('users').doc(user!.uid);
+    if (!isSaved) {
+      userRef.update({
+        'saved_posts': FieldValue.arrayUnion([widget.postId]),
+      });
+    } else {
+      userRef.update({
+        'saved_posts': FieldValue.arrayRemove([widget.postId]),
+      });
+    }
+    return !isSaved;
   }
 
   @override
@@ -299,60 +328,60 @@ class _PostState extends State<Post> {
   Widget _buildActionButtons() {
     return Row(
       children: [
+        LikeButton(
+          circleColor: const CircleColor(start: Colors.red, end: Colors.red),
+          bubblesColor: const BubblesColor(
+            dotPrimaryColor: Colors.red,
+            dotSecondaryColor: Colors.red,
+          ),
+          likeCount: widget.like.length,
+          isLiked: widget.like.contains(user!.uid),
+          likeBuilder: (bool isLiked) {
+            return Icon(
+              isLiked ? Icons.favorite : Iconsax.heart,
+              color: isLiked ? Colors.red : Colors.black,
+            );
+          },
+          countBuilder: (int? count, bool isLiked, String text) {
+            var color = isLiked ? Colors.red : Colors.black;
+            Widget result;
+            result = Text(
+              text,
+              style: TextStyle(color: color),
+            );
+            return result;
+          },
+          onTap: onLikeButtonTapped,
+        ),
+
+        // TODO: Pull a show bottom modal sheet to show comments
         Row(
           children: [
-            LikeButton(
-              circleColor:
-                  const CircleColor(start: Colors.red, end: Colors.red),
-              bubblesColor: const BubblesColor(
-                dotPrimaryColor: Colors.red,
-                dotSecondaryColor: Colors.red,
-              ),
-              likeCount: widget.like.length,
-              isLiked: widget.like.contains(user!.uid),
-              likeBuilder: (bool isLiked) {
-                return Icon(
-                  isLiked ? Icons.favorite : Iconsax.heart,
-                  color: isLiked ? Colors.red : Colors.black,
-                );
-              },
-              countBuilder: (int? count, bool isLiked, String text) {
-                var color = isLiked ? Colors.red : Colors.black;
-                Widget result;
-                result = Text(
-                  text,
-                  style: TextStyle(color: color),
-                );
-                return result;
-              },
-              onTap: onLikeButtonTapped,
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(Iconsax.message),
             ),
-
-            // TODO: Pull a show bottom modal sheet to show comments
-            Row(
-              children: [
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Iconsax.message),
-                ),
-                Transform.translate(
-                  offset: const Offset(-7, 0),
-                  child: Text("${widget.comment.length}"),
-                ),
-              ],
-            ),
-
-            // TODO:: icon to save post
             Transform.translate(
-              offset: const Offset(-10, 0),
-              child: IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  Iconsax.archive_add,
-                ),
-              ),
+              offset: const Offset(-7, 0),
+              child: Text("${widget.comment.length}"),
             ),
           ],
+        ),
+        const Spacer(),
+        // TODO:: icon to save post
+        LikeButton(
+          circleColor: const CircleColor(start: Colors.red, end: Colors.red),
+          bubblesColor: const BubblesColor(
+            dotPrimaryColor: Colors.red,
+            dotSecondaryColor: Colors.red,
+          ),
+          isLiked: isSaved,
+          likeBuilder: (bool isSaved) {
+            return Icon(
+              isSaved ? Iconsax.archive_tick1 : Iconsax.archive_add,
+            );
+          },
+          onTap: onSavePostTapped,
         ),
       ],
     );
