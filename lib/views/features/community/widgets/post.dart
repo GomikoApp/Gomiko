@@ -163,7 +163,7 @@ class _PostState extends State<Post> {
                                 const SizedBox(height: 10),
                                 Padding(
                                   padding: const EdgeInsets.only(
-                                      left: 15.0, right: 15.0),
+                                      left: 25.0, right: 25.0, top: 5),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
@@ -174,7 +174,7 @@ class _PostState extends State<Post> {
                                         icon: Iconsax.edit,
                                         text: "Edit",
                                       ),
-                                      const SizedBox(width: 10),
+                                      const SizedBox(width: 15),
                                       // Delete Post
                                       CustomElevatedButton(
                                         onPressed: () {},
@@ -187,7 +187,7 @@ class _PostState extends State<Post> {
                                 const SizedBox(height: 10),
                                 Padding(
                                   padding: const EdgeInsets.only(
-                                      left: 15.0, right: 15.0),
+                                      left: 25.0, right: 25.0),
                                   child: Column(
                                     children: [
                                       // Cancel Button
@@ -336,9 +336,9 @@ class _PostState extends State<Post> {
                   icon: const Icon(Iconsax.message),
                 ),
                 Transform.translate(
-                    offset: const Offset(-7, 0),
-                    child: Text(
-                        "${widget.comment.length}")), // Removed leading space
+                  offset: const Offset(-7, 0),
+                  child: Text("${widget.comment.length}"),
+                ),
               ],
             ),
 
