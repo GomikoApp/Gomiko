@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:recycle/constants.dart';
 import 'package:recycle/views/features/community/community_screen.dart';
 import 'package:recycle/views/features/learn/learn_screen.dart';
 

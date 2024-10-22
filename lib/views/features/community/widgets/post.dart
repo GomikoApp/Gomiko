@@ -6,6 +6,7 @@ import 'package:recycle/constants.dart';
 import 'package:recycle/views/profile/widgets/profile_widget.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:like_button/like_button.dart';
+import 'build_elevated_button_widget.dart';
 
 class Post extends StatefulWidget {
   final String uid;
@@ -130,6 +131,7 @@ class _PostState extends State<Post> {
 
         // Make a hamburger menu that allows user to edit their posts or delete their posts
         const Spacer(),
+
         IconButton(
           onPressed: () {
             showModalBottomSheet(
@@ -166,72 +168,18 @@ class _PostState extends State<Post> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      Expanded(
-                                        child: ElevatedButton(
-                                          onPressed: () {},
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor: primaryGrey,
-                                            padding: const EdgeInsets.only(
-                                                top: 10, bottom: 10),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(20.0),
-                                            ),
-                                          ),
-                                          child: const Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              Icon(
-                                                Iconsax.edit,
-                                                color: Colors.black,
-                                              ),
-                                              SizedBox(
-                                                  height:
-                                                      8), // Add some space between the icon and the text
-                                              Text(
-                                                "Edit",
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 12,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
+                                      // Edit Post
+                                      CustomElevatedButton(
+                                        onPressed: () {},
+                                        icon: Iconsax.edit,
+                                        text: "Edit",
                                       ),
                                       const SizedBox(width: 10),
-                                      Expanded(
-                                        child: ElevatedButton(
-                                          onPressed: () {},
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor: primaryGrey,
-                                            padding: const EdgeInsets.only(
-                                                top: 10, bottom: 10),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(20.0),
-                                            ),
-                                          ),
-                                          child: const Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              Icon(
-                                                Iconsax.trash,
-                                                color: Colors.black,
-                                              ),
-                                              SizedBox(
-                                                  height:
-                                                      8), // Add some space between the icon and the text
-                                              Text(
-                                                "Delete",
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 12,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
+                                      // Delete Post
+                                      CustomElevatedButton(
+                                        onPressed: () {},
+                                        icon: Iconsax.trash,
+                                        text: "Delete",
                                       ),
                                     ],
                                   ),
@@ -242,13 +190,15 @@ class _PostState extends State<Post> {
                                       left: 15.0, right: 15.0),
                                   child: Column(
                                     children: [
-                                      // Saved Posts
+                                      // Cancel Button
                                       CustomInkWell(
                                         bottomRight: true,
                                         bottomLeft: true,
                                         topLeft: true,
                                         topRight: true,
-                                        onTap: () {},
+                                        onTap: () {
+                                          Navigator.pop(context);
+                                        },
                                         leading: const Icon(
                                             Icons.keyboard_arrow_left),
                                         title: const Text("Cancel"),
@@ -265,6 +215,7 @@ class _PostState extends State<Post> {
                                       left: 15.0, right: 15.0),
                                   child: Column(
                                     children: [
+                                      // Save Posts to Collection
                                       CustomInkWell(
                                         topLeft: true,
                                         topRight: true,
@@ -275,9 +226,8 @@ class _PostState extends State<Post> {
                                             const Icon(Iconsax.archive_add),
                                         title: const Text("Save"),
                                       ),
-
                                       const SizedBox(height: 10),
-
+                                      // Report Posts
                                       CustomInkWell(
                                         topLeft: true,
                                         topRight: true,
@@ -286,11 +236,13 @@ class _PostState extends State<Post> {
                                             const Icon(Iconsax.shield_cross),
                                         title: const Text("Report"),
                                       ),
-                                      // Saved Posts
+                                      // Cancel Posts
                                       CustomInkWell(
                                         bottomRight: true,
                                         bottomLeft: true,
-                                        onTap: () {},
+                                        onTap: () {
+                                          Navigator.pop(context);
+                                        },
                                         leading: const Icon(
                                             Icons.keyboard_arrow_left),
                                         title: const Text("Cancel"),
@@ -375,23 +327,33 @@ class _PostState extends State<Post> {
               },
               onTap: onLikeButtonTapped,
             ),
+
+            // TODO: Pull a show bottom modal sheet to show comments
+            Row(
+              children: [
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Iconsax.message),
+                ),
+                Transform.translate(
+                    offset: const Offset(-7, 0),
+                    child: Text(
+                        "${widget.comment.length}")), // Removed leading space
+              ],
+            ),
+
+            // TODO:: icon to save post
+            Transform.translate(
+              offset: const Offset(-10, 0),
+              child: IconButton(
+                onPressed: () {},
+                icon: const Icon(
+                  Iconsax.archive_add,
+                ),
+              ),
+            ),
           ],
         ),
-        const SizedBox(width: 10),
-
-        // TODO:: make this button to pull up a bottom sheet modal showing all comments
-        const Row(
-          children: [
-            Icon(Iconsax.message),
-            SizedBox(width: 5),
-            Text('0'),
-          ],
-        ),
-
-        const Spacer(),
-
-        // TODO:: icon to save post
-        const Icon(Iconsax.archive_add),
       ],
     );
   }
