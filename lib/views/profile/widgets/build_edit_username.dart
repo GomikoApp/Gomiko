@@ -6,8 +6,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 // widget
-import 'package:recycle/views/profile/widgets/custom_outlined_input_border.dart';
-import 'package:recycle/views/profile/widgets/profile_widget.dart';
+import 'custom_outlined_input_border.dart';
+import 'custom_ink_well_widget.dart';
 
 // utils
 import 'package:recycle/utils/data_classes.dart';

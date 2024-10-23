@@ -17,7 +17,7 @@ import 'package:recycle/utils/data_classes.dart';
 import 'package:recycle/views/profile/edit_profile_screen.dart';
 
 // Widgets
-import 'widgets/profile_widget.dart';
+import 'widgets/custom_ink_well_widget.dart';
 
 // Constants
 import 'package:recycle/constants.dart';
@@ -75,7 +75,7 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
               child: Container(
                 height: windowHeight * 0.1,
                 decoration: BoxDecoration(
-                  color: primaryGrey,
+                  color: Colors.white,
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Center(
@@ -117,7 +117,7 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
             Container(
               margin: const EdgeInsets.only(left: 20, right: 20, bottom: 10.0),
               decoration: BoxDecoration(
-                color: primaryGrey,
+                color: Colors.white,
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Padding(
@@ -203,12 +203,12 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
                   CustomInkWell(
                     topRight: true,
                     topLeft: true,
-                    // TODO: implement liked posts
+                    // TODO: implement Saved Items
                     onTap: () {
                       if (kDebugMode) print("Liked Posts");
                     },
-                    leading: const Icon(Iconsax.camera),
-                    title: const Text("Liked Posts"),
+                    leading: const Icon(Iconsax.archive),
+                    title: const Text("Saved Items"),
                     trailing: const Icon(Iconsax.arrow_right_3),
                   ),
 

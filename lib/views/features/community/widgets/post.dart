@@ -1,12 +1,18 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:recycle/constants.dart';
-import 'package:recycle/views/profile/widgets/profile_widget.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:like_button/like_button.dart';
-import 'build_elevated_button_widget.dart';
+
+// Firebase
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+// Constants
+import 'package:recycle/constants.dart';
+
+// Widgets
+import 'package:recycle/views/profile/widgets/custom_ink_well_widget.dart';
+import 'elevated_button_widget.dart';
 
 class Post extends StatefulWidget {
   final String uid;
@@ -118,7 +124,7 @@ class _PostState extends State<Post> {
   Widget _buildHeader() {
     return Row(
       children: [
-        // TODO:: make this a button that navigates to the user's profile
+        // TODO: make this a button that navigates to the user's profile
         // retrieve the user's profile image from firestore
         CircleAvatar(
           radius: 20,
@@ -368,7 +374,8 @@ class _PostState extends State<Post> {
           ],
         ),
         const Spacer(),
-        // TODO:: icon to save post
+
+        // Save post utilizing the like button package
         LikeButton(
           circleColor: const CircleColor(start: Colors.red, end: Colors.red),
           bubblesColor: const BubblesColor(

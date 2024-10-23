@@ -9,8 +9,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:recycle/utils/data_classes.dart';
 
 // widget
-import 'package:recycle/views/profile/widgets/custom_outlined_input_border.dart';
-import 'profile_widget.dart';
+import 'custom_outlined_input_border.dart';
+import 'custom_ink_well_widget.dart';
 import 'show_modal_top_bar.dart';
 
 // constants

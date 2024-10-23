@@ -14,8 +14,7 @@ import 'package:recycle/constants.dart';
 import 'package:recycle/utils/data_classes.dart';
 
 // widgets
-import 'package:recycle/views/profile/widgets/profile_widget.dart';
-
+import 'custom_ink_well_widget.dart';
 import 'show_modal_top_bar.dart';
 
 class BuildEditLocationField extends ConsumerStatefulWidget {
