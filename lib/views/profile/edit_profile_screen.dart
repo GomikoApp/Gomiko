@@ -83,7 +83,6 @@ class _EditProfileState extends ConsumerState<EditProfile> {
                   windowHeight: windowHeight,
                   userData: userData,
                 ),
-
                 BuildDeleteAccount(
                   windowWidth: windowWidth,
                   windowHeight: windowHeight,

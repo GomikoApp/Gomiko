@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+
 import 'package:flutter/material.dart';
 
 // firebase
@@ -111,6 +112,7 @@ class _BuildEditUsernameFieldState extends State<BuildEditUsernameField> {
               children: <Widget>[
                 Container(
                     alignment: Alignment.center, child: showModalTopBar()),
+
                 const SizedBox(height: 20),
                 _buildTitle(),
                 _buildUsernameField(),
