@@ -48,7 +48,7 @@ android {
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
         // NOTE: https://youtu.be/rWamixHIKmQ?t=87 told me to change this version to 19. if it breaks, we'll figure it out.
         // NOTE: Changed version to 21 as camera requires it.
-        minSdkVersion 21
+        minSdkVersion 23
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName

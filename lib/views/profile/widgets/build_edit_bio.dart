@@ -11,6 +11,7 @@ import 'package:recycle/utils/data_classes.dart';
 // widget
 import 'package:recycle/views/profile/widgets/custom_outlined_input_border.dart';
 import 'profile_widget.dart';
+import 'show_modal_top_bar.dart';
 
 // constants
 import 'package:recycle/constants.dart';
@@ -75,6 +76,8 @@ class _BuildEditBioFieldState extends State<BuildEditBioField> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                Container(
+                    alignment: Alignment.center, child: showModalTopBar()),
                 const SizedBox(height: 20),
                 _buildTitle(),
                 _buildBioField(),

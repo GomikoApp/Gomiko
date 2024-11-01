@@ -15,6 +15,8 @@ import 'package:recycle/utils/data_classes.dart';
 // constants
 import 'package:recycle/constants.dart';
 
+import 'show_modal_top_bar.dart';
+
 class BuildEditNameField extends StatefulWidget {
   const BuildEditNameField({
     super.key,
@@ -91,6 +93,8 @@ class _BuildEditNameFieldState extends State<BuildEditNameField> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                Container(
+                    alignment: Alignment.center, child: showModalTopBar()),
                 const SizedBox(height: 20),
                 _buildTitle(),
                 _buildFirstNameField(),

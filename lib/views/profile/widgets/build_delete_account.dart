@@ -1,9 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:recycle/constants.dart';
 import 'package:go_router/go_router.dart';
+
+// services
+import 'package:recycle/services/auth_services.dart';
+
+// constants
+import 'package:recycle/constants.dart';
 
 class BuildDeleteAccount extends StatelessWidget {
   const BuildDeleteAccount({
@@ -14,51 +16,6 @@ class BuildDeleteAccount extends StatelessWidget {
 
   final double windowWidth;
   final double windowHeight;
-
-  Future<void> deleteAccount() async {
-    try {
-      // delete user data from firestore
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(FirebaseAuth.instance.currentUser!.uid)
-          .delete();
-      await FirebaseAuth.instance.currentUser!.delete();
-    } on FirebaseAuthException catch (e) {
-      if (kDebugMode) {
-        print('Failed to delete account: $e');
-      }
-
-      if (e.code == 'requires-recent-login') {
-        await _reauthenticateAndDelete();
-      } else {
-        // show error message
-      }
-    } catch (e) {
-      if (kDebugMode) {
-        print('Failed to delete account: $e');
-      }
-    }
-  }
-
-  Future<void> _reauthenticateAndDelete() async {
-    try {
-      final providerData =
-          FirebaseAuth.instance.currentUser?.providerData.first;
-
-      // TODO:: Not sure if these works, need to wait for error for requires-recent-login
-      if (GoogleAuthProvider().providerId == providerData!.providerId) {
-        await FirebaseAuth.instance.currentUser!.reauthenticateWithPopup(
-          GoogleAuthProvider(),
-        );
-      } else if (FacebookAuthProvider().providerId == providerData.providerId) {
-        await FirebaseAuth.instance.currentUser!.reauthenticateWithPopup(
-          FacebookAuthProvider(),
-        );
-      }
-    } catch (e) {
-      // show error message
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,9 +43,9 @@ class BuildDeleteAccount extends StatelessWidget {
                     child: const Text('Cancel'),
                   ),
                   TextButton(
-                    onPressed: () {
+                    onPressed: () async {
                       // delete account
-                      deleteAccount();
+                      AuthService().deleteAccount();
                       // nvaigate to login screen
                       context.pushReplacement('/login');
                     },

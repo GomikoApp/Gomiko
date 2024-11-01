@@ -38,6 +38,7 @@ class TabBarWidgetState extends ConsumerState<TabBarWidget> {
         length: 3,
         child: Scaffold(
           appBar: AppBar(
+            backgroundColor: Colors.white,
             bottom: const PreferredSize(
               preferredSize: Size.fromHeight(20),
               child: Align(

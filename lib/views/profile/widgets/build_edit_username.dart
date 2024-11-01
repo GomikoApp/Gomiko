@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 import 'package:flutter/material.dart';
 
 // firebase
@@ -13,6 +15,8 @@ import 'package:recycle/utils/data_classes.dart';
 
 // constants
 import 'package:recycle/constants.dart';
+
+import 'show_modal_top_bar.dart';
 
 class BuildEditUsernameField extends StatefulWidget {
   const BuildEditUsernameField({
@@ -78,10 +82,12 @@ class _BuildEditUsernameFieldState extends State<BuildEditUsernameField> {
           .collection('users')
           .doc(user.uid)
           .update({
-            UserData.keyProfileUsername: usernameController.text,
-          })
-          .then((value) => print("Username Updated"))
-          .catchError((error) => print("Failed to update username: $error"));
+        UserData.keyProfileUsername: usernameController.text,
+      }).then((value) {
+        if (kDebugMode) print("Username Updated");
+      }).catchError((error) {
+        if (kDebugMode) print("Failed to update username: $error");
+      });
     }
   }
 
@@ -104,6 +110,9 @@ class _BuildEditUsernameFieldState extends State<BuildEditUsernameField> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                Container(
+                    alignment: Alignment.center, child: showModalTopBar()),
+
                 const SizedBox(height: 20),
                 _buildTitle(),
                 _buildUsernameField(),
@@ -207,7 +216,9 @@ class _BuildEditUsernameFieldState extends State<BuildEditUsernameField> {
             await isUniqueUsername(usernameController.text);
             if (_formKey.currentState!.validate() && context.mounted) {
               _updateUsername();
-              Navigator.pop(context);
+              if (mounted) {
+                Navigator.pop(context);
+              }
             }
           },
           child: const Text(

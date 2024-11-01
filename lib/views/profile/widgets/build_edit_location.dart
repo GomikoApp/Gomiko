@@ -16,6 +16,8 @@ import 'package:recycle/utils/data_classes.dart';
 // widgets
 import 'package:recycle/views/profile/widgets/profile_widget.dart';
 
+import 'show_modal_top_bar.dart';
+
 class BuildEditLocationField extends ConsumerStatefulWidget {
   const BuildEditLocationField({
     super.key,
@@ -145,6 +147,8 @@ class _BuildEditLocationFieldState
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                Container(
+                    alignment: Alignment.center, child: showModalTopBar()),
                 const SizedBox(height: 20),
                 _buildTitle(),
                 _buildRegionHeading(),

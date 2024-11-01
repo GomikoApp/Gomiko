@@ -251,7 +251,7 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
                   CustomInkWell(
                     topRight: true,
                     topLeft: true,
-                    // TODO: implement appearance
+                    // TODO: implement appearance (dark + light mode)
                     onTap: () {
                       if (kDebugMode) print("Appearance");
                     },
