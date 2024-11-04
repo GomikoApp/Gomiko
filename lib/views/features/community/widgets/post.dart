@@ -227,6 +227,12 @@ class _PostState extends State<Post> {
                                     children: [
                                       // Cancel Button
                                       CustomInkWell(
+                                        decoration: const BoxDecoration(
+                                          color: primaryGrey,
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(20),
+                                          ),
+                                        ),
                                         bottomRight: true,
                                         bottomLeft: true,
                                         topLeft: true,
@@ -364,7 +370,9 @@ class _PostState extends State<Post> {
         Row(
           children: [
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                // showModalBottomCommentSheet();
+              },
               icon: const Icon(Iconsax.message),
             ),
             Transform.translate(
