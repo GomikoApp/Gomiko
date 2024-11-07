@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:recycle/views/profile/widgets/show_modal_top_bar.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:like_button/like_button.dart';
 
@@ -336,6 +337,113 @@ class _PostState extends State<Post> {
     );
   }
 
+  // show bottom modal sheet to show comments
+  void showModalBottomCommentSheet(BuildContext context) {
+    showModalBottomSheet(
+      isScrollControlled: true,
+      context: context,
+      builder: (BuildContext context) {
+        return DraggableScrollableSheet(
+          initialChildSize: 0.7,
+          minChildSize: 0.6,
+          maxChildSize: 0.9,
+          snap: true,
+          expand: false,
+          builder: (BuildContext context, ScrollController scrollController) {
+            return Column(
+              children: [
+                // Custom top bar or handle
+                Container(
+                  alignment: Alignment.center,
+                  child: showModalTopBar(),
+                ),
+                const Text("Comments",
+                    style:
+                        TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                Expanded(
+                  child: widget.comment.isEmpty
+                      ? const Center(
+                          child: Text(
+                          'No comments',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ))
+                      : ListView.builder(
+                          controller: scrollController,
+                          itemCount: widget.comment.length,
+                          itemBuilder: (context, index) {
+                            return const ListTile(
+                              leading: CircleAvatar(
+                                backgroundImage: NetworkImage(
+                                    'http://www.gravatar.com/avatar/?d=mp'),
+                              ),
+                              title: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Text(
+                                        "@username",
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+
+                                      // add a small dot
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                            left: 4.0, right: 4.0),
+                                        child: Icon(Icons.circle, size: 5),
+                                      ),
+
+                                      Row(
+                                        children: [
+                                          // Text(timeago.format(widget.time),
+                                          //     style: const TextStyle(
+                                          //         fontSize: 14)),
+                                          Text("1d ago",
+                                              style: TextStyle(fontSize: 12)),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  Text("Example text",
+                                      style: TextStyle(fontSize: 16)),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      hintStyle: const TextStyle(fontSize: 14),
+                      hintText: 'Add a comment...',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      contentPadding:
+                          const EdgeInsets.symmetric(horizontal: 12),
+                      suffixIcon: IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Iconsax.send_1),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
   // build the action buttons of the post
   Widget _buildActionButtons() {
     return Row(
@@ -366,12 +474,11 @@ class _PostState extends State<Post> {
           onTap: onLikeButtonTapped,
         ),
 
-        // TODO: Pull a show bottom modal sheet to show comments
         Row(
           children: [
             IconButton(
               onPressed: () {
-                // showModalBottomCommentSheet();
+                showModalBottomCommentSheet(context);
               },
               icon: const Icon(Iconsax.message),
             ),
