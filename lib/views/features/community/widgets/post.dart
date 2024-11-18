@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:recycle/views/profile/widgets/show_modal_top_bar.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -15,7 +16,7 @@ import 'package:recycle/constants.dart';
 import 'package:recycle/views/profile/widgets/custom_ink_well_widget.dart';
 import 'elevated_button_widget.dart';
 
-class Post extends StatefulWidget {
+class Post extends ConsumerStatefulWidget {
   final String uid;
   final String username;
   final String location;
@@ -23,11 +24,11 @@ class Post extends StatefulWidget {
   final String? imageUrl;
   final String? profileImageUrl;
   final List<dynamic> like;
-  final List<dynamic> comment;
+  List<dynamic> comment;
   final DateTime time;
   final String postId;
 
-  const Post({
+  Post({
     super.key,
     required this.uid,
     required this.username,
@@ -42,10 +43,10 @@ class Post extends StatefulWidget {
   });
 
   @override
-  State<Post> createState() => _PostState();
+  ConsumerState<Post> createState() => _PostState();
 }
 
-class _PostState extends State<Post> {
+class _PostState extends ConsumerState<Post> {
   final user = FirebaseAuth.instance.currentUser;
   bool isSaved = false;
 
@@ -95,30 +96,6 @@ class _PostState extends State<Post> {
       });
     }
     return !isSaved;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(
-        top: 0,
-        bottom: 10,
-      ),
-      padding: const EdgeInsets.all(15),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildHeader(),
-          const SizedBox(height: 10),
-          _buildContent(),
-          _buildActionButtons(), // like, comment, share
-        ],
-      ),
-    );
   }
 
   // build the header of the post
@@ -343,100 +320,140 @@ class _PostState extends State<Post> {
       isScrollControlled: true,
       context: context,
       builder: (BuildContext context) {
-        return DraggableScrollableSheet(
-          initialChildSize: 0.7,
-          minChildSize: 0.6,
-          maxChildSize: 0.9,
-          snap: true,
-          expand: false,
-          builder: (BuildContext context, ScrollController scrollController) {
-            return Column(
-              children: [
-                // Custom top bar or handle
-                Container(
-                  alignment: Alignment.center,
-                  child: showModalTopBar(),
-                ),
-                const Text("Comments",
-                    style:
-                        TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                Expanded(
-                  child: widget.comment.isEmpty
-                      ? const Center(
-                          child: Text(
-                          'No comments',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ))
-                      : ListView.builder(
-                          controller: scrollController,
-                          itemCount: widget.comment.length,
-                          itemBuilder: (context, index) {
-                            return const ListTile(
-                              leading: CircleAvatar(
-                                backgroundImage: NetworkImage(
-                                    'http://www.gravatar.com/avatar/?d=mp'),
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            // fetch comments from the post
+            Future<void> fetchComments() async {
+              final postRef = FirebaseFirestore.instance
+                  .collection('posts')
+                  .doc(widget.postId);
+              final postSnapshot = await postRef.get();
+              final comments = postSnapshot.data()?['comments'];
+              setState(() {
+                widget.comment = comments;
+              });
+            }
+
+            // add comment to the post
+            Future<void> onCommentTapped(String commentText) async {
+              final userRef =
+                  FirebaseFirestore.instance.collection('users').doc(user!.uid);
+              final userSnapshot = await userRef.get();
+              final username = userSnapshot.data()?['username'];
+              final postRef = FirebaseFirestore.instance
+                  .collection('posts')
+                  .doc(widget.postId);
+              postRef.update({
+                'comments': FieldValue.arrayUnion([
+                  {
+                    'username': username,
+                    'comment': commentText,
+                    'time': DateTime.now(),
+                  }
+                ]),
+              });
+              fetchComments();
+            }
+
+            return DraggableScrollableSheet(
+              initialChildSize: 0.7,
+              minChildSize: 0.6,
+              maxChildSize: 0.9,
+              snap: true,
+              expand: false,
+              builder:
+                  (BuildContext context, ScrollController scrollController) {
+                return Column(
+                  children: [
+                    // Custom top bar or handle
+                    Container(
+                      alignment: Alignment.center,
+                      child: showModalTopBar(),
+                    ),
+                    const Text("Comments",
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold)),
+                    Expanded(
+                      child: widget.comment.isEmpty
+                          ? const Center(
+                              child: Text(
+                              'No comments',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
                               ),
-                              title: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
+                            ))
+                          : ListView.builder(
+                              controller: scrollController,
+                              itemCount: widget.comment.length,
+                              itemBuilder: (context, index) {
+                                return const ListTile(
+                                  leading: CircleAvatar(
+                                    backgroundImage: NetworkImage(
+                                        'http://www.gravatar.com/avatar/?d=mp'),
+                                  ),
+                                  title: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      Text(
-                                        "@username",
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-
-                                      // add a small dot
-                                      Padding(
-                                        padding: EdgeInsets.only(
-                                            left: 4.0, right: 4.0),
-                                        child: Icon(Icons.circle, size: 5),
-                                      ),
-
                                       Row(
                                         children: [
-                                          // Text(timeago.format(widget.time),
-                                          //     style: const TextStyle(
-                                          //         fontSize: 14)),
-                                          Text("1d ago",
-                                              style: TextStyle(fontSize: 12)),
+                                          Text(
+                                            "@username",
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                          // add a small dot
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                left: 4.0, right: 4.0),
+                                            child: Icon(Icons.circle, size: 5),
+                                          ),
+                                          Row(
+                                            children: [
+                                              // Text(timeago.format(widget.time),
+                                              //     style: const TextStyle(
+                                              //         fontSize: 14)),
+                                              Text("1d ago",
+                                                  style:
+                                                      TextStyle(fontSize: 12)),
+                                            ],
+                                          ),
                                         ],
                                       ),
+                                      Text("Example text",
+                                          style: TextStyle(fontSize: 16)),
                                     ],
                                   ),
-                                  Text("Example text",
-                                      style: TextStyle(fontSize: 16)),
-                                ],
-                              ),
-                            );
-                          },
+                                );
+                              },
+                            ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: TextField(
+                        decoration: InputDecoration(
+                          hintStyle: const TextStyle(fontSize: 14),
+                          hintText: 'Add a comment...',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          contentPadding:
+                              const EdgeInsets.symmetric(horizontal: 12),
+                          suffixIcon: IconButton(
+                            onPressed: () async {
+                              await onCommentTapped('commentText');
+                            },
+                            icon: const Icon(Iconsax.send_1),
+                          ),
                         ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintStyle: const TextStyle(fontSize: 14),
-                      hintText: 'Add a comment...',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      contentPadding:
-                          const EdgeInsets.symmetric(horizontal: 12),
-                      suffixIcon: IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Iconsax.send_1),
                       ),
                     ),
-                  ),
-                ),
-              ],
+                  ],
+                );
+              },
             );
           },
         );
@@ -506,6 +523,30 @@ class _PostState extends State<Post> {
           onTap: onSavePostTapped,
         ),
       ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(
+        top: 0,
+        bottom: 10,
+      ),
+      padding: const EdgeInsets.all(15),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildHeader(),
+          const SizedBox(height: 10),
+          _buildContent(),
+          _buildActionButtons(), // like, comment, share
+        ],
+      ),
     );
   }
 }
