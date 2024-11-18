@@ -16,6 +16,7 @@ import 'package:recycle/constants.dart';
 import 'package:recycle/views/profile/widgets/custom_ink_well_widget.dart';
 import 'elevated_button_widget.dart';
 
+// ignore: must_be_immutable
 class Post extends ConsumerStatefulWidget {
   final String uid;
   final String username;
@@ -322,11 +323,16 @@ class _PostState extends ConsumerState<Post> {
       builder: (BuildContext context) {
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
+            // sort comments by time
+            widget.comment.sort((a, b) => b['time'].compareTo(a['time']));
+
+            final controller = TextEditingController();
+            final postRef = FirebaseFirestore.instance
+                .collection('posts')
+                .doc(widget.postId);
+
             // fetch comments from the post
             Future<void> fetchComments() async {
-              final postRef = FirebaseFirestore.instance
-                  .collection('posts')
-                  .doc(widget.postId);
               final postSnapshot = await postRef.get();
               final comments = postSnapshot.data()?['comments'];
               setState(() {
@@ -339,14 +345,15 @@ class _PostState extends ConsumerState<Post> {
               final userRef =
                   FirebaseFirestore.instance.collection('users').doc(user!.uid);
               final userSnapshot = await userRef.get();
-              final username = userSnapshot.data()?['username'];
-              final postRef = FirebaseFirestore.instance
-                  .collection('posts')
-                  .doc(widget.postId);
+              final username = userSnapshot.data()?['profile_username'];
+              final profileImageUrl =
+                  userSnapshot.data()?['profile_picture_url'];
+
               postRef.update({
                 'comments': FieldValue.arrayUnion([
                   {
                     'username': username,
+                    'profile_image_url': profileImageUrl,
                     'comment': commentText,
                     'time': DateTime.now(),
                   }
@@ -387,44 +394,41 @@ class _PostState extends ConsumerState<Post> {
                               controller: scrollController,
                               itemCount: widget.comment.length,
                               itemBuilder: (context, index) {
-                                return const ListTile(
+                                return ListTile(
                                   leading: CircleAvatar(
-                                    backgroundImage: NetworkImage(
+                                    backgroundImage: NetworkImage(widget
+                                                .comment[index]
+                                            ['profile_image_url'] ??
                                         'http://www.gravatar.com/avatar/?d=mp'),
                                   ),
                                   title: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Row(
-                                        children: [
-                                          Text(
-                                            "@username",
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          ),
-                                          // add a small dot
-                                          Padding(
-                                            padding: EdgeInsets.only(
-                                                left: 4.0, right: 4.0),
-                                            child: Icon(Icons.circle, size: 5),
-                                          ),
-                                          Row(
-                                            children: [
-                                              // Text(timeago.format(widget.time),
-                                              //     style: const TextStyle(
-                                              //         fontSize: 14)),
-                                              Text("1d ago",
-                                                  style:
-                                                      TextStyle(fontSize: 12)),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                      Text("Example text",
-                                          style: TextStyle(fontSize: 16)),
+                                      Row(children: [
+                                        Text(
+                                          widget.comment[index]['username'],
+                                          style: const TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+
+                                        // add a small dot
+                                        const Padding(
+                                          padding: EdgeInsets.only(
+                                              left: 4.0, right: 4.0),
+                                          child: Icon(Icons.circle, size: 5),
+                                        ),
+
+                                        Text(
+                                          timeago.format(widget.comment[index]
+                                                  ['time']
+                                              .toDate()),
+                                          style: const TextStyle(fontSize: 14),
+                                        ),
+                                      ]),
+                                      Text(widget.comment[index]['comment'],
+                                          style: const TextStyle(fontSize: 16)),
                                     ],
                                   ),
                                 );
@@ -434,6 +438,7 @@ class _PostState extends ConsumerState<Post> {
                     Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: TextField(
+                        controller: controller,
                         decoration: InputDecoration(
                           hintStyle: const TextStyle(fontSize: 14),
                           hintText: 'Add a comment...',
@@ -444,7 +449,11 @@ class _PostState extends ConsumerState<Post> {
                               const EdgeInsets.symmetric(horizontal: 12),
                           suffixIcon: IconButton(
                             onPressed: () async {
-                              await onCommentTapped('commentText');
+                              if (controller.text.isEmpty) {
+                                return;
+                              } else {
+                                await onCommentTapped(controller.text);
+                              }
                             },
                             icon: const Icon(Iconsax.send_1),
                           ),
