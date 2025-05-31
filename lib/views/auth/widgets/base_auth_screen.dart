@@ -69,9 +69,8 @@ class _BaseAuthScreenState extends State<BaseAuthScreen>
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
-    final keyboardOpenMultiplier = _isKeyboardVisible ? 0.1 : 0.25;
-    final logoTopPaddingMultiplier = _isKeyboardVisible ? 0.05 : 0.1;
-
+    // final keyboardOpenMultiplier = _isKeyboardVisible ? 0.1 : 0.25; // No longer used with these changes
+    // final logoTopPaddingMultiplier = _isKeyboardVisible ? 0.05 : 0.1; // No longer used with these changes
 
     return Container(
       decoration: BoxDecoration(
@@ -83,7 +82,7 @@ class _BaseAuthScreenState extends State<BaseAuthScreen>
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: SingleChildScrollView(
-          child: widget.customScaffold ?? 
+          child: widget.customScaffold ??
           Padding(
             padding: EdgeInsets.only(
               // Adjust overall padding when keyboard is visible to push content up
@@ -93,36 +92,39 @@ class _BaseAuthScreenState extends State<BaseAuthScreen>
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center, // Task 2: Centering
               children: <Widget>[
-                AnimatedContainer(
-                  duration: const Duration(milliseconds: 300),
-                  height: screenHeight * (_isKeyboardVisible ? 0.05 : 0.15), // Smaller space above logo when keyboard is visible
-                  curve: Curves.easeInOut,
-                ),
+                // Task 3: Initial Top Padding (Above Logo)
+                SizedBox(height: screenHeight > 800 ? screenHeight * 0.1 : 40.0),
+
                 if (widget.logo != null)
                   AnimatedOpacity(
                     opacity: _isKeyboardVisible ? 0.0 : 1.0,
                     duration: const Duration(milliseconds: 300),
-                    // Removed AnimatedContainer wrapper, rely on Opacity and natural layout adjustment
-                    child: SizedBox( // Use a SizedBox to give the logo a consistent space when visible
-                      height: screenHeight * 0.15, // Standard height for the logo area
+                    child: SizedBox(
+                      height: screenHeight * 0.15,
                       child: FittedBox(child: widget.logo!),
                     )
                   ),
+
+                // Task 4: Spacing between Logo and Header
                 AnimatedContainer(
-                  duration: const Duration(milliseconds: 300),
-                  height: screenHeight * (_isKeyboardVisible ? 0.02 : 0.05), // Space between logo and header text
+                  duration: const Duration(milliseconds: 200),
+                  height: _isKeyboardVisible ? 5.0 : 35.0,
                   curve: Curves.easeInOut,
                 ),
+
                 if (widget.headerTextWidget != null)
-                  AnimatedPadding(
-                    duration: const Duration(milliseconds: 300),
-                    padding: EdgeInsets.symmetric(vertical: _isKeyboardVisible ? 5.0 : 10.0),
-                    child: widget.headerTextWidget!,
-                  ),
-                SizedBox(height: screenHeight * 0.03), // Space before form content
+                  widget.headerTextWidget!, // Removed AnimatedPadding wrapper, direct display
+
+                // Task 4: Spacing between Header and Form Content
+                AnimatedContainer(
+                  duration: const Duration(milliseconds: 200),
+                  height: _isKeyboardVisible ? 5.0 : 20.0,
+                  curve: Curves.easeInOut,
+                ),
                 widget.formContent,
-                SizedBox(height: screenHeight * 0.05), // Space at the bottom
+                SizedBox(height: screenHeight * 0.05), // Space at the bottom (can be adjusted if needed)
               ],
             ),
           ),

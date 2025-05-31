@@ -157,7 +157,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               // Removed AnimatedContainers for spacing - BaseAuthScreen handles major keyboard adjustments
               // Add some consistent spacing if needed
-              const SizedBox(height: 20), 
+              const SizedBox(height: 20),
               const GomikoTextDivider(
                 label: "Or Log in with",
                 labelSize: 13.5,

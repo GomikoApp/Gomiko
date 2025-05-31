@@ -234,7 +234,7 @@ class GomikoPasswordTextFormField extends StatefulWidget {
   final String hintText;
   final Color? hintColor;
   final Color? iconColor;
-  final Icon? suffixIcon; 
+  final Icon? suffixIcon;
   final Color? suffixIconColor;
   final TextEditingController controller;
   final String? Function(String?)? validator;
@@ -583,7 +583,7 @@ class GomikoTextDivider extends StatelessWidget {
   }
 }
 
-// Note: The original incorrect StatelessWidget version of GomikoPasswordTextFormField has been removed 
+// Note: The original incorrect StatelessWidget version of GomikoPasswordTextFormField has been removed
 // and replaced by the StatefulWidget and its State class above.
 // The _GomikoPasswordTextFormFieldState class is now correctly placed *after* GomikoPasswordTextFormField.
 // No, the _GomikoPasswordTextFormFieldState class must be *before* other classes if it's not part of the GomikoPasswordTextFormField class directly.
